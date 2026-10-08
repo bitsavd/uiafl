@@ -19,8 +19,9 @@ const form = reactive({
   name: '',
   category: 'industrial',
   protocol: '',
-  target_profile: 'standard',
-  netinfo: 'tcp://127.0.0.1/18885',
+  transport: 'tcp',
+  target_host: '127.0.0.1',
+  target_port: 18885,
   duration: '10m',
   aflnet_options: {
     state_aware: true,
@@ -37,6 +38,11 @@ const form = reactive({
 })
 
 const activeGroup = computed(() => groups.value.find(group => group.id === activeGroupId.value))
+const targetNetinfo = computed(() => `${form.transport}://${form.target_host || '127.0.0.1'}/${form.target_port || ''}`)
+const targetProfile = computed(() => {
+  const host = String(form.target_host || '').trim().toLowerCase()
+  return ['127.0.0.1', 'localhost', '::1'].includes(host) ? 'standard' : 'external'
+})
 
 function protocolSummary(protocol) {
   const category = activeGroup.value?.name || '协议'
@@ -49,7 +55,8 @@ function applyProtocol(protocol, closeDialog = true) {
   form.category = activeGroupId.value
   form.name = `${protocol.id} 协议检测`
   const port = protocol.default_port || (protocol.id === 'RTSP' ? 8554 : protocol.id === 'FTP' ? 2200 : protocol.id === 'DNS' ? 5353 : 18885)
-  form.netinfo = `${protocol.transport.includes('UDP') ? 'udp' : 'tcp'}://127.0.0.1/${port}`
+  form.transport = protocol.transport.includes('UDP') ? 'udp' : 'tcp'
+  form.target_port = port
   if (closeDialog) protocolDialogVisible.value = false
 }
 
@@ -80,8 +87,8 @@ async function createTask() {
       name: form.name,
       category: form.category,
       protocol: form.protocol,
-      target_profile: form.target_profile,
-      netinfo: form.netinfo,
+      target_profile: targetProfile.value,
+      netinfo: targetNetinfo.value,
       duration: form.duration,
       aflnet_options: form.aflnet_options,
     })
@@ -167,11 +174,7 @@ onUnmounted(() => window.clearInterval(timer))
         </div>
         <div>
           <span>目标地址</span>
-          <strong>{{ form.netinfo }}</strong>
-        </div>
-        <div>
-          <span>目标接入</span>
-          <strong>{{ form.target_profile === 'standard' ? '标准检测' : '外部目标' }}</strong>
+          <strong>{{ targetNetinfo }}</strong>
         </div>
         <div>
           <span>运行时长</span>
@@ -242,19 +245,23 @@ onUnmounted(() => window.clearInterval(timer))
               <template #append><el-button @click="protocolDialogVisible = true">选择</el-button></template>
             </el-input>
           </el-form-item>
-          <el-form-item label="目标接入方式">
+          <el-form-item label="目标网络协议">
             <el-segmented
-              v-model="form.target_profile"
+              v-model="form.transport"
               :options="[
-                { label: '标准检测', value: 'standard' },
-                { label: '外部目标', value: 'external' },
+                { label: 'TCP', value: 'tcp' },
+                { label: 'UDP', value: 'udp' },
               ]"
             />
-            <div class="form-tip">标准检测适合可控服务或实验环境；外部目标用于真实设备、远程服务或指定网口场景。</div>
+            <div class="form-tip">选择目标服务使用的网络传输协议。</div>
           </el-form-item>
-          <el-form-item label="目标网络地址">
-            <el-input v-model="form.netinfo" placeholder="tcp://127.0.0.1/18885" />
-            <div class="form-tip">格式：协议://主机/端口，例如 tcp://127.0.0.1/18885；可填写真实设备地址或测试网段内服务。</div>
+          <el-form-item label="目标主机地址">
+            <el-input v-model="form.target_host" placeholder="127.0.0.1" />
+            <div class="form-tip">可填写本机地址、真实设备 IP 或远程服务域名。</div>
+          </el-form-item>
+          <el-form-item label="目标端口">
+            <el-input-number v-model="form.target_port" :min="1" :max="65535" />
+            <div class="form-tip">单位：端口号。选择协议后会自动填入默认端口，可按目标服务修改。</div>
           </el-form-item>
           <el-form-item label="运行时长">
             <el-input v-model="form.duration" placeholder="如 10m、1h；留空则手动停止" />

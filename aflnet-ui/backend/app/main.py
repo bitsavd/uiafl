@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import time
+import uuid
 from pathlib import Path
 from typing import Any
 
@@ -104,12 +105,23 @@ def create_task(payload: TaskCreate) -> dict[str, Any]:
     port = parse_netinfo_port(payload.netinfo) or template.get("default_port") or 0
     input_dir = payload.input_dir or template.get("input_dir") or ""
     dictionary = payload.dictionary or template.get("dictionary") or ""
-    target_command = payload.target_command or template.get("target_command", "").format(port=port)
+    if payload.target_profile == "external":
+        target_command = payload.target_command or "sleep 86400"
+    else:
+        target_command = payload.target_command or template.get("target_command", "").format(port=port)
     work_dir = template.get("work_dir", ".")
     cleanup_script = payload.cleanup_script or template.get("cleanup_script") or ""
     if not input_dir or not target_command:
         raise HTTPException(400, "当前协议模板需要补充目标接入配置")
-    task_id = f"{time.strftime('%Y%m%d_%H%M%S')}_{payload.protocol.lower()}"
+    options = {
+        **default_options(),
+        "startup_delay_us": settings_data["execution"]["startup_delay_us"],
+        "timeout": settings_data["execution"]["default_timeout_ms"],
+        **payload.aflnet_options,
+    }
+    if payload.target_profile == "external":
+        options["terminate_server"] = False
+    task_id = f"{time.strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}_{payload.protocol.lower()}"
     output_dir = payload.output_dir or str(APP_ROOT / "runs" / task_id)
     task = {
         "id": task_id,
@@ -125,12 +137,7 @@ def create_task(payload: TaskCreate) -> dict[str, Any]:
         "work_dir": work_dir,
         "cleanup_script": cleanup_script,
         "duration": payload.duration or settings_data["execution"]["default_duration"],
-        "aflnet_options": {
-            **default_options(),
-            "startup_delay_us": settings_data["execution"]["startup_delay_us"],
-            "timeout": settings_data["execution"]["default_timeout_ms"],
-            **payload.aflnet_options,
-        },
+        "aflnet_options": options,
         "status": "created",
         "pid": None,
         "created_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
