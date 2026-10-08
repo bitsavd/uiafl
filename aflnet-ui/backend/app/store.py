@@ -201,6 +201,13 @@ def normalize_path(path: str | None, base: Path = ROOT) -> str:
 def is_process_alive(pid: int | None) -> bool:
     if not pid:
         return False
+    stat_path = Path(f"/proc/{pid}/stat")
+    try:
+        parts = stat_path.read_text(errors="ignore").split()
+        if len(parts) > 2 and parts[2] == "Z":
+            return False
+    except OSError:
+        pass
     try:
         os.kill(pid, 0)
         return True
