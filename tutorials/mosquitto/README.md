@@ -6,9 +6,33 @@ cd mosquitto
 git checkout 2665705  
 export AFL_USE_ASAN=1  
 CFLAGS="-g -O0 -fsanitize=address -fno-omit-frame-pointer" LDFLAGS="-g -O0 -fsanitize=address -fno-omit-frame-pointer"  CC=afl-gcc make clean all WITH_TLS=no WITH_TLS_PSK:=no WITH_STATIC_LIBRARIES=yes WITH_DOCS=no WITH_CJSON=no WITH_EPOLL:=no  
+
+当前环境中也提供了可重复构建脚本，默认构建普通 AFL 插桩版：
+
+```bash
+tutorials/mosquitto/build_mosquitto_aflnet.sh
+```
+
+如需尝试 ASAN 版：
+
+```bash
+MQTT_USE_ASAN=1 tutorials/mosquitto/build_mosquitto_aflnet.sh
+```
 ## Fuzzing  
 cd $WORKDIR/mosquitto  
 afl-fuzz -d -i $AFLNET/tutorials/mosquitto/in-mqtt -o ./out-mqtt -m none -N tcp://127.0.0.1/1883 -P MQTT -D 10000 -q 3 -s 3 -E -K -R ./src/mosquitto  
+
+或者在 AFLNet 根目录直接运行：
+
+```bash
+tutorials/mosquitto/run_mqtt_fuzz.sh 24h fast
+```
+
+可选环境变量：
+
+```bash
+MQTT_PORT=1884 MQTT_OUT_DIR=mosquitto/out-mqtt-1884 tutorials/mosquitto/run_mqtt_fuzz.sh 1h fast
+```
 ## In addition: Seeds generation  
 You can refer to the script in this [repository](https://github.com/B1y0nd/mosquitto_seed) to generate more seeds.  
 Support mqtt v3.1.1 and v5.  

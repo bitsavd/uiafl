@@ -14,7 +14,7 @@ char *get_test_case(char* packet_file, int *fsize)
 {
   /* open packet file */
   s32 fd = open(packet_file, O_RDONLY);
-  if(fd == NULL){
+  if(fd < 0){
     fprintf(stderr, "[AFLNet-replay] Error opening file %s\n", packet_file); 
     exit(1);
   }
@@ -65,7 +65,11 @@ int main(int argc, char* argv[])
   else if (!strcmp(argv[2], "SIP")) extract_response_codes = &extract_response_codes_sip;
   else if (!strcmp(argv[2], "HTTP")) extract_response_codes = &extract_response_codes_http;
   else if (!strcmp(argv[2], "IPP")) extract_response_codes = &extract_response_codes_ipp;
+  else if (!strcmp(argv[2], "MODBUS")) extract_response_codes = &extract_response_codes_modbus;
+  else if (!strcmp(argv[2], "S7COMM")) extract_response_codes = &extract_response_codes_s7comm;
   else {fprintf(stderr, "[AFL-replay] Protocol %s has not been supported yet!\n", argv[2]); exit(1);}
+
+  init_message_code_map();
 
   portno = atoi(argv[3]);
 
@@ -148,7 +152,7 @@ int main(int argc, char* argv[])
   ck_free(state_sequence);
   if (buf) ck_free(buf);
   ck_free(response_buf);
+  destroy_message_code_map();
 
   return 0;
 }
-

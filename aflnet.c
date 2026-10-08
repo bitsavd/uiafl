@@ -1266,6 +1266,46 @@ region_t* extract_requests_ipp(unsigned char* buf, unsigned int buf_size, unsign
   *region_count_ref = region_count;
   return regions;
 }
+
+region_t* extract_requests_modbus(unsigned char* buf, unsigned int buf_size, unsigned int* region_count_ref)
+{
+  unsigned int region_count = 0;
+  region_t *regions = NULL;
+  unsigned int offset = 0;
+
+  while (offset < buf_size) {
+    if (offset + 7 > buf_size) break;
+
+    unsigned int mbap_length = ((unsigned int)buf[offset + 4] << 8) | buf[offset + 5];
+    if (mbap_length == 0 || mbap_length > 260) break;
+
+    unsigned int packet_length = 6 + mbap_length;
+    if (packet_length < 8) break;
+    if (offset + packet_length < offset) break;
+    if (offset + packet_length > buf_size) break;
+
+    region_count++;
+    regions = (region_t *)ck_realloc(regions, region_count * sizeof(region_t));
+    regions[region_count - 1].start_byte = offset;
+    regions[region_count - 1].end_byte = offset + packet_length - 1;
+    regions[region_count - 1].state_sequence = NULL;
+    regions[region_count - 1].state_count = 0;
+
+    offset += packet_length;
+  }
+
+  if ((offset < buf_size) && (buf_size > 0)) {
+    region_count++;
+    regions = (region_t *)ck_realloc(regions, region_count * sizeof(region_t));
+    regions[region_count - 1].start_byte = offset;
+    regions[region_count - 1].end_byte = buf_size - 1;
+    regions[region_count - 1].state_sequence = NULL;
+    regions[region_count - 1].state_count = 0;
+  }
+
+  *region_count_ref = region_count;
+  return regions;
+}
 unsigned int* extract_response_codes_tftp(unsigned char* buf, unsigned int buf_size, unsigned int* state_count_ref)
 {
   char *mem;
@@ -1937,6 +1977,272 @@ region_t *extract_requests_dtls12(unsigned char* buf, unsigned int buf_size, uns
   return regions;
 }
 
+/*
+ * Basic S7COMM request extractor.
+ * S7comm over TCP commonly uses TPKT (0x03) + 1 reserved byte + 2-byte length.
+ * This implementation splits the buffer by TPKT packet lengths. If no
+ * recognizable TPKT header is present, the whole buffer is returned as one region.
+ */
+region_t* extract_requests_s7comm(unsigned char* buf, unsigned int buf_size, unsigned int* region_count_ref) {
+  unsigned int offset = 0;
+  unsigned int region_count = 0;
+  region_t *regions = NULL;
+
+  while (offset + 4 <= buf_size) {
+    /* TPKT: version (0x03), reserved (0x00), length (2 bytes big-endian) */
+    if (buf[offset] == 0x03) {
+      unsigned int pkt_len = ((unsigned int)buf[offset + 2] << 8) | (unsigned int)buf[offset + 3];
+      if (pkt_len < 4) break;
+      if (offset + pkt_len <= buf_size) {
+        region_count++;
+        regions = (region_t *)ck_realloc(regions, region_count * sizeof(region_t));
+        regions[region_count - 1].start_byte = offset;
+        regions[region_count - 1].end_byte = offset + pkt_len - 1;
+        regions[region_count - 1].state_sequence = NULL;
+        regions[region_count - 1].state_count = 0;
+        offset += pkt_len;
+        continue;
+      } else {
+        /* incomplete packet at the end */
+        break;
+      }
+    } else {
+      /* not a TPKT stream; bail out */
+      break;
+    }
+  }
+
+  if ((region_count == 0) && (buf_size > 0)) {
+    regions = (region_t *)ck_realloc(regions, sizeof(region_t));
+    regions[0].start_byte = 0;
+    regions[0].end_byte = buf_size - 1;
+    regions[0].state_sequence = NULL;
+    regions[0].state_count = 0;
+    region_count = 1;
+  }
+
+  *region_count_ref = region_count;
+  return regions;
+}
+
+/*
+ * Response-code extractor for S7COMM.
+ * Build black-box state IDs from COTP packet classes and S7 ACK/ACK_DATA
+ * fields, including ROSCTR, function code, error class and error code.
+ */
+unsigned int* extract_response_codes_s7comm(unsigned char* buf, unsigned int buf_size, unsigned int* state_count_ref) {
+  unsigned int i = 0;
+  unsigned int codes_count = 1;
+  unsigned int *codes = NULL;
+  int compact = 1;
+  int strict = 1;
+  char *compact_env = getenv("S7_STATE_COMPACT");
+  char *strict_env = getenv("S7_STATE_STRICT");
+
+  if (compact_env && (!strcmp(compact_env, "0") || !strcmp(compact_env, "false") || !strcmp(compact_env, "FALSE"))) {
+    compact = 0;
+  }
+  if (strict_env && (!strcmp(strict_env, "0") || !strcmp(strict_env, "false") || !strcmp(strict_env, "FALSE"))) {
+    strict = 0;
+  }
+
+  codes = (unsigned int *)ck_realloc(codes, sizeof(unsigned int));
+  codes[0] = 0;
+
+  if (!buf || buf_size == 0) {
+    *state_count_ref = codes_count;
+    return codes;
+  }
+
+  // Scan for TPKT packets and extract S7 response state codes from COTP/S7 headers.
+  while (i + 4 <= buf_size) {
+    if (buf[i] == 0x03) {
+      if (i + 4 > buf_size) break;
+      unsigned int pkt_len = ((unsigned int)buf[i + 2] << 8) | (unsigned int)buf[i + 3];
+      if (pkt_len < 4) { i++; continue; }
+      if (i + pkt_len > buf_size) break;
+
+      unsigned int payload_off = i + 4;
+      unsigned int payload_len = pkt_len - 4;
+      unsigned int status_code = 0;
+      unsigned int extra_code = 0;
+      unsigned int append_extra = 0;
+      unsigned int semantic_state = 0;
+
+      if (payload_len >= 3) {
+        unsigned char cotp_len = buf[payload_off];
+        unsigned char cotp_type = buf[payload_off + 1];
+        unsigned char cotp_last = buf[payload_off + 2];
+        unsigned int cotp_class = cotp_type & 0xF0;
+        unsigned int s7_off = payload_off + 3;
+        unsigned int rosctr = 0;
+        unsigned int service = 0;
+        unsigned int error_class = 0;
+        unsigned int error_code = 0;
+
+        if (cotp_class != 0xF0) {
+          if (cotp_class == 0xD0 || cotp_class == 0xE0) {
+            status_code = 0x70000000 | ((unsigned int)cotp_class << 16);
+            if (!compact) {
+              status_code |= ((unsigned int)cotp_len << 8) | (unsigned int)cotp_last;
+            }
+            semantic_state = 1;
+          }
+        } else if (s7_off + 10 <= i + pkt_len && buf[s7_off] == 0x32) {
+          rosctr = buf[s7_off + 1];
+          unsigned int header_len = 10;
+          if ((rosctr == 0x03 || rosctr == 0x07) && s7_off + 12 <= i + pkt_len) {
+            header_len = 12;
+            error_class = buf[s7_off + 10];
+            error_code = buf[s7_off + 11];
+          }
+          if (s7_off + header_len <= i + pkt_len) {
+            unsigned int param_len = ((unsigned int)buf[s7_off + 6] << 8) | (unsigned int)buf[s7_off + 7];
+            unsigned int data_len = ((unsigned int)buf[s7_off + 8] << 8) | (unsigned int)buf[s7_off + 9];
+            unsigned int params_start = s7_off + header_len;
+            unsigned int data_start = params_start + param_len;
+            unsigned int item_count = 0;
+
+            if (param_len >= 1 && params_start < i + pkt_len) {
+              service = buf[params_start];
+            }
+            if (param_len >= 2 && params_start + 1 < i + pkt_len) {
+              item_count = buf[params_start + 1];
+            }
+
+            if (!compact && data_len >= 1 && data_start < i + pkt_len) {
+              error_code ^= buf[data_start];
+            }
+
+            status_code = 0x32000000 |
+                          ((unsigned int)rosctr << 20) |
+                          ((unsigned int)service << 12) |
+                          ((unsigned int)error_class << 8) |
+                          (unsigned int)error_code;
+
+            if (!compact) {
+              status_code ^= ((param_len & 0x0F) << 4);
+              status_code ^= (data_len & 0x0F);
+              status_code ^= ((pkt_len & 0x3F) << 18);
+            }
+            if (!compact) {
+              status_code ^= ((item_count & 0x0F) << 16);
+            }
+            semantic_state = 1;
+
+            if (service == 0x04 && data_len >= 1 && data_start < i + pkt_len) {
+              unsigned int item_off = data_start;
+              unsigned int item_idx = 0;
+              while (item_off < i + pkt_len && item_off < data_start + data_len && item_idx < 8) {
+                unsigned int ret_code = buf[item_off];
+                unsigned int transport_size = 0;
+                unsigned int item_bits = 0;
+                unsigned int item_data_bytes = 0;
+
+                if (item_off + 3 < i + pkt_len && item_off + 3 < data_start + data_len) {
+                  transport_size = buf[item_off + 1];
+                  item_bits = ((unsigned int)buf[item_off + 2] << 8) | (unsigned int)buf[item_off + 3];
+                  item_data_bytes = (item_bits + 7) / 8;
+                }
+
+                extra_code = 0x33000000 |
+                             ((service & 0xFF) << 16) |
+                             ((item_idx & 0x0F) << 12) |
+                             ((ret_code & 0xFF) << 4);
+                if (!compact) {
+                  extra_code |= (transport_size & 0x0F);
+                  extra_code ^= ((item_bits & 0xFF) << 8);
+                }
+                if (!compact || ret_code != 0xFF) append_extra = 1;
+
+                if (ret_code == 0xFF && item_off + 4 + item_data_bytes <= i + pkt_len && item_data_bytes > 0) {
+                  item_off += 4 + item_data_bytes;
+                  if (item_bits % 8) item_off++;
+                } else {
+                  item_off += (item_off + 4 <= i + pkt_len) ? 4 : 1;
+                }
+                item_idx++;
+              }
+            }
+          }
+        } else if (s7_off + 5 <= i + pkt_len && buf[s7_off] == 0x72) {
+          /*
+           * S7CommPlus is used by S7-1200/1500 engineering and authentication
+           * flows. It rides on the same TPKT/COTP transport but starts with
+           * protocol byte 0x72 instead of the classic S7Comm 0x32 header.
+           * The exact object payload is complex, so keep this deliberately
+           * compact and stable: packet class plus the leading message fields
+           * are enough to distinguish create-session/auth/error transitions.
+           */
+          unsigned int msg_class = buf[s7_off + 1];
+          unsigned int msg_type = buf[s7_off + 2];
+          unsigned int seq = buf[s7_off + 3];
+          unsigned int service = buf[s7_off + 4];
+
+          status_code = 0x72000000 |
+                        ((msg_class & 0xFF) << 16) |
+                        ((msg_type & 0xFF) << 8) |
+                        (service & 0xFF);
+
+          if (!compact) {
+            status_code ^= ((seq & 0xFF) << 12);
+            status_code ^= ((pkt_len & 0xFF) << 4);
+          }
+
+          semantic_state = 1;
+        } else if (!strict) {
+          status_code = 0x71000000 |
+                        ((unsigned int)cotp_type << 16) |
+                        ((unsigned int)cotp_len << 8) |
+                        (unsigned int)cotp_last;
+          semantic_state = 1;
+        }
+      }
+
+      if (status_code == 0 && !strict) {
+        unsigned int take = payload_len < 4 ? payload_len : 4;
+        for (unsigned int j = 0; j < take; j++) {
+          status_code = (status_code << 8) | (unsigned int)buf[payload_off + j];
+        }
+        semantic_state = (status_code != 0);
+      }
+
+      if (semantic_state) {
+        u32 mapped = get_mapped_message_code(status_code);
+        codes_count++;
+        codes = (unsigned int *)ck_realloc(codes, codes_count * sizeof(unsigned int));
+        codes[codes_count - 1] = mapped;
+
+        if (append_extra) {
+          mapped = get_mapped_message_code(extra_code);
+          codes_count++;
+          codes = (unsigned int *)ck_realloc(codes, codes_count * sizeof(unsigned int));
+          codes[codes_count - 1] = mapped;
+        }
+      }
+
+      i += pkt_len;
+    } else {
+      i++;
+    }
+  }
+
+  if (codes_count == 1 && buf_size > 0 && !strict) {
+    unsigned int status_code = 0;
+    unsigned int take = buf_size < 4 ? buf_size : 4;
+    for (unsigned int j = 0; j < take; j++) {
+      status_code = (status_code << 8) | (unsigned int)buf[j];
+    }
+    u32 mapped = get_mapped_message_code(status_code);
+    codes_count++;
+    codes = (unsigned int *)ck_realloc(codes, codes_count * sizeof(unsigned int));
+    codes[codes_count - 1] = mapped;
+  }
+
+  *state_count_ref = codes_count;
+  return codes;
+}
+
 // a status code comprises <content_type, message_type> tuples
 // message_type varies depending on content_type (e.g. for handshake content, message_type is the handshake message type...)
 //
@@ -2403,6 +2709,47 @@ unsigned int* extract_response_codes_ipp(unsigned char* buf, unsigned int buf_si
   }
 
   if (mem) ck_free(mem);
+  *state_count_ref = state_count;
+  return state_sequence;
+}
+
+unsigned int* extract_response_codes_modbus(unsigned char* buf, unsigned int buf_size, unsigned int* state_count_ref)
+{
+  unsigned int *state_sequence = NULL;
+  unsigned int state_count = 0;
+  unsigned int offset = 0;
+
+  state_count++;
+  state_sequence = (unsigned int *)ck_realloc(state_sequence, state_count * sizeof(unsigned int));
+  state_sequence[state_count - 1] = 0;
+
+  while (offset + 7 <= buf_size) {
+    unsigned int mbap_length = ((unsigned int)buf[offset + 4] << 8) | buf[offset + 5];
+    if (mbap_length == 0 || mbap_length > 260) break;
+
+    unsigned int packet_length = 6 + mbap_length;
+    if (packet_length < 8) break;
+    if (offset + packet_length < offset) break;
+    if (offset + packet_length > buf_size) break;
+
+    unsigned int unit_id = buf[offset + 6];
+    unsigned int function_code = buf[offset + 7];
+    unsigned int exception_code = 0;
+
+    if ((function_code & 0x80) && mbap_length >= 3) {
+      exception_code = buf[offset + 8];
+    }
+
+    unsigned int message_code = (unit_id << 16) | (function_code << 8) | exception_code;
+    message_code = get_mapped_message_code(message_code);
+
+    state_count++;
+    state_sequence = (unsigned int *)ck_realloc(state_sequence, state_count * sizeof(unsigned int));
+    state_sequence[state_count - 1] = message_code;
+
+    offset += packet_length;
+  }
+
   *state_count_ref = state_count;
   return state_sequence;
 }

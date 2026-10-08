@@ -13,9 +13,41 @@ unsigned int* (*extract_response_codes)(unsigned char* buf, unsigned int buf_siz
 2. Application protocol (e.g., RTSP, FTP)
 3. Server's network port
 Optional:
-4. First response timeout (ms), default 1
-5. Follow-up responses timeout (us), default 1000
+4. Response poll timeout (ms), default 1
+5. Per-recv socket timeout (us), default 1000
 */
+
+static int drain_available_responses(int sockfd, struct timeval timeout, int poll_w,
+                                     char **response_buf, unsigned int *len) {
+  char temp_buf[1000];
+  int n;
+  struct pollfd pfd[1];
+
+  pfd[0].fd = sockfd;
+  pfd[0].events = POLLIN;
+
+  if (poll(pfd, 1, poll_w) <= 0) return 0;
+  if (!(pfd[0].revents & POLLIN)) return (pfd[0].revents != 0);
+
+  setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(timeout));
+
+  while (1) {
+    n = recv(sockfd, temp_buf, sizeof(temp_buf), MSG_DONTWAIT);
+    if (n > 0) {
+      *response_buf = (unsigned char *)ck_realloc(*response_buf, *len + n + 1);
+      memcpy(&(*response_buf)[*len], temp_buf, n);
+      (*response_buf)[(*len) + n] = '\0';
+      *len += n;
+      continue;
+    }
+
+    if (n == 0) break;
+    if ((errno == EAGAIN) || (errno == EWOULDBLOCK)) break;
+    return 1;
+  }
+
+  return 0;
+}
 
 int main(int argc, char* argv[])
 {
@@ -31,7 +63,7 @@ int main(int argc, char* argv[])
 
 
   if (argc < 4) {
-    PFATAL("Usage: ./aflnet-replay packet_file protocol port [first_resp_timeout(us) [follow-up_resp_timeout(ms)]]");
+    PFATAL("Usage: ./aflnet-replay packet_file protocol port [poll_timeout(ms) [socket_timeout(us)]]");
   }
 
   fp = fopen(argv[1],"rb");
@@ -57,7 +89,10 @@ int main(int argc, char* argv[])
   else if (!strcmp(argv[2], "NTP")) extract_response_codes = &extract_response_codes_NTP;
   else if (!strcmp(argv[2], "DHCP")) extract_response_codes = &extract_response_codes_dhcp;
   else if (!strcmp(argv[2], "SNTP")) extract_response_codes = &extract_response_codes_SNTP;  
+  else if (!strcmp(argv[2], "MODBUS")) extract_response_codes = &extract_response_codes_modbus;
 else {fprintf(stderr, "[AFLNet-replay] Protocol %s has not been supported yet!\n", argv[2]); exit(1);}
+
+  init_message_code_map();
 
   portno = atoi(argv[3]);
 
@@ -127,11 +162,10 @@ else {fprintf(stderr, "[AFLNet-replay] Protocol %s has not been supported yet!\n
       buf = (char *)ck_alloc(size);
       fread(buf, size, 1, fp);
 
-      if (net_recv(sockfd, timeout, poll_timeout, &response_buf, &response_buf_size)) break;
       n = net_send(sockfd, timeout, buf,size);
       if (n != size) break;
 
-      if (net_recv(sockfd, timeout, poll_timeout, &response_buf, &response_buf_size)) break;
+      if (drain_available_responses(sockfd, timeout, poll_timeout, &response_buf, &response_buf_size)) break;
     }
   }
 
@@ -158,7 +192,7 @@ else {fprintf(stderr, "[AFLNet-replay] Protocol %s has not been supported yet!\n
   ck_free(state_sequence);
   if (buf) ck_free(buf);
   ck_free(response_buf);
+  destroy_message_code_map();
 
   return 0;
 }
-

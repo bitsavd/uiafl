@@ -1,0 +1,3858 @@
+{
+  "dictionary_tokens_hex": [
+    "0300",
+    "11e0",
+    "02f080",
+    "32",
+    "3201",
+    "3203",
+    "f000",
+    "0401",
+    "0501",
+    "120a10",
+    "81",
+    "82",
+    "83",
+    "84",
+    "1c",
+    "1d",
+    "1a00",
+    "1b00",
+    "1c00",
+    "1d00",
+    "1e00",
+    "1f00",
+    "2800",
+    "2900",
+    "0000",
+    "0001",
+    "ffff",
+    "00f0",
+    "01e0",
+    "03c0"
+  ],
+  "llm_used": false,
+  "mutation_targets": [
+    {
+      "fields": [
+        "item_count",
+        "area",
+        "db_number",
+        "bit_address",
+        "transport_size"
+      ],
+      "name": "var_item_boundary",
+      "reason": "S7 variable item count, DB number, area and bit address are common parser boundary fields.",
+      "risk": "medium"
+    },
+    {
+      "fields": [
+        "param_len",
+        "data_len",
+        "item_bit_length",
+        "payload_length"
+      ],
+      "name": "write_data_length_mismatch",
+      "reason": "Write Var has coupled parameter and data lengths; mismatches may expose parser bugs.",
+      "risk": "high"
+    },
+    {
+      "fields": [
+        "function",
+        "rosctr",
+        "param_len",
+        "data_len"
+      ],
+      "name": "control_and_block_functions",
+      "reason": "PLC control and block-management functions tend to be stateful and privileged.",
+      "risk": "high"
+    }
+  ],
+  "prompt": {
+    "constraints": [
+      "Prefer valid stateful message sequences that pass COTP and S7 setup.",
+      "Prioritize deep protocol functions, boundary lengths, item counts, invalid areas, DB edge cases, write/control/download-like functions.",
+      "Avoid recommendations that only create random garbage or huge packets."
+    ],
+    "goal": "Rank seeds and suggest mutation targets likely to expose S7COMM PLC protocol vulnerabilities, not just improve AFL metrics.",
+    "return_json_schema": {
+      "dictionary_tokens_hex": [
+        "0300",
+        "02f080"
+      ],
+      "mutation_targets": [
+        {
+          "fields": [
+            "function",
+            "area",
+            "length",
+            "pdu_ref"
+          ],
+          "name": "short name",
+          "reason": "why it may expose a vulnerability",
+          "risk": "low|medium|high"
+        }
+      ],
+      "ranked_seed_names": [
+        "seed.raw"
+      ]
+    },
+    "role": "s7comm_fuzzing_guidance",
+    "seeds": [
+      {
+        "areas": [],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0x1a",
+            "len": 19,
+            "param_len": 2,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x1a"
+        ],
+        "heuristic_score": 66,
+        "len": 66,
+        "name": "deep_deep_fn_request_download_empty.raw",
+        "path": "tutorials/s7/in_final_candidates/deep_deep_fn_request_download_empty.raw"
+      },
+      {
+        "areas": [
+          "0x83"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x83"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [
+              0
+            ],
+            "function": "0x04",
+            "item_count": 2,
+            "len": 31,
+            "param_len": 14,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 51,
+        "len": 78,
+        "name": "deep_deep_read_item_count_02.raw",
+        "path": "tutorials/s7/in_final_candidates/deep_deep_read_item_count_02.raw"
+      },
+      {
+        "areas": [
+          "0x83"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x83"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [
+              0
+            ],
+            "function": "0x04",
+            "item_count": 255,
+            "len": 31,
+            "param_len": 14,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 51,
+        "len": 78,
+        "name": "deep_deep_read_item_count_ff.raw",
+        "path": "tutorials/s7/in_final_candidates/deep_deep_read_item_count_ff.raw"
+      },
+      {
+        "areas": [
+          "0x83"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x83"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [
+              0
+            ],
+            "function": "0x04",
+            "item_count": 1,
+            "len": 31,
+            "param_len": 14,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 51,
+        "len": 78,
+        "name": "deep_deep_read_m_offset65535.raw",
+        "path": "tutorials/s7/in_final_candidates/deep_deep_read_m_offset65535.raw"
+      },
+      {
+        "areas": [
+          "0x83"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x83"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [
+              0
+            ],
+            "function": "0x04",
+            "item_count": 1,
+            "len": 31,
+            "param_len": 14,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 51,
+        "len": 78,
+        "name": "deep_deep_read_m_size0.raw",
+        "path": "tutorials/s7/in_final_candidates/deep_deep_read_m_size0.raw"
+      },
+      {
+        "areas": [
+          "0x83"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x83"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [
+              0
+            ],
+            "function": "0x04",
+            "item_count": 1,
+            "len": 31,
+            "param_len": 14,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 51,
+        "len": 78,
+        "name": "deep_deep_read_m_size240.raw",
+        "path": "tutorials/s7/in_final_candidates/deep_deep_read_m_size240.raw"
+      },
+      {
+        "areas": [
+          "0x83"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x83",
+              "0x83",
+              "0x83",
+              "0x83"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "function": "0x04",
+            "item_count": 4,
+            "len": 67,
+            "param_len": 50,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 51,
+        "len": 114,
+        "name": "deep_deep_read_multi_4_m.raw",
+        "path": "tutorials/s7/in_final_candidates/deep_deep_read_multi_4_m.raw"
+      },
+      {
+        "areas": [
+          "0x83"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x83",
+              "0x83",
+              "0x83",
+              "0x83",
+              "0x83",
+              "0x83",
+              "0x83",
+              "0x83"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "function": "0x04",
+            "item_count": 8,
+            "len": 115,
+            "param_len": 98,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 51,
+        "len": 162,
+        "name": "deep_deep_read_multi_8_m.raw",
+        "path": "tutorials/s7/in_final_candidates/deep_deep_read_multi_8_m.raw"
+      },
+      {
+        "areas": [
+          "0x83",
+          "0x84",
+          "0xff"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x83",
+              "0x84",
+              "0xff"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [
+              0,
+              1,
+              0
+            ],
+            "function": "0x04",
+            "item_count": 3,
+            "len": 55,
+            "param_len": 38,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 61,
+        "len": 102,
+        "name": "deep_deep_read_multi_m_db_badarea.raw",
+        "path": "tutorials/s7/in_final_candidates/deep_deep_read_multi_m_db_badarea.raw"
+      },
+      {
+        "areas": [
+          "0x83"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x83"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [
+              0
+            ],
+            "function": "0x04",
+            "item_count": 1,
+            "len": 31,
+            "param_len": 0,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 51,
+        "len": 78,
+        "name": "deep_deep_read_param_len_0000.raw",
+        "path": "tutorials/s7/in_final_candidates/deep_deep_read_param_len_0000.raw"
+      },
+      {
+        "areas": [
+          "0x83"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x83"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [
+              0
+            ],
+            "function": "0x04",
+            "item_count": 1,
+            "len": 31,
+            "param_len": 1,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 51,
+        "len": 78,
+        "name": "deep_deep_read_param_len_0001.raw",
+        "path": "tutorials/s7/in_final_candidates/deep_deep_read_param_len_0001.raw"
+      },
+      {
+        "areas": [
+          "0x83"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x83"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [
+              0
+            ],
+            "function": "0x04",
+            "item_count": 1,
+            "len": 31,
+            "param_len": 14,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 51,
+        "len": 78,
+        "name": "deep_deep_setup_pdu_00f0_then_read.raw",
+        "path": "tutorials/s7/in_final_candidates/deep_deep_setup_pdu_00f0_then_read.raw"
+      },
+      {
+        "areas": [
+          "0x83"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x83"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [
+              0
+            ],
+            "function": "0x04",
+            "item_count": 1,
+            "len": 31,
+            "param_len": 14,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 51,
+        "len": 78,
+        "name": "deep_deep_setup_pdu_01e0_then_read.raw",
+        "path": "tutorials/s7/in_final_candidates/deep_deep_setup_pdu_01e0_then_read.raw"
+      },
+      {
+        "areas": [
+          "0x83"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x83"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [
+              0
+            ],
+            "function": "0x05",
+            "item_count": 1,
+            "len": 36,
+            "param_len": 14,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x05"
+        ],
+        "heuristic_score": 66,
+        "len": 83,
+        "name": "deep_deep_write_m0_decl_dlen_0000.raw",
+        "path": "tutorials/s7/in_final_candidates/deep_deep_write_m0_decl_dlen_0000.raw"
+      },
+      {
+        "areas": [
+          "0x83"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x83"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 3,
+            "db_numbers": [
+              0
+            ],
+            "function": "0x05",
+            "item_count": 1,
+            "len": 36,
+            "param_len": 14,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x05"
+        ],
+        "heuristic_score": 66,
+        "len": 83,
+        "name": "deep_deep_write_m0_decl_dlen_0003.raw",
+        "path": "tutorials/s7/in_final_candidates/deep_deep_write_m0_decl_dlen_0003.raw"
+      },
+      {
+        "areas": [
+          "0x83"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x83"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 65535,
+            "db_numbers": [
+              0
+            ],
+            "function": "0x05",
+            "item_count": 1,
+            "len": 36,
+            "param_len": 14,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x05"
+        ],
+        "heuristic_score": 66,
+        "len": 83,
+        "name": "deep_deep_write_m0_decl_dlen_ffff.raw",
+        "path": "tutorials/s7/in_final_candidates/deep_deep_write_m0_decl_dlen_ffff.raw"
+      },
+      {
+        "areas": [
+          "0x84"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x84"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [
+              1
+            ],
+            "function": "0x04",
+            "item_count": 1,
+            "len": 31,
+            "param_len": 14,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 51,
+        "len": 78,
+        "name": "fb_deep_baseline_db_read.raw",
+        "path": "tutorials/s7/in_final_candidates/fb_deep_baseline_db_read.raw"
+      },
+      {
+        "areas": [],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [],
+            "function": "0x04",
+            "item_count": 0,
+            "len": 31,
+            "param_len": 14,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 46,
+        "len": 78,
+        "name": "fb_deep_len_read_count_00.raw",
+        "path": "tutorials/s7/in_final_candidates/fb_deep_len_read_count_00.raw"
+      },
+      {
+        "areas": [
+          "0x83"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x83"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 5,
+            "db_numbers": [
+              0
+            ],
+            "function": "0x05",
+            "item_count": 1,
+            "len": 36,
+            "param_len": 14,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x05"
+        ],
+        "heuristic_score": 66,
+        "len": 83,
+        "name": "fb_deep_len_write_dlen_0005.raw",
+        "path": "tutorials/s7/in_final_candidates/fb_deep_len_write_dlen_0005.raw"
+      },
+      {
+        "areas": [],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0x1a",
+            "len": 19,
+            "param_len": 2,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "len": 8,
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x1a"
+        ],
+        "heuristic_score": 76,
+        "len": 74,
+        "name": "fb_feedback_fn_1a_then_short.raw",
+        "path": "tutorials/s7/in_final_candidates/fb_feedback_fn_1a_then_short.raw"
+      },
+      {
+        "areas": [],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0x1b",
+            "len": 19,
+            "param_len": 2,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "len": 8,
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x1b"
+        ],
+        "heuristic_score": 76,
+        "len": 74,
+        "name": "fb_feedback_fn_1b_then_short.raw",
+        "path": "tutorials/s7/in_final_candidates/fb_feedback_fn_1b_then_short.raw"
+      },
+      {
+        "areas": [],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0x28",
+            "len": 19,
+            "param_len": 2,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "len": 8,
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x28"
+        ],
+        "heuristic_score": 76,
+        "len": 74,
+        "name": "fb_feedback_fn_28_then_short.raw",
+        "path": "tutorials/s7/in_final_candidates/fb_feedback_fn_28_then_short.raw"
+      },
+      {
+        "areas": [],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0x29",
+            "len": 19,
+            "param_len": 2,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "len": 8,
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x29"
+        ],
+        "heuristic_score": 76,
+        "len": 74,
+        "name": "fb_feedback_fn_29_then_short.raw",
+        "path": "tutorials/s7/in_final_candidates/fb_feedback_fn_29_then_short.raw"
+      },
+      {
+        "areas": [
+          "0x7f"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x7f"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [
+              1
+            ],
+            "function": "0x04",
+            "item_count": 1,
+            "len": 31,
+            "param_len": 14,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "len": 8,
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 61,
+        "len": 86,
+        "name": "fb_feedback_read_bad_area_then_short.raw",
+        "path": "tutorials/s7/in_final_candidates/fb_feedback_read_bad_area_then_short.raw"
+      },
+      {
+        "areas": [
+          "0x84"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x84"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [
+              61953
+            ],
+            "function": "0x04",
+            "item_count": 1,
+            "len": 31,
+            "param_len": 14,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "len": 8,
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 61,
+        "len": 86,
+        "name": "fb_feedback_read_bad_db_then_short.raw",
+        "path": "tutorials/s7/in_final_candidates/fb_feedback_read_bad_db_then_short.raw"
+      },
+      {
+        "areas": [],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [],
+            "function": "0x04",
+            "item_count": 0,
+            "len": 31,
+            "param_len": 14,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 46,
+        "len": 78,
+        "name": "fb_feedback_read_count_00.raw",
+        "path": "tutorials/s7/in_final_candidates/fb_feedback_read_count_00.raw"
+      },
+      {
+        "areas": [
+          "0x84"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x84"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [
+              1
+            ],
+            "function": "0x04",
+            "item_count": 1,
+            "len": 31,
+            "param_len": 14,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 51,
+        "len": 78,
+        "name": "fb_feedback_read_count_01.raw",
+        "path": "tutorials/s7/in_final_candidates/fb_feedback_read_count_01.raw"
+      },
+      {
+        "areas": [
+          "0x84"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x84"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [
+              1
+            ],
+            "function": "0x04",
+            "item_count": 2,
+            "len": 31,
+            "param_len": 14,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 51,
+        "len": 78,
+        "name": "fb_feedback_read_count_02.raw",
+        "path": "tutorials/s7/in_final_candidates/fb_feedback_read_count_02.raw"
+      },
+      {
+        "areas": [
+          "0x84"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x84"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [
+              1
+            ],
+            "function": "0x04",
+            "item_count": 3,
+            "len": 31,
+            "param_len": 14,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 51,
+        "len": 78,
+        "name": "fb_feedback_read_count_03.raw",
+        "path": "tutorials/s7/in_final_candidates/fb_feedback_read_count_03.raw"
+      },
+      {
+        "areas": [
+          "0x84"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x84"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [
+              1
+            ],
+            "function": "0x04",
+            "item_count": 255,
+            "len": 31,
+            "param_len": 14,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 51,
+        "len": 78,
+        "name": "fb_feedback_read_count_ff.raw",
+        "path": "tutorials/s7/in_final_candidates/fb_feedback_read_count_ff.raw"
+      },
+      {
+        "areas": [
+          "0x84"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x84"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [
+              1
+            ],
+            "function": "0x04",
+            "item_count": 1,
+            "len": 31,
+            "param_len": 0,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 51,
+        "len": 78,
+        "name": "fb_feedback_read_plen_0000.raw",
+        "path": "tutorials/s7/in_final_candidates/fb_feedback_read_plen_0000.raw"
+      },
+      {
+        "areas": [
+          "0x84"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x84"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [
+              1
+            ],
+            "function": "0x04",
+            "item_count": 1,
+            "len": 31,
+            "param_len": 14,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 51,
+        "len": 78,
+        "name": "fb_feedback_read_plen_000e.raw",
+        "path": "tutorials/s7/in_final_candidates/fb_feedback_read_plen_000e.raw"
+      },
+      {
+        "areas": [
+          "0x84"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x84"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [
+              1
+            ],
+            "function": "0x04",
+            "item_count": 1,
+            "len": 31,
+            "param_len": 65535,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 51,
+        "len": 78,
+        "name": "fb_feedback_read_plen_ffff.raw",
+        "path": "tutorials/s7/in_final_candidates/fb_feedback_read_plen_ffff.raw"
+      },
+      {
+        "areas": [],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "len": 8,
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0"
+        ],
+        "heuristic_score": 38,
+        "len": 55,
+        "name": "fb_feedback_short_s7_00.raw",
+        "path": "tutorials/s7/in_final_candidates/fb_feedback_short_s7_00.raw"
+      },
+      {
+        "areas": [
+          "0x84"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "len": 8,
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x84"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [
+              1
+            ],
+            "function": "0x04",
+            "item_count": 1,
+            "len": 31,
+            "param_len": 14,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 61,
+        "len": 86,
+        "name": "fb_feedback_short_s7_00_then_read.raw",
+        "path": "tutorials/s7/in_final_candidates/fb_feedback_short_s7_00_then_read.raw"
+      },
+      {
+        "areas": [],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "len": 8,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0xf0"
+        ],
+        "heuristic_score": 48,
+        "len": 80,
+        "name": "fb_feedback_short_s7_00_then_setup.raw",
+        "path": "tutorials/s7/in_final_candidates/fb_feedback_short_s7_00_then_setup.raw"
+      },
+      {
+        "areas": [],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "len": 9,
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0"
+        ],
+        "heuristic_score": 38,
+        "len": 56,
+        "name": "fb_feedback_short_s7_01.raw",
+        "path": "tutorials/s7/in_final_candidates/fb_feedback_short_s7_01.raw"
+      },
+      {
+        "areas": [
+          "0x84"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "len": 9,
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x84"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "db_numbers": [
+              1
+            ],
+            "function": "0x04",
+            "item_count": 1,
+            "len": 31,
+            "param_len": 14,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x04"
+        ],
+        "heuristic_score": 61,
+        "len": 87,
+        "name": "fb_feedback_short_s7_01_then_read.raw",
+        "path": "tutorials/s7/in_final_candidates/fb_feedback_short_s7_01_then_read.raw"
+      },
+      {
+        "areas": [],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "len": 9,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0xf0"
+        ],
+        "heuristic_score": 48,
+        "len": 81,
+        "name": "fb_feedback_short_s7_01_then_setup.raw",
+        "path": "tutorials/s7/in_final_candidates/fb_feedback_short_s7_01_then_setup.raw"
+      },
+      {
+        "areas": [
+          "0x83"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x83"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 5,
+            "db_numbers": [
+              0
+            ],
+            "function": "0x05",
+            "item_count": 1,
+            "len": 36,
+            "param_len": 14,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x05"
+        ],
+        "heuristic_score": 66,
+        "len": 83,
+        "name": "fb_feedback_write_dlen_0005.raw",
+        "path": "tutorials/s7/in_final_candidates/fb_feedback_write_dlen_0005.raw"
+      },
+      {
+        "areas": [
+          "0x83"
+        ],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "areas": [
+              "0x83"
+            ],
+            "cotp_type": "0xf0",
+            "data_len": 65535,
+            "db_numbers": [
+              0
+            ],
+            "function": "0x05",
+            "item_count": 1,
+            "len": 36,
+            "param_len": 14,
+            "rosctr": "0x01",
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0",
+          "0x05"
+        ],
+        "heuristic_score": 66,
+        "len": 83,
+        "name": "fb_feedback_write_dlen_ffff.raw",
+        "path": "tutorials/s7/in_final_candidates/fb_feedback_write_dlen_ffff.raw"
+      },
+      {
+        "areas": [],
+        "frames": [
+          {
+            "cotp_type": "0xe0",
+            "len": 22,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "data_len": 0,
+            "function": "0xf0",
+            "len": 25,
+            "param_len": 8,
+            "rosctr": "0x01",
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "len": 8,
+            "tpkt": true
+          },
+          {
+            "cotp_type": "0xf0",
+            "len": 7,
+            "tpkt": true
+          }
+        ],
+        "functions": [
+          "0xf0"
+        ],
+        "heuristic_score": 48,
+        "len": 62,
+        "name": "min_event_001100_fn85_min.raw",
+        "path": "tutorials/s7/in_final_candidates/min_event_001100_fn85_min.raw"
+      }
+    ]
+  },
+  "ranked_seed_names": [
+    "fb_feedback_fn_1a_then_short.raw",
+    "fb_feedback_fn_1b_then_short.raw",
+    "fb_feedback_fn_28_then_short.raw",
+    "fb_feedback_fn_29_then_short.raw",
+    "deep_deep_fn_request_download_empty.raw",
+    "deep_deep_write_m0_decl_dlen_0000.raw",
+    "deep_deep_write_m0_decl_dlen_0003.raw",
+    "deep_deep_write_m0_decl_dlen_ffff.raw",
+    "fb_deep_len_write_dlen_0005.raw",
+    "fb_feedback_write_dlen_0005.raw",
+    "fb_feedback_write_dlen_ffff.raw",
+    "deep_deep_read_multi_m_db_badarea.raw",
+    "fb_feedback_read_bad_area_then_short.raw",
+    "fb_feedback_read_bad_db_then_short.raw",
+    "fb_feedback_short_s7_00_then_read.raw",
+    "fb_feedback_short_s7_01_then_read.raw",
+    "deep_deep_read_item_count_02.raw",
+    "deep_deep_read_item_count_ff.raw",
+    "deep_deep_read_m_offset65535.raw",
+    "deep_deep_read_m_size0.raw",
+    "deep_deep_read_m_size240.raw",
+    "deep_deep_read_multi_4_m.raw",
+    "deep_deep_read_multi_8_m.raw",
+    "deep_deep_read_param_len_0000.raw",
+    "deep_deep_read_param_len_0001.raw",
+    "deep_deep_setup_pdu_00f0_then_read.raw",
+    "deep_deep_setup_pdu_01e0_then_read.raw",
+    "fb_deep_baseline_db_read.raw",
+    "fb_feedback_read_count_01.raw",
+    "fb_feedback_read_count_02.raw",
+    "fb_feedback_read_count_03.raw",
+    "fb_feedback_read_count_ff.raw",
+    "fb_feedback_read_plen_0000.raw",
+    "fb_feedback_read_plen_000e.raw",
+    "fb_feedback_read_plen_ffff.raw",
+    "fb_feedback_short_s7_00_then_setup.raw",
+    "fb_feedback_short_s7_01_then_setup.raw",
+    "min_event_001100_fn85_min.raw",
+    "fb_deep_len_read_count_00.raw",
+    "fb_feedback_read_count_00.raw",
+    "fb_feedback_short_s7_00.raw",
+    "fb_feedback_short_s7_01.raw"
+  ],
+  "seed_analysis": [
+    {
+      "areas": [],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0x1a",
+          "len": 19,
+          "param_len": 2,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x1a"
+      ],
+      "heuristic_score": 66,
+      "len": 66,
+      "name": "deep_deep_fn_request_download_empty.raw",
+      "path": "tutorials/s7/in_final_candidates/deep_deep_fn_request_download_empty.raw"
+    },
+    {
+      "areas": [
+        "0x83"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x83"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [
+            0
+          ],
+          "function": "0x04",
+          "item_count": 2,
+          "len": 31,
+          "param_len": 14,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 51,
+      "len": 78,
+      "name": "deep_deep_read_item_count_02.raw",
+      "path": "tutorials/s7/in_final_candidates/deep_deep_read_item_count_02.raw"
+    },
+    {
+      "areas": [
+        "0x83"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x83"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [
+            0
+          ],
+          "function": "0x04",
+          "item_count": 255,
+          "len": 31,
+          "param_len": 14,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 51,
+      "len": 78,
+      "name": "deep_deep_read_item_count_ff.raw",
+      "path": "tutorials/s7/in_final_candidates/deep_deep_read_item_count_ff.raw"
+    },
+    {
+      "areas": [
+        "0x83"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x83"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [
+            0
+          ],
+          "function": "0x04",
+          "item_count": 1,
+          "len": 31,
+          "param_len": 14,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 51,
+      "len": 78,
+      "name": "deep_deep_read_m_offset65535.raw",
+      "path": "tutorials/s7/in_final_candidates/deep_deep_read_m_offset65535.raw"
+    },
+    {
+      "areas": [
+        "0x83"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x83"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [
+            0
+          ],
+          "function": "0x04",
+          "item_count": 1,
+          "len": 31,
+          "param_len": 14,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 51,
+      "len": 78,
+      "name": "deep_deep_read_m_size0.raw",
+      "path": "tutorials/s7/in_final_candidates/deep_deep_read_m_size0.raw"
+    },
+    {
+      "areas": [
+        "0x83"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x83"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [
+            0
+          ],
+          "function": "0x04",
+          "item_count": 1,
+          "len": 31,
+          "param_len": 14,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 51,
+      "len": 78,
+      "name": "deep_deep_read_m_size240.raw",
+      "path": "tutorials/s7/in_final_candidates/deep_deep_read_m_size240.raw"
+    },
+    {
+      "areas": [
+        "0x83"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x83",
+            "0x83",
+            "0x83",
+            "0x83"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "function": "0x04",
+          "item_count": 4,
+          "len": 67,
+          "param_len": 50,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 51,
+      "len": 114,
+      "name": "deep_deep_read_multi_4_m.raw",
+      "path": "tutorials/s7/in_final_candidates/deep_deep_read_multi_4_m.raw"
+    },
+    {
+      "areas": [
+        "0x83"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x83",
+            "0x83",
+            "0x83",
+            "0x83",
+            "0x83",
+            "0x83",
+            "0x83",
+            "0x83"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "function": "0x04",
+          "item_count": 8,
+          "len": 115,
+          "param_len": 98,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 51,
+      "len": 162,
+      "name": "deep_deep_read_multi_8_m.raw",
+      "path": "tutorials/s7/in_final_candidates/deep_deep_read_multi_8_m.raw"
+    },
+    {
+      "areas": [
+        "0x83",
+        "0x84",
+        "0xff"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x83",
+            "0x84",
+            "0xff"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [
+            0,
+            1,
+            0
+          ],
+          "function": "0x04",
+          "item_count": 3,
+          "len": 55,
+          "param_len": 38,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 61,
+      "len": 102,
+      "name": "deep_deep_read_multi_m_db_badarea.raw",
+      "path": "tutorials/s7/in_final_candidates/deep_deep_read_multi_m_db_badarea.raw"
+    },
+    {
+      "areas": [
+        "0x83"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x83"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [
+            0
+          ],
+          "function": "0x04",
+          "item_count": 1,
+          "len": 31,
+          "param_len": 0,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 51,
+      "len": 78,
+      "name": "deep_deep_read_param_len_0000.raw",
+      "path": "tutorials/s7/in_final_candidates/deep_deep_read_param_len_0000.raw"
+    },
+    {
+      "areas": [
+        "0x83"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x83"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [
+            0
+          ],
+          "function": "0x04",
+          "item_count": 1,
+          "len": 31,
+          "param_len": 1,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 51,
+      "len": 78,
+      "name": "deep_deep_read_param_len_0001.raw",
+      "path": "tutorials/s7/in_final_candidates/deep_deep_read_param_len_0001.raw"
+    },
+    {
+      "areas": [
+        "0x83"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x83"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [
+            0
+          ],
+          "function": "0x04",
+          "item_count": 1,
+          "len": 31,
+          "param_len": 14,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 51,
+      "len": 78,
+      "name": "deep_deep_setup_pdu_00f0_then_read.raw",
+      "path": "tutorials/s7/in_final_candidates/deep_deep_setup_pdu_00f0_then_read.raw"
+    },
+    {
+      "areas": [
+        "0x83"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x83"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [
+            0
+          ],
+          "function": "0x04",
+          "item_count": 1,
+          "len": 31,
+          "param_len": 14,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 51,
+      "len": 78,
+      "name": "deep_deep_setup_pdu_01e0_then_read.raw",
+      "path": "tutorials/s7/in_final_candidates/deep_deep_setup_pdu_01e0_then_read.raw"
+    },
+    {
+      "areas": [
+        "0x83"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x83"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [
+            0
+          ],
+          "function": "0x05",
+          "item_count": 1,
+          "len": 36,
+          "param_len": 14,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x05"
+      ],
+      "heuristic_score": 66,
+      "len": 83,
+      "name": "deep_deep_write_m0_decl_dlen_0000.raw",
+      "path": "tutorials/s7/in_final_candidates/deep_deep_write_m0_decl_dlen_0000.raw"
+    },
+    {
+      "areas": [
+        "0x83"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x83"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 3,
+          "db_numbers": [
+            0
+          ],
+          "function": "0x05",
+          "item_count": 1,
+          "len": 36,
+          "param_len": 14,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x05"
+      ],
+      "heuristic_score": 66,
+      "len": 83,
+      "name": "deep_deep_write_m0_decl_dlen_0003.raw",
+      "path": "tutorials/s7/in_final_candidates/deep_deep_write_m0_decl_dlen_0003.raw"
+    },
+    {
+      "areas": [
+        "0x83"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x83"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 65535,
+          "db_numbers": [
+            0
+          ],
+          "function": "0x05",
+          "item_count": 1,
+          "len": 36,
+          "param_len": 14,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x05"
+      ],
+      "heuristic_score": 66,
+      "len": 83,
+      "name": "deep_deep_write_m0_decl_dlen_ffff.raw",
+      "path": "tutorials/s7/in_final_candidates/deep_deep_write_m0_decl_dlen_ffff.raw"
+    },
+    {
+      "areas": [
+        "0x84"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x84"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [
+            1
+          ],
+          "function": "0x04",
+          "item_count": 1,
+          "len": 31,
+          "param_len": 14,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 51,
+      "len": 78,
+      "name": "fb_deep_baseline_db_read.raw",
+      "path": "tutorials/s7/in_final_candidates/fb_deep_baseline_db_read.raw"
+    },
+    {
+      "areas": [],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [],
+          "function": "0x04",
+          "item_count": 0,
+          "len": 31,
+          "param_len": 14,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 46,
+      "len": 78,
+      "name": "fb_deep_len_read_count_00.raw",
+      "path": "tutorials/s7/in_final_candidates/fb_deep_len_read_count_00.raw"
+    },
+    {
+      "areas": [
+        "0x83"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x83"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 5,
+          "db_numbers": [
+            0
+          ],
+          "function": "0x05",
+          "item_count": 1,
+          "len": 36,
+          "param_len": 14,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x05"
+      ],
+      "heuristic_score": 66,
+      "len": 83,
+      "name": "fb_deep_len_write_dlen_0005.raw",
+      "path": "tutorials/s7/in_final_candidates/fb_deep_len_write_dlen_0005.raw"
+    },
+    {
+      "areas": [],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0x1a",
+          "len": 19,
+          "param_len": 2,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "len": 8,
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x1a"
+      ],
+      "heuristic_score": 76,
+      "len": 74,
+      "name": "fb_feedback_fn_1a_then_short.raw",
+      "path": "tutorials/s7/in_final_candidates/fb_feedback_fn_1a_then_short.raw"
+    },
+    {
+      "areas": [],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0x1b",
+          "len": 19,
+          "param_len": 2,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "len": 8,
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x1b"
+      ],
+      "heuristic_score": 76,
+      "len": 74,
+      "name": "fb_feedback_fn_1b_then_short.raw",
+      "path": "tutorials/s7/in_final_candidates/fb_feedback_fn_1b_then_short.raw"
+    },
+    {
+      "areas": [],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0x28",
+          "len": 19,
+          "param_len": 2,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "len": 8,
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x28"
+      ],
+      "heuristic_score": 76,
+      "len": 74,
+      "name": "fb_feedback_fn_28_then_short.raw",
+      "path": "tutorials/s7/in_final_candidates/fb_feedback_fn_28_then_short.raw"
+    },
+    {
+      "areas": [],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0x29",
+          "len": 19,
+          "param_len": 2,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "len": 8,
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x29"
+      ],
+      "heuristic_score": 76,
+      "len": 74,
+      "name": "fb_feedback_fn_29_then_short.raw",
+      "path": "tutorials/s7/in_final_candidates/fb_feedback_fn_29_then_short.raw"
+    },
+    {
+      "areas": [
+        "0x7f"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x7f"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [
+            1
+          ],
+          "function": "0x04",
+          "item_count": 1,
+          "len": 31,
+          "param_len": 14,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "len": 8,
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 61,
+      "len": 86,
+      "name": "fb_feedback_read_bad_area_then_short.raw",
+      "path": "tutorials/s7/in_final_candidates/fb_feedback_read_bad_area_then_short.raw"
+    },
+    {
+      "areas": [
+        "0x84"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x84"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [
+            61953
+          ],
+          "function": "0x04",
+          "item_count": 1,
+          "len": 31,
+          "param_len": 14,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "len": 8,
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 61,
+      "len": 86,
+      "name": "fb_feedback_read_bad_db_then_short.raw",
+      "path": "tutorials/s7/in_final_candidates/fb_feedback_read_bad_db_then_short.raw"
+    },
+    {
+      "areas": [],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [],
+          "function": "0x04",
+          "item_count": 0,
+          "len": 31,
+          "param_len": 14,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 46,
+      "len": 78,
+      "name": "fb_feedback_read_count_00.raw",
+      "path": "tutorials/s7/in_final_candidates/fb_feedback_read_count_00.raw"
+    },
+    {
+      "areas": [
+        "0x84"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x84"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [
+            1
+          ],
+          "function": "0x04",
+          "item_count": 1,
+          "len": 31,
+          "param_len": 14,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 51,
+      "len": 78,
+      "name": "fb_feedback_read_count_01.raw",
+      "path": "tutorials/s7/in_final_candidates/fb_feedback_read_count_01.raw"
+    },
+    {
+      "areas": [
+        "0x84"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x84"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [
+            1
+          ],
+          "function": "0x04",
+          "item_count": 2,
+          "len": 31,
+          "param_len": 14,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 51,
+      "len": 78,
+      "name": "fb_feedback_read_count_02.raw",
+      "path": "tutorials/s7/in_final_candidates/fb_feedback_read_count_02.raw"
+    },
+    {
+      "areas": [
+        "0x84"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x84"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [
+            1
+          ],
+          "function": "0x04",
+          "item_count": 3,
+          "len": 31,
+          "param_len": 14,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 51,
+      "len": 78,
+      "name": "fb_feedback_read_count_03.raw",
+      "path": "tutorials/s7/in_final_candidates/fb_feedback_read_count_03.raw"
+    },
+    {
+      "areas": [
+        "0x84"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x84"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [
+            1
+          ],
+          "function": "0x04",
+          "item_count": 255,
+          "len": 31,
+          "param_len": 14,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 51,
+      "len": 78,
+      "name": "fb_feedback_read_count_ff.raw",
+      "path": "tutorials/s7/in_final_candidates/fb_feedback_read_count_ff.raw"
+    },
+    {
+      "areas": [
+        "0x84"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x84"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [
+            1
+          ],
+          "function": "0x04",
+          "item_count": 1,
+          "len": 31,
+          "param_len": 0,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 51,
+      "len": 78,
+      "name": "fb_feedback_read_plen_0000.raw",
+      "path": "tutorials/s7/in_final_candidates/fb_feedback_read_plen_0000.raw"
+    },
+    {
+      "areas": [
+        "0x84"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x84"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [
+            1
+          ],
+          "function": "0x04",
+          "item_count": 1,
+          "len": 31,
+          "param_len": 14,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 51,
+      "len": 78,
+      "name": "fb_feedback_read_plen_000e.raw",
+      "path": "tutorials/s7/in_final_candidates/fb_feedback_read_plen_000e.raw"
+    },
+    {
+      "areas": [
+        "0x84"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x84"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [
+            1
+          ],
+          "function": "0x04",
+          "item_count": 1,
+          "len": 31,
+          "param_len": 65535,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 51,
+      "len": 78,
+      "name": "fb_feedback_read_plen_ffff.raw",
+      "path": "tutorials/s7/in_final_candidates/fb_feedback_read_plen_ffff.raw"
+    },
+    {
+      "areas": [],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "len": 8,
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0"
+      ],
+      "heuristic_score": 38,
+      "len": 55,
+      "name": "fb_feedback_short_s7_00.raw",
+      "path": "tutorials/s7/in_final_candidates/fb_feedback_short_s7_00.raw"
+    },
+    {
+      "areas": [
+        "0x84"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "len": 8,
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x84"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [
+            1
+          ],
+          "function": "0x04",
+          "item_count": 1,
+          "len": 31,
+          "param_len": 14,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 61,
+      "len": 86,
+      "name": "fb_feedback_short_s7_00_then_read.raw",
+      "path": "tutorials/s7/in_final_candidates/fb_feedback_short_s7_00_then_read.raw"
+    },
+    {
+      "areas": [],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "len": 8,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0xf0"
+      ],
+      "heuristic_score": 48,
+      "len": 80,
+      "name": "fb_feedback_short_s7_00_then_setup.raw",
+      "path": "tutorials/s7/in_final_candidates/fb_feedback_short_s7_00_then_setup.raw"
+    },
+    {
+      "areas": [],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "len": 9,
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0"
+      ],
+      "heuristic_score": 38,
+      "len": 56,
+      "name": "fb_feedback_short_s7_01.raw",
+      "path": "tutorials/s7/in_final_candidates/fb_feedback_short_s7_01.raw"
+    },
+    {
+      "areas": [
+        "0x84"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "len": 9,
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x84"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "db_numbers": [
+            1
+          ],
+          "function": "0x04",
+          "item_count": 1,
+          "len": 31,
+          "param_len": 14,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x04"
+      ],
+      "heuristic_score": 61,
+      "len": 87,
+      "name": "fb_feedback_short_s7_01_then_read.raw",
+      "path": "tutorials/s7/in_final_candidates/fb_feedback_short_s7_01_then_read.raw"
+    },
+    {
+      "areas": [],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "len": 9,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0xf0"
+      ],
+      "heuristic_score": 48,
+      "len": 81,
+      "name": "fb_feedback_short_s7_01_then_setup.raw",
+      "path": "tutorials/s7/in_final_candidates/fb_feedback_short_s7_01_then_setup.raw"
+    },
+    {
+      "areas": [
+        "0x83"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x83"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 5,
+          "db_numbers": [
+            0
+          ],
+          "function": "0x05",
+          "item_count": 1,
+          "len": 36,
+          "param_len": 14,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x05"
+      ],
+      "heuristic_score": 66,
+      "len": 83,
+      "name": "fb_feedback_write_dlen_0005.raw",
+      "path": "tutorials/s7/in_final_candidates/fb_feedback_write_dlen_0005.raw"
+    },
+    {
+      "areas": [
+        "0x83"
+      ],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "areas": [
+            "0x83"
+          ],
+          "cotp_type": "0xf0",
+          "data_len": 65535,
+          "db_numbers": [
+            0
+          ],
+          "function": "0x05",
+          "item_count": 1,
+          "len": 36,
+          "param_len": 14,
+          "rosctr": "0x01",
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0",
+        "0x05"
+      ],
+      "heuristic_score": 66,
+      "len": 83,
+      "name": "fb_feedback_write_dlen_ffff.raw",
+      "path": "tutorials/s7/in_final_candidates/fb_feedback_write_dlen_ffff.raw"
+    },
+    {
+      "areas": [],
+      "frames": [
+        {
+          "cotp_type": "0xe0",
+          "len": 22,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "data_len": 0,
+          "function": "0xf0",
+          "len": 25,
+          "param_len": 8,
+          "rosctr": "0x01",
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "len": 8,
+          "tpkt": true
+        },
+        {
+          "cotp_type": "0xf0",
+          "len": 7,
+          "tpkt": true
+        }
+      ],
+      "functions": [
+        "0xf0"
+      ],
+      "heuristic_score": 48,
+      "len": 62,
+      "name": "min_event_001100_fn85_min.raw",
+      "path": "tutorials/s7/in_final_candidates/min_event_001100_fn85_min.raw"
+    }
+  ]
+}

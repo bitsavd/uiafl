@@ -1,0 +1,854 @@
+{
+  "target": "192.168.0.13:102",
+  "candidate_dir": "tutorials/s7/in_deep_candidates",
+  "selected_dir": "tutorials/s7/in_deep_selected",
+  "method": "protocol-guided S7Comm seed generation from public S7Comm structure references",
+  "seeds": [
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_tsap_pg_read_m0.raw",
+      "category": "tsap",
+      "risk": "low",
+      "description": "read M0 using connection type pg",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=26"
+      ],
+      "elapsed_ms": 122
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_tsap_op_read_m0.raw",
+      "category": "tsap",
+      "risk": "low",
+      "description": "read M0 using connection type op",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=26"
+      ],
+      "elapsed_ms": 92
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_tsap_basic_read_m0.raw",
+      "category": "tsap",
+      "risk": "low",
+      "description": "read M0 using connection type basic",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=26"
+      ],
+      "elapsed_ms": 88
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_setup_pdu_00f0_then_read.raw",
+      "category": "setup",
+      "risk": "medium",
+      "description": "negotiate PDU length 0x00f0 then read M0",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=26"
+      ],
+      "elapsed_ms": 87
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_setup_pdu_01e0_then_read.raw",
+      "category": "setup",
+      "risk": "medium",
+      "description": "negotiate PDU length 0x01e0 then read M0",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=26"
+      ],
+      "elapsed_ms": 86
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_setup_pdu_03c0_then_read.raw",
+      "category": "setup",
+      "risk": "medium",
+      "description": "negotiate PDU length 0x03c0 then read M0",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=26"
+      ],
+      "elapsed_ms": 85
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_setup_pdu_0780_then_read.raw",
+      "category": "setup",
+      "risk": "medium",
+      "description": "negotiate PDU length 0x0780 then read M0",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=26"
+      ],
+      "elapsed_ms": 84
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_setup_pdu_ffff_then_read.raw",
+      "category": "setup",
+      "risk": "medium",
+      "description": "negotiate PDU length 0xffff then read M0",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=26"
+      ],
+      "elapsed_ms": 85
+    },
+    {
+      "ok": false,
+      "name": "deep_setup_amq_0000_then_read.raw",
+      "category": "setup",
+      "risk": "medium",
+      "description": "negotiate max AMQ 0x0000 then read M0",
+      "detail": "[Errno 104] Connection reset by peer",
+      "responses": [
+        "cotp_cc"
+      ],
+      "elapsed_ms": 76
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_setup_amq_0001_then_read.raw",
+      "category": "setup",
+      "risk": "medium",
+      "description": "negotiate max AMQ 0x0001 then read M0",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=26"
+      ],
+      "elapsed_ms": 78
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_setup_amq_0002_then_read.raw",
+      "category": "setup",
+      "risk": "medium",
+      "description": "negotiate max AMQ 0x0002 then read M0",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=26"
+      ],
+      "elapsed_ms": 85
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_setup_amq_0008_then_read.raw",
+      "category": "setup",
+      "risk": "medium",
+      "description": "negotiate max AMQ 0x0008 then read M0",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=26"
+      ],
+      "elapsed_ms": 84
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_setup_amq_ffff_then_read.raw",
+      "category": "setup",
+      "risk": "medium",
+      "description": "negotiate max AMQ 0xffff then read M0",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=26"
+      ],
+      "elapsed_ms": 86
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_m_bit_bool.raw",
+      "category": "read_boundary",
+      "risk": "medium",
+      "description": "Read Var boundary area=0x83 db=0 offset=0 size=1 tsize=0x01",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=26"
+      ],
+      "elapsed_ms": 82
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_m_size0.raw",
+      "category": "read_boundary",
+      "risk": "medium",
+      "description": "Read Var boundary area=0x83 db=0 offset=0 size=0 tsize=0x02",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=25"
+      ],
+      "elapsed_ms": 87
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_m_size240.raw",
+      "category": "read_boundary",
+      "risk": "medium",
+      "description": "Read Var boundary area=0x83 db=0 offset=0 size=240 tsize=0x02",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=02:fn=85:len=19"
+      ],
+      "elapsed_ms": 86
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_m_offset255.raw",
+      "category": "read_boundary",
+      "risk": "medium",
+      "description": "Read Var boundary area=0x83 db=0 offset=255 size=1 tsize=0x02",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=26"
+      ],
+      "elapsed_ms": 88
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_m_offset256.raw",
+      "category": "read_boundary",
+      "risk": "medium",
+      "description": "Read Var boundary area=0x83 db=0 offset=256 size=1 tsize=0x02",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=26"
+      ],
+      "elapsed_ms": 84
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_m_offset65535.raw",
+      "category": "read_boundary",
+      "risk": "medium",
+      "description": "Read Var boundary area=0x83 db=0 offset=65535 size=1 tsize=0x02",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=25"
+      ],
+      "elapsed_ms": 88
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_m_offset24bit.raw",
+      "category": "read_boundary",
+      "risk": "medium",
+      "description": "Read Var boundary area=0x83 db=0 offset=2097151 size=1 tsize=0x02",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=25"
+      ],
+      "elapsed_ms": 85
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_db0.raw",
+      "category": "read_boundary",
+      "risk": "medium",
+      "description": "Read Var boundary area=0x84 db=0 offset=0 size=1 tsize=0x02",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=25"
+      ],
+      "elapsed_ms": 85
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_db1_offset65535.raw",
+      "category": "read_boundary",
+      "risk": "medium",
+      "description": "Read Var boundary area=0x84 db=1 offset=65535 size=1 tsize=0x02",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=25"
+      ],
+      "elapsed_ms": 88
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_dbffff.raw",
+      "category": "read_boundary",
+      "risk": "medium",
+      "description": "Read Var boundary area=0x84 db=65535 offset=0 size=1 tsize=0x02",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=25"
+      ],
+      "elapsed_ms": 85
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_area00.raw",
+      "category": "read_boundary",
+      "risk": "medium",
+      "description": "Read Var boundary area=0x00 db=0 offset=0 size=1 tsize=0x02",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=25"
+      ],
+      "elapsed_ms": 82
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_areaff.raw",
+      "category": "read_boundary",
+      "risk": "medium",
+      "description": "Read Var boundary area=0xff db=0 offset=0 size=1 tsize=0x02",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=25"
+      ],
+      "elapsed_ms": 82
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_counter_as_byte.raw",
+      "category": "read_boundary",
+      "risk": "medium",
+      "description": "Read Var boundary area=0x1c db=0 offset=0 size=1 tsize=0x02",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=25"
+      ],
+      "elapsed_ms": 83
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_timer_as_byte.raw",
+      "category": "read_boundary",
+      "risk": "medium",
+      "description": "Read Var boundary area=0x1d db=0 offset=0 size=1 tsize=0x02",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=25"
+      ],
+      "elapsed_ms": 85
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_multi_4_m.raw",
+      "category": "multi_item",
+      "risk": "medium",
+      "description": "Read Var with 4 variable items",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=44"
+      ],
+      "elapsed_ms": 93
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_multi_8_m.raw",
+      "category": "multi_item",
+      "risk": "medium",
+      "description": "Read Var with 8 variable items",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=68"
+      ],
+      "elapsed_ms": 90
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_multi_m_db_badarea.raw",
+      "category": "multi_item",
+      "risk": "medium",
+      "description": "Read Var with 3 variable items",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=37"
+      ],
+      "elapsed_ms": 89
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_item_count_00.raw",
+      "category": "length_mismatch",
+      "risk": "high",
+      "description": "Read Var item count declares 0 for one encoded item",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=04:err=00/00:len=21"
+      ],
+      "elapsed_ms": 86
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_item_count_02.raw",
+      "category": "length_mismatch",
+      "risk": "high",
+      "description": "Read Var item count declares 2 for one encoded item",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=02:fn=84:len=19"
+      ],
+      "elapsed_ms": 82
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_item_count_ff.raw",
+      "category": "length_mismatch",
+      "risk": "high",
+      "description": "Read Var item count declares 255 for one encoded item",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=02:fn=84:len=19"
+      ],
+      "elapsed_ms": 91
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_param_len_0000.raw",
+      "category": "length_mismatch",
+      "risk": "high",
+      "description": "Read Var parameter length declared as 0x0000",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=02:fn=85:len=19"
+      ],
+      "elapsed_ms": 87
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_param_len_0001.raw",
+      "category": "length_mismatch",
+      "risk": "high",
+      "description": "Read Var parameter length declared as 0x0001",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=02:fn=85:len=19"
+      ],
+      "elapsed_ms": 82
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_param_len_0002.raw",
+      "category": "length_mismatch",
+      "risk": "high",
+      "description": "Read Var parameter length declared as 0x0002",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=02:fn=85:len=19"
+      ],
+      "elapsed_ms": 85
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_param_len_000d.raw",
+      "category": "length_mismatch",
+      "risk": "high",
+      "description": "Read Var parameter length declared as 0x000d",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=02:fn=85:len=19"
+      ],
+      "elapsed_ms": 85
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_param_len_000f.raw",
+      "category": "length_mismatch",
+      "risk": "high",
+      "description": "Read Var parameter length declared as 0x000f",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=02:fn=85:len=19"
+      ],
+      "elapsed_ms": 82
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_read_param_len_ffff.raw",
+      "category": "length_mismatch",
+      "risk": "high",
+      "description": "Read Var parameter length declared as 0xffff",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=02:fn=85:len=19"
+      ],
+      "elapsed_ms": 86
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_write_m0_zero_payload.raw",
+      "category": "write_boundary",
+      "risk": "high",
+      "description": "Write Var boundary/mismatch case zero_payload",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=05:err=00/00:len=22"
+      ],
+      "elapsed_ms": 87
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_write_m0_decl_bits_0000.raw",
+      "category": "write_boundary",
+      "risk": "high",
+      "description": "Write Var boundary/mismatch case decl_bits_0000",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=05:err=00/00:len=22"
+      ],
+      "elapsed_ms": 85
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_write_m0_decl_bits_0007.raw",
+      "category": "write_boundary",
+      "risk": "high",
+      "description": "Write Var boundary/mismatch case decl_bits_0007",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=05:err=00/00:len=22"
+      ],
+      "elapsed_ms": 87
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_write_m0_decl_bits_ffff.raw",
+      "category": "write_boundary",
+      "risk": "high",
+      "description": "Write Var boundary/mismatch case decl_bits_ffff",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=03:fn=05:err=00/00:len=22"
+      ],
+      "elapsed_ms": 83
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_write_m0_decl_dlen_0000.raw",
+      "category": "write_boundary",
+      "risk": "high",
+      "description": "Write Var boundary/mismatch case decl_dlen_0000",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=02:fn=85:len=19"
+      ],
+      "elapsed_ms": 86
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_write_m0_decl_dlen_0003.raw",
+      "category": "write_boundary",
+      "risk": "high",
+      "description": "Write Var boundary/mismatch case decl_dlen_0003",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=02:fn=85:len=19"
+      ],
+      "elapsed_ms": 82
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_write_m0_decl_dlen_ffff.raw",
+      "category": "write_boundary",
+      "risk": "high",
+      "description": "Write Var boundary/mismatch case decl_dlen_ffff",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=02:fn=85:len=19"
+      ],
+      "elapsed_ms": 88
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_fn_cpu_service_empty.raw",
+      "category": "block_control",
+      "risk": "high",
+      "description": "Block/control function probe cpu_service_empty",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=02:fn=81:len=19"
+      ],
+      "elapsed_ms": 94
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_fn_mode_transition_empty.raw",
+      "category": "block_control",
+      "risk": "high",
+      "description": "Block/control function probe mode_transition_empty",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=02:fn=81:len=19"
+      ],
+      "elapsed_ms": 88
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_fn_request_download_empty.raw",
+      "category": "block_control",
+      "risk": "high",
+      "description": "Block/control function probe request_download_empty",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=02:fn=81:len=19"
+      ],
+      "elapsed_ms": 94
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_fn_download_block_empty.raw",
+      "category": "block_control",
+      "risk": "high",
+      "description": "Block/control function probe download_block_empty",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=02:fn=81:len=19"
+      ],
+      "elapsed_ms": 85
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_fn_download_ended_empty.raw",
+      "category": "block_control",
+      "risk": "high",
+      "description": "Block/control function probe download_ended_empty",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=02:fn=81:len=19"
+      ],
+      "elapsed_ms": 86
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_fn_start_upload_empty.raw",
+      "category": "block_control",
+      "risk": "high",
+      "description": "Block/control function probe start_upload_empty",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=02:fn=81:len=19"
+      ],
+      "elapsed_ms": 82
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_fn_upload_empty.raw",
+      "category": "block_control",
+      "risk": "high",
+      "description": "Block/control function probe upload_empty",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=02:fn=81:len=19"
+      ],
+      "elapsed_ms": 83
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_fn_end_upload_empty.raw",
+      "category": "block_control",
+      "risk": "high",
+      "description": "Block/control function probe end_upload_empty",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=02:fn=81:len=19"
+      ],
+      "elapsed_ms": 85
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_fn_pi_service_empty.raw",
+      "category": "block_control",
+      "risk": "high",
+      "description": "Block/control function probe pi_service_empty",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=02:fn=81:len=19"
+      ],
+      "elapsed_ms": 90
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_fn_plc_stop_empty.raw",
+      "category": "block_control",
+      "risk": "high",
+      "description": "Block/control function probe plc_stop_empty",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=02:fn=81:len=19"
+      ],
+      "elapsed_ms": 84
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_tpkt_declared_short.raw",
+      "category": "transport_length",
+      "risk": "high",
+      "description": "TPKT declared length one byte shorter than actual S7 frame",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27",
+        "s7:rosctr=02:fn=85:len=19"
+      ],
+      "elapsed_ms": 85
+    },
+    {
+      "ok": true,
+      "abnormal": false,
+      "name": "deep_tpkt_declared_long.raw",
+      "category": "transport_length",
+      "risk": "high",
+      "description": "TPKT declared length one byte longer than actual S7 frame",
+      "responses": [
+        "cotp_cc",
+        "s7:rosctr=03:fn=f0:err=00/00:len=27"
+      ],
+      "elapsed_ms": 74
+    }
+  ],
+  "selected_count": 24,
+  "selected_categories": {
+    "length_mismatch": 4,
+    "write_boundary": 3,
+    "block_control": 3,
+    "transport_length": 2,
+    "read_boundary": 3,
+    "multi_item": 3,
+    "setup": 3,
+    "tsap": 3
+  },
+  "selected_names": [
+    "deep_read_item_count_02.raw",
+    "deep_read_item_count_ff.raw",
+    "deep_read_param_len_0000.raw",
+    "deep_write_m0_decl_dlen_0000.raw",
+    "deep_write_m0_decl_dlen_0003.raw",
+    "deep_write_m0_decl_dlen_ffff.raw",
+    "deep_fn_cpu_service_empty.raw",
+    "deep_fn_mode_transition_empty.raw",
+    "deep_fn_request_download_empty.raw",
+    "deep_tpkt_declared_short.raw",
+    "deep_read_m_size240.raw",
+    "deep_tpkt_declared_long.raw",
+    "deep_read_m_size0.raw",
+    "deep_read_m_offset65535.raw",
+    "deep_read_multi_4_m.raw",
+    "deep_read_multi_8_m.raw",
+    "deep_read_multi_m_db_badarea.raw",
+    "deep_setup_pdu_00f0_then_read.raw",
+    "deep_setup_pdu_01e0_then_read.raw",
+    "deep_setup_pdu_03c0_then_read.raw",
+    "deep_tsap_pg_read_m0.raw",
+    "deep_tsap_op_read_m0.raw",
+    "deep_tsap_basic_read_m0.raw",
+    "deep_read_param_len_0001.raw"
+  ]
+}

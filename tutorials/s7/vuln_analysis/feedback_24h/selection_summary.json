@@ -1,0 +1,39 @@
+{
+  "response_signatures": {
+    "('cotp_cc', 's7:rosctr=03:fn=f0:err=00/00:len=27', 's7:rosctr=02:fn=81:len=19', 's7:rosctr=02:fn=85:len=19')": 2,
+    "('cotp_cc', 's7:rosctr=03:fn=f0:err=00/00:len=27', 's7:rosctr=02:fn=84:len=19')": 2,
+    "('cotp_cc', 's7:rosctr=03:fn=f0:err=00/00:len=27', 's7:rosctr=02:fn=85:len=19')": 2,
+    "('cotp_cc', 's7:rosctr=03:fn=f0:err=00/00:len=27', 's7:rosctr=02:fn=85:len=19', 's7:rosctr=02:fn=81:len=19')": 2,
+    "('cotp_cc', 's7:rosctr=03:fn=f0:err=00/00:len=27', 's7:rosctr=02:fn=85:len=19', 's7:rosctr=03:fn=04:err=00/00:len=29')": 2,
+    "('cotp_cc', 's7:rosctr=03:fn=f0:err=00/00:len=27', 's7:rosctr=03:fn=04:err=00/00:len=21')": 1,
+    "('cotp_cc', 's7:rosctr=03:fn=f0:err=00/00:len=27', 's7:rosctr=03:fn=04:err=00/00:len=25', 's7:rosctr=02:fn=85:len=19')": 2,
+    "('cotp_cc', 's7:rosctr=03:fn=f0:err=00/00:len=27', 's7:rosctr=03:fn=04:err=00/00:len=29')": 2,
+    "('cotp_cc', 's7:rosctr=03:fn=f0:err=00/00:len=27', 's7:rosctr=03:fn=05:err=00/00:len=22')": 1
+  },
+  "selected_count": 25,
+  "selected_feedback": [
+    "feedback_fn_1a_then_short.raw",
+    "feedback_fn_28_then_short.raw",
+    "feedback_fn_29_then_short.raw",
+    "feedback_read_bad_area_then_short.raw",
+    "feedback_read_bad_db_then_short.raw",
+    "feedback_read_count_02.raw",
+    "feedback_read_count_ff.raw",
+    "feedback_read_plen_0000.raw",
+    "feedback_read_plen_ffff.raw",
+    "feedback_short_s7_00.raw",
+    "feedback_short_s7_00_then_read.raw",
+    "feedback_short_s7_00_then_setup.raw",
+    "feedback_write_dlen_0005.raw",
+    "feedback_write_dlen_ffff.raw",
+    "feedback_short_s7_01.raw",
+    "feedback_short_s7_01_then_read.raw",
+    "feedback_short_s7_01_then_setup.raw",
+    "feedback_read_plen_000e.raw",
+    "feedback_read_count_00.raw",
+    "feedback_read_count_01.raw",
+    "feedback_read_count_03.raw",
+    "feedback_fn_1b_then_short.raw"
+  ],
+  "source_report": "tutorials/s7/feedback_seed_probe.json"
+}

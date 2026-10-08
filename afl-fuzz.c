@@ -350,6 +350,7 @@ char** use_argv;  /* argument to run the target program. In vanilla AFL, this is
 static u8 run_target(char** argv, u32 timeout);
 static inline u32 UR(u32 limit);
 static inline u8 has_new_bits(u8* virgin_map);
+static u64 get_cur_time(void);
 
 /* AFLNet-specific variables & functions */
 
@@ -357,6 +358,7 @@ u32 server_wait_usecs = 10000;
 u32 poll_wait_msecs = 1;
 u32 socket_timeout_usecs = 1000;
 u8 net_protocol;
+u8 s7comm_selected = 0;
 u8* net_ip;
 u32 net_port;
 char *response_buf = NULL;
@@ -388,6 +390,257 @@ u8 poll_wait = 0;
 u8 server_wait = 0;
 u8 socket_timeout = 0;
 u8 protocol_selected = 0;
+
+static int env_flag_enabled(const char *name) {
+  char *value = getenv(name);
+  return value && strcmp(value, "0") && strcmp(value, "false") && strcmp(value, "FALSE");
+}
+
+static u32 env_u32_or(const char *name, u32 fallback) {
+  char *value = getenv(name);
+  char *endptr = NULL;
+  unsigned long parsed;
+
+  if (!value || !*value) return fallback;
+  parsed = strtoul(value, &endptr, 10);
+  if (endptr == value) return fallback;
+  return (u32)parsed;
+}
+
+static u32 s7_event_count = 0;
+static u32 s7_transport_event_count = 0;
+
+static u8 s7_should_log_transport_event(void) {
+  u32 sample = env_u32_or("S7_EVENT_TRANSPORT_SAMPLE", 32);
+
+  if (!sample) return 0;
+  s7_transport_event_count++;
+  return (sample == 1 || (s7_transport_event_count % sample) == 1);
+}
+
+static u32 s7_effective_testcase_len(u32 len) {
+  u32 max_len;
+
+  if (!s7comm_selected) return len;
+
+  max_len = env_u32_or("S7_MAX_TESTCASE", 512);
+  if (max_len && len > max_len) return max_len;
+  return len;
+}
+
+static u8 s7_state_sequence_has_nonzero(void) {
+  if (!state_sequence || state_count <= 1) return 0;
+  for (u32 i = 1; i < state_count; i++) {
+    if (state_sequence[i]) return 1;
+  }
+  return 0;
+}
+
+static u8 s7_skip_network_for_current_stage(void) {
+  return s7comm_selected &&
+         env_flag_enabled("S7_SKIP_NET_CALIBRATION") &&
+         stage_name &&
+         !strcmp((char *)stage_name, "calibration");
+}
+
+static void s7_hex_prefix(char *dst, u32 dst_size, const u8 *buf, u32 len) {
+  u32 off = 0;
+  u32 max_bytes;
+
+  if (!dst_size) return;
+  dst[0] = 0;
+  if (!buf || !len) return;
+
+  max_bytes = env_u32_or("S7_EVENT_HEX_BYTES", 48);
+  if (len > max_bytes) len = max_bytes;
+
+  for (u32 i = 0; i < len && off + 3 < dst_size; i++) {
+    off += snprintf(dst + off, dst_size - off, "%02x", buf[i]);
+  }
+}
+
+static void s7_save_event_case(u32 event_id, const char *kind) {
+  u8 *dir, *path;
+  int src_fd, dst_fd;
+  char buf[4096];
+  int rd;
+  u8 *parent;
+
+  if (!out_dir || !out_file || !env_flag_enabled("S7_EVENT_SAVE_CASES")) return;
+  if (!kind || !strcmp(kind, "event_repeat")) return;
+  if (!env_flag_enabled("S7_EVENT_SAVE_TRANSPORT") &&
+      (!strcmp(kind, "recv_error_testcase") ||
+       !strcmp(kind, "no_response_after_message") ||
+       !strcmp(kind, "no_response_testcase"))) {
+    return;
+  }
+
+  parent = alloc_printf("%s/s7_events", out_dir);
+  dir = alloc_printf("%s/cases", parent);
+  mkdir(parent, 0700);
+  mkdir(dir, 0700);
+  path = alloc_printf("%s/event_%06u_%s.raw", dir, event_id, kind);
+
+  src_fd = open(out_file, O_RDONLY);
+  if (src_fd >= 0) {
+    dst_fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0600);
+    if (dst_fd >= 0) {
+      while ((rd = read(src_fd, buf, sizeof(buf))) > 0) {
+        if (write(dst_fd, buf, rd) != rd) break;
+      }
+      close(dst_fd);
+    }
+    close(src_fd);
+  }
+
+  ck_free(path);
+  ck_free(dir);
+  ck_free(parent);
+}
+
+static void s7_log_event(const char *kind, const char *detail,
+                         const u8 *req, u32 req_len,
+                         const u8 *resp, u32 resp_len) {
+  u8 *dir, *path;
+  FILE *fp;
+  char req_hex[160];
+  char resp_hex[160];
+  char sig[384];
+  static char last_sig[384];
+  static u32 repeat_count = 0;
+  u32 max_events;
+
+  if (!env_flag_enabled("S7_EVENT_LOG")) return;
+
+  s7_hex_prefix(req_hex, sizeof(req_hex), req, req_len);
+  s7_hex_prefix(resp_hex, sizeof(resp_hex), resp, resp_len);
+  snprintf(sig, sizeof(sig), "%s|%s|%u|%u|%s|%s",
+           kind ? kind : "unknown",
+           detail ? detail : "",
+           req_len,
+           resp_len,
+           req_hex,
+           resp_hex);
+
+  if (last_sig[0] && !strcmp(last_sig, sig)) {
+    repeat_count++;
+    return;
+  }
+
+  max_events = env_u32_or("S7_EVENT_MAX", 20000);
+  if (max_events && s7_event_count >= max_events) return;
+
+  if (!out_dir) return;
+  dir = alloc_printf("%s/s7_events", out_dir);
+  mkdir(dir, 0700);
+  path = alloc_printf("%s/events.log", dir);
+
+  fp = fopen((char *)path, "a");
+  if (fp) {
+    if (repeat_count) {
+      s7_event_count++;
+      fprintf(fp,
+              "event=%u time=%llu kind=event_repeat detail=\"previous event repeated %u times\" messages_sent=%u req_len=0 resp_len=0 testcase=\"%s\" req_prefix= resp_prefix=\n",
+              s7_event_count,
+              get_cur_time(),
+              repeat_count,
+              messages_sent,
+              out_file ? (char *)out_file : "");
+      repeat_count = 0;
+    }
+
+    if (!max_events || s7_event_count < max_events) {
+      s7_event_count++;
+      fprintf(fp,
+              "event=%u time=%llu kind=%s detail=\"%s\" messages_sent=%u req_len=%u resp_len=%u testcase=\"%s\" req_prefix=%s resp_prefix=%s\n",
+              s7_event_count,
+              get_cur_time(),
+              kind ? kind : "unknown",
+              detail ? detail : "",
+              messages_sent,
+              req_len,
+              resp_len,
+              out_file ? (char *)out_file : "",
+              req_hex,
+              resp_hex);
+      s7_save_event_case(s7_event_count, kind);
+    }
+    fclose(fp);
+  }
+
+  snprintf(last_sig, sizeof(last_sig), "%s", sig);
+
+  ck_free(path);
+  ck_free(dir);
+}
+
+static void s7_scan_response_events(const u8 *req, u32 req_len,
+                                    const u8 *buf, u32 len) {
+  u32 off = 0;
+
+  if (!buf || !len) return;
+
+  while (off + 7 <= len) {
+    if (buf[off] != 0x03 || buf[off + 1] != 0x00) {
+      off++;
+      continue;
+    }
+
+    u32 pkt_len = ((u32)buf[off + 2] << 8) | buf[off + 3];
+    if (pkt_len < 7 || off + pkt_len > len) break;
+
+    u32 cotp_off = off + 4;
+    u8 cotp_len = buf[cotp_off];
+    u8 cotp_type = buf[cotp_off + 1] & 0xf0;
+
+    if (cotp_type != 0xd0 && cotp_type != 0xf0) {
+      char detail[64];
+      snprintf(detail, sizeof(detail), "cotp_type=0x%02x pkt_len=%u", cotp_type, pkt_len);
+      s7_log_event("cotp_abnormal", detail, req, req_len, buf + off, pkt_len);
+    }
+
+    if (cotp_type == 0xf0 && cotp_len >= 2) {
+      u32 s7_off = cotp_off + 3;
+      if (s7_off + 10 <= off + pkt_len && buf[s7_off] == 0x32) {
+        u8 rosctr = buf[s7_off + 1];
+        u16 param_len = ((u16)buf[s7_off + 6] << 8) | buf[s7_off + 7];
+        u16 data_len = ((u16)buf[s7_off + 8] << 8) | buf[s7_off + 9];
+        u32 header_len = 10;
+        u8 err_class = 0;
+        u8 err_code = 0;
+
+        if ((rosctr == 0x03 || rosctr == 0x07) && s7_off + 12 <= off + pkt_len) {
+          header_len = 12;
+          err_class = buf[s7_off + 10];
+          err_code = buf[s7_off + 11];
+        }
+
+        u32 param_start = s7_off + header_len;
+        u32 data_start = param_start + param_len;
+        u8 fn = param_start < off + pkt_len ? buf[param_start] : 0;
+
+        if (err_class || err_code) {
+          char detail[96];
+          snprintf(detail, sizeof(detail), "rosctr=0x%02x fn=0x%02x err=%02x/%02x param_len=%u data_len=%u",
+                   rosctr, fn, err_class, err_code, param_len, data_len);
+          s7_log_event("s7_error", detail, req, req_len, buf + off, pkt_len);
+        }
+
+        if ((fn == 0x04 || fn == 0x05) && data_len > 0 && data_start < off + pkt_len) {
+          u8 ret_code = buf[data_start];
+          if (ret_code != 0xff) {
+            char detail[96];
+            snprintf(detail, sizeof(detail), "fn=0x%02x return_code=0x%02x param_len=%u data_len=%u",
+                     fn, ret_code, param_len, data_len);
+            s7_log_event("s7_item_abnormal", detail, req, req_len, buf + off, pkt_len);
+          }
+        }
+      }
+    }
+
+    off += pkt_len;
+  }
+}
 u8 terminate_child = 0;
 u8 corpus_read_or_sync = 0;
 u8 state_aware_mode = 0;
@@ -417,6 +670,47 @@ kliter_t(lms) *M2_prev, *M2_next;
 unsigned int* (*extract_response_codes)(unsigned char* buf, unsigned int buf_size, unsigned int* state_count_ref) = NULL;
 region_t* (*extract_requests)(unsigned char* buf, unsigned int buf_size, unsigned int* region_count_ref) = NULL;
 
+void expand_was_fuzzed_map(u32 new_states, u32 new_qentries);
+
+static state_info_t *new_state_info(u32 state_id) {
+  state_info_t *state = (state_info_t *) ck_alloc(sizeof(state_info_t));
+  state->id = state_id;
+  state->is_covered = 1;
+  state->paths = 0;
+  state->paths_discovered = 0;
+  state->selected_times = 0;
+  state->fuzzs = 0;
+  state->score = 1;
+  state->selected_seed_index = 0;
+  state->seeds = NULL;
+  state->seeds_count = 0;
+  return state;
+}
+
+static void ensure_state_exists(u32 state_id, u8 dry_run) {
+  khint_t k = kh_get(hms, khms_states, state_id);
+  if (k != kh_end(khms_states)) return;
+
+  int discard;
+  char state_name[STATE_STR_LEN];
+  snprintf(state_name, STATE_STR_LEN, "%d", state_id);
+
+  Agnode_t *node = agnode(ipsm, state_name, FALSE);
+  if (!node) {
+    node = agnode(ipsm, state_name, TRUE);
+    if (dry_run) agset(node, "color", "blue");
+    else agset(node, "color", "red");
+  }
+
+  k = kh_put(hms, khms_states, state_id, &discard);
+  kh_value(khms_states, k) = new_state_info(state_id);
+
+  state_ids = (u32 *) ck_realloc(state_ids, (state_ids_count + 1) * sizeof(u32));
+  state_ids[state_ids_count++] = state_id;
+
+  if (state_id != 0) expand_was_fuzzed_map(1, 0);
+}
+
 /* Initialize the implemented state machine as a graphviz graph */
 void setup_ipsm()
 {
@@ -428,6 +722,8 @@ void setup_ipsm()
   khs_ipsm_paths = kh_init(hs32);
 
   khms_states = kh_init(hms);
+
+  ensure_state_exists(0, 1);
 }
 
 /* Free memory allocated to state-machine variables */
@@ -482,6 +778,11 @@ void update_state_bitmap(){
   state_sequence = (*extract_response_codes)(response_buf, response_buf_size, &state_count);
 
   if(feedback_type != STATE_FEEDBACK && feedback_type != CODE_STATE_FEEDBACK) return;
+  if (s7comm_selected && !env_flag_enabled("S7_STATE_BITMAP_FEEDBACK")) return;
+  if (s7comm_selected && env_flag_enabled("S7_STATE_MIN_NONZERO") &&
+      !s7_state_sequence_has_nonzero()) {
+    return;
+  }
 
   u32 prev_state = 0;
 
@@ -489,7 +790,11 @@ void update_state_bitmap(){
     u32 cur_state = state_sequence[i];
 
     u16 map_ptr_idx = (prev_state * STATE_SIZE  + cur_state) % SHIFT_SIZE;
-    trace_bits[map_ptr_idx]++;
+    if (s7comm_selected && env_flag_enabled("S7_STATE_BINARY_BITMAP")) {
+      trace_bits[map_ptr_idx] = 1;
+    } else {
+      trace_bits[map_ptr_idx]++;
+    }
 
     prev_state = cur_state;
   }
@@ -544,16 +849,59 @@ u8* choose_source_region(u32 *out_len) {
   *out_len = 0;
   struct queue_entry *q = queue;
 
-  //randomly select a seed
-  u32 index = UR(queued_paths);
-  while (index != 0) {
-    q = q->next;
-    index--;
+  if (seed_selection_algo == RARE_STATE_AWARE) {
+    u32 total = 0, pick, seen = 0;
+    struct queue_entry *cur = queue;
+
+    while (cur) {
+      u32 weight = 1;
+      if (cur->region_count) weight += 10;
+      if (cur->favored) weight += 8;
+      if (cur->unique_state_count) weight += MIN(cur->unique_state_count, 8) * 3;
+      if (cur->has_new_cov) weight += 6;
+      if (cur->len > 4096) weight = MAX(1, weight / 2);
+      total += weight;
+      cur = cur->next;
+    }
+
+    pick = total ? UR(total) : 0;
+    cur = queue;
+    while (cur) {
+      u32 weight = 1;
+      if (cur->region_count) weight += 10;
+      if (cur->favored) weight += 8;
+      if (cur->unique_state_count) weight += MIN(cur->unique_state_count, 8) * 3;
+      if (cur->has_new_cov) weight += 6;
+      if (cur->len > 4096) weight = MAX(1, weight / 2);
+      seen += weight;
+      if (pick < seen) {
+        q = cur;
+        break;
+      }
+      cur = cur->next;
+    }
+  } else {
+    //randomly select a seed
+    u32 index = UR(queued_paths);
+    while (index != 0) {
+      q = q->next;
+      index--;
+    }
   }
 
   //randomly select a region in the selected seed
   if (q->region_count) {
     u32 reg_index = UR(q->region_count);
+    if (seed_selection_algo == RARE_STATE_AWARE) {
+      u32 attempts = MIN(q->region_count, 8);
+      while (attempts--) {
+        u32 candidate = UR(q->region_count);
+        if (q->regions[candidate].state_count > 0) {
+          reg_index = candidate;
+          break;
+        }
+      }
+    }
     u32 len = q->regions[reg_index].end_byte - q->regions[reg_index].start_byte + 1;
     if (len <= MAX_FILE) {
       out = (u8 *)ck_alloc(len);
@@ -605,9 +953,103 @@ u32 index_search(u32 *A, u32 n, u32 val) {
   return index;
 }
 
+static double clamp_unit(double value) {
+  if (value < 0.0) return 0.0;
+  if (value > 1.0) return 1.0;
+  return value;
+}
+
+static double norm_log_pos_u32(u32 value, u32 max_value) {
+  double denom;
+  if (!max_value) return value ? 1.0 : 0.0;
+  denom = log((double)max_value + 2.0);
+  if (denom <= 0.0) return 0.0;
+  return clamp_unit(log((double)value + 1.0) / denom);
+}
+
+static double norm_log_inv_u32(u32 value, u32 max_value) {
+  return 1.0 - norm_log_pos_u32(value, max_value);
+}
+
+static double norm_log_inv_u64(u64 value, u64 max_value) {
+  double denom;
+  if (!max_value) return value ? 0.0 : 1.0;
+  denom = log((double)max_value + 2.0);
+  if (denom <= 0.0) return 1.0;
+  return clamp_unit(1.0 - (log((double)value + 1.0) / denom));
+}
+
+/* Protocol-agnostic state score inspired by rare-path scheduling. All inputs are
+   normalized before being combined, so raw counters with different units cannot
+   dominate each other. */
+static u32 rare_state_score(state_info_t *state, u32 max_paths, u32 max_fuzzs,
+                            u32 max_selected, u32 max_discovered,
+                            u32 max_seeds, u32 total_selected) {
+  double rarity = norm_log_inv_u32(state->paths, max_paths);
+  double under_fuzzed = norm_log_inv_u32(state->fuzzs, max_fuzzs);
+  double under_selected = norm_log_inv_u32(state->selected_times, max_selected);
+  double productivity = norm_log_pos_u32(state->paths_discovered, max_discovered);
+  double support = norm_log_pos_u32(state->seeds_count, max_seeds);
+  double ucb = sqrt(log((double)total_selected + 2.0) /
+                    ((double)state->selected_times + 1.0));
+  double score01;
+  u32 score;
+
+  if (!state->seeds_count) return 0;
+
+  if (ucb > 2.0) ucb = 2.0;
+  ucb /= 2.0;
+
+  score01 = pow(0.05 + rarity, 0.35) *
+            pow(0.05 + under_fuzzed, 0.25) *
+            pow(0.05 + under_selected, 0.15) *
+            pow(0.05 + productivity, 0.15) *
+            pow(0.05 + support, 0.10) *
+            (1.0 + 0.5 * ucb);
+
+  score = (u32)ceil(1000.0 * score01);
+  if (score < 1) score = 1;
+  if (score > 1000000) score = 1000000;
+  return score;
+}
+
+/* Protocol-agnostic seed score for selecting a seed that reaches target_state_id.
+   The normalized multiplicative form rewards seeds that are useful on several
+   dimensions instead of letting one large raw counter overwhelm the decision. */
+static u32 rare_seed_score(struct queue_entry *q, u32 target_state_id,
+                           u32 max_unique_states, u32 max_regions,
+                           u64 max_exec_us, u32 max_len,
+                           u8 already_fuzzed) {
+  u32 regions = q->region_count ? q->region_count : 1;
+  double coverage = q->has_new_cov ? 1.0 : (q->favored ? 0.75 : 0.25);
+  double lineage = (q->generating_state_id == target_state_id) ? 1.0 :
+                   (q->is_initial_seed ? 0.70 : 0.35);
+  double diversity = norm_log_pos_u32(q->unique_state_count, max_unique_states);
+  double structure = norm_log_pos_u32(regions, max_regions);
+  double speed = norm_log_inv_u64(q->exec_us, max_exec_us);
+  double size_eff = norm_log_inv_u32(q->len, max_len);
+  double novelty = already_fuzzed ? 0.25 : 1.0;
+  double score01;
+  u32 score;
+
+  score01 = pow(0.05 + coverage, 0.22) *
+            pow(0.05 + lineage, 0.18) *
+            pow(0.05 + diversity, 0.14) *
+            pow(0.05 + structure, 0.10) *
+            pow(0.05 + speed, 0.08) *
+            pow(0.05 + size_eff, 0.08) *
+            pow(0.05 + novelty, 0.20);
+
+  score = (u32)ceil(1000.0 * score01);
+  if (score < 1) score = 1;
+  return score;
+}
+
 /* Calculate state scores and select the next state */
 u32 update_scores_and_select_next_state(u8 mode) {
   u32 result = 0, i;
+  u32 max_paths = 0, max_fuzzs = 0, max_selected = 0;
+  u32 max_discovered = 0, max_seeds = 0, total_selected = 0;
 
   if (state_ids_count == 0) return 0;
 
@@ -617,6 +1059,23 @@ u32 update_scores_and_select_next_state(u8 mode) {
 
   khint_t k;
   state_info_t *state;
+
+  if (mode == RARE_STATE_AWARE) {
+    for(i = 0; i < state_ids_count; i++) {
+      u32 state_id = state_ids[i];
+      k = kh_get(hms, khms_states, state_id);
+      if (k != kh_end(khms_states)) {
+        state = kh_val(khms_states, k);
+        if (state->paths > max_paths) max_paths = state->paths;
+        if (state->fuzzs > max_fuzzs) max_fuzzs = state->fuzzs;
+        if (state->selected_times > max_selected) max_selected = state->selected_times;
+        if (state->paths_discovered > max_discovered) max_discovered = state->paths_discovered;
+        if (state->seeds_count > max_seeds) max_seeds = state->seeds_count;
+        total_selected += state->selected_times;
+      }
+    }
+  }
+
   //Update the states' score
   for(i = 0; i < state_ids_count; i++) {
     u32 state_id = state_ids[i];
@@ -628,6 +1087,11 @@ u32 update_scores_and_select_next_state(u8 mode) {
         case FAVOR:
           state->score = ceil(1000 * pow(2, -log10(log10(state->fuzzs + 1) * state->selected_times + 1)) * pow(2, log(state->paths_discovered + 1)));
           break;
+        case RARE_STATE_AWARE:
+          state->score = rare_state_score(state, max_paths, max_fuzzs,
+                                          max_selected, max_discovered,
+                                          max_seeds, total_selected);
+          break;
         //other cases are reserved
       }
 
@@ -637,6 +1101,18 @@ u32 update_scores_and_select_next_state(u8 mode) {
         state_scores[i] = state_scores[i-1] + state->score;
       }
     }
+  }
+
+  if (!state_scores[state_ids_count - 1]) {
+    for(i = 0; i < state_ids_count; i++) {
+      k = kh_get(hms, khms_states, state_ids[i]);
+      if (k != kh_end(khms_states) && kh_val(khms_states, k)->seeds_count) {
+        result = state_ids[i];
+        break;
+      }
+    }
+    if (state_scores) ck_free(state_scores);
+    return result ? result : state_ids[0];
   }
 
   u32 randV = UR(state_scores[state_ids_count - 1]);
@@ -674,6 +1150,20 @@ unsigned int choose_target_state(u8 mode) {
       }
 
       result = update_scores_and_select_next_state(FAVOR);
+      break;
+    case RARE_STATE_AWARE:
+      /* Warm up with round-robin so paths/fuzzs/selected_times are meaningful. */
+      if (state_cycles < 3) {
+        result = state_ids[selected_state_index];
+        selected_state_index++;
+        if (selected_state_index == state_ids_count) {
+          selected_state_index = 0;
+          state_cycles++;
+        }
+        break;
+      }
+
+      result = update_scores_and_select_next_state(RARE_STATE_AWARE);
       break;
     default:
       break;
@@ -751,6 +1241,53 @@ struct queue_entry *choose_seed(u32 target_state_id, u8 mode)
           if (state->selected_seed_index == state->seeds_count) state->selected_seed_index = 0;
         }
         break;
+      case RARE_STATE_AWARE: {
+        u32 *seed_scores = NULL;
+        u32 score_sum = 0;
+        u32 i, target_state_index;
+        u32 max_unique_states = 0, max_regions = 0, max_len = 0;
+        u64 max_exec_us = 0;
+
+        seed_scores = (u32 *)ck_alloc(state->seeds_count * sizeof(u32));
+        if (!seed_scores) PFATAL("Cannot allocate memory for seed_scores");
+
+        target_state_index = get_state_index(target_state_id);
+
+        for (i = 0; i < state->seeds_count; i++) {
+          struct queue_entry *candidate = state->seeds[i];
+          u32 regions = candidate->region_count ? candidate->region_count : 1;
+
+          if (candidate->unique_state_count > max_unique_states) {
+            max_unique_states = candidate->unique_state_count;
+          }
+          if (regions > max_regions) max_regions = regions;
+          if (candidate->exec_us > max_exec_us) max_exec_us = candidate->exec_us;
+          if (candidate->len > max_len) max_len = candidate->len;
+        }
+
+        for (i = 0; i < state->seeds_count; i++) {
+          struct queue_entry *candidate = state->seeds[i];
+          u8 already_fuzzed = was_fuzzed_map[target_state_index][candidate->index] == 1;
+          u32 score = rare_seed_score(candidate, target_state_id,
+                                      max_unique_states, max_regions,
+                                      max_exec_us, max_len, already_fuzzed);
+          if (!candidate->region_count) score = 0;
+
+          score_sum += score;
+          seed_scores[i] = score_sum;
+        }
+
+        if (score_sum == 0) {
+          result = state->seeds[UR(state->seeds_count)];
+        } else {
+          u32 idx = index_search(seed_scores, state->seeds_count, UR(score_sum));
+          result = state->seeds[idx];
+          state->selected_seed_index = idx;
+        }
+
+        ck_free(seed_scores);
+        break;
+      }
       default:
         break;
     }
@@ -800,17 +1337,7 @@ void update_state_aware_variables(struct queue_entry *q, u8 dry_run)
           else agset(from,"color","red");
 
           //Insert this newly discovered state into the states hashtable
-          state_info_t *newState_From = (state_info_t *) ck_alloc (sizeof(state_info_t));
-          newState_From->id = prevStateID;
-          newState_From->is_covered = 1;
-          newState_From->paths = 0;
-          newState_From->paths_discovered = 0;
-          newState_From->selected_times = 0;
-          newState_From->fuzzs = 0;
-          newState_From->score = 1;
-          newState_From->selected_seed_index = 0;
-          newState_From->seeds = NULL;
-          newState_From->seeds_count = 0;
+          state_info_t *newState_From = new_state_info(prevStateID);
 
           k = kh_put(hms, khms_states, prevStateID, &discard);
           kh_value(khms_states, k) = newState_From;
@@ -830,17 +1357,7 @@ void update_state_aware_variables(struct queue_entry *q, u8 dry_run)
           else agset(to,"color","red");
 
           //Insert this newly discovered state into the states hashtable
-          state_info_t *newState_To = (state_info_t *) ck_alloc (sizeof(state_info_t));
-          newState_To->id = curStateID;
-          newState_To->is_covered = 1;
-          newState_To->paths = 0;
-          newState_To->paths_discovered = 0;
-          newState_To->selected_times = 0;
-          newState_To->fuzzs = 0;
-          newState_To->score = 1;
-          newState_To->selected_seed_index = 0;
-          newState_To->seeds = NULL;
-          newState_To->seeds_count = 0;
+          state_info_t *newState_To = new_state_info(curStateID);
 
           k = kh_put(hms, khms_states, curStateID, &discard);
           kh_value(khms_states, k) = newState_To;
@@ -889,6 +1406,7 @@ void update_state_aware_variables(struct queue_entry *q, u8 dry_run)
   //Update the states hashtable to keep the list of seeds which help us to reach a specific state
   //Iterate over the regions & their annotated state (sub)sequences and update the hashtable accordingly
   //All seed should "reach" state 0 (initial state) so we add this one to the map first
+  ensure_state_exists(0, dry_run);
   k = kh_get(hms, khms_states, 0);
   if (k != kh_end(khms_states)) {
     state = kh_val(khms_states, k);
@@ -921,16 +1439,7 @@ void update_state_aware_variables(struct queue_entry *q, u8 dry_run)
         //To completely fix this, we should fix all causes leading to potential undeterminism
         //For now, we just add the state into the hashtable
 
-        state_info_t *newState = (state_info_t *) ck_alloc (sizeof(state_info_t));
-        newState->id = reachable_state_id;
-        newState->is_covered = 1;
-        newState->paths = 0;
-        newState->paths_discovered = 0;
-        newState->selected_times = 0;
-        newState->fuzzs = 0;
-        newState->score = 1;
-        newState->selected_seed_index = 0;
-        newState->seeds = NULL;
+        state_info_t *newState = new_state_info(reachable_state_id);
         newState->seeds = (void **) ck_realloc (newState->seeds, sizeof(void *));
         newState->seeds[0] = (void *)q;
         newState->seeds_count = 1;
@@ -980,16 +1489,204 @@ void update_state_aware_variables(struct queue_entry *q, u8 dry_run)
 
 }
 
+static int s7_reset_send_all(int sockfd, const u8 *buf, u32 len) {
+  u32 sent = 0;
+
+  while (sent < len) {
+    int ret = send(sockfd, buf + sent, len - sent, 0);
+    if (ret <= 0) return -1;
+    sent += ret;
+  }
+
+  return 0;
+}
+
+static void s7_reset_drain_response(int sockfd) {
+  u8 header[4];
+  u8 tmp[512];
+  int got = recv(sockfd, header, sizeof(header), 0);
+
+  if (got <= 0) return;
+  if (got < 4 || header[0] != 0x03 || header[1] != 0x00) return;
+
+  u32 pkt_len = ((u32)header[2] << 8) | header[3];
+  u32 left = pkt_len > 4 ? pkt_len - 4 : 0;
+
+  while (left > 0) {
+    u32 want = left > sizeof(tmp) ? sizeof(tmp) : left;
+    got = recv(sockfd, tmp, want, 0);
+    if (got <= 0) break;
+    left -= got;
+  }
+}
+
+static void s7_reset_write_frame(u8 *frame, u16 pdu_ref, u8 area) {
+  static const u8 prefix[] = {
+    0x03, 0x00, 0x00, 0x24, 0x02, 0xf0, 0x80,
+    0x32, 0x01, 0x00, 0x00
+  };
+  static const u8 suffix[] = {
+    0x00, 0x0e, 0x00, 0x05,
+    0x05, 0x01,
+    0x12, 0x0a, 0x10, 0x02,
+    0x00, 0x01,
+    0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00,
+    0x00, 0x04, 0x00, 0x08, 0x00
+  };
+
+  memcpy(frame, prefix, sizeof(prefix));
+  frame[11] = (u8)(pdu_ref >> 8);
+  frame[12] = (u8)(pdu_ref & 0xff);
+  memcpy(frame + sizeof(prefix) + 2, suffix, sizeof(suffix));
+  frame[27] = area;
+}
+
+static u8 s7_request_may_mutate_plc(const u8 *buf, u32 len) {
+  u32 off = 0;
+
+  if (!buf || len < 7) return 0;
+
+  while (off + 7 <= len) {
+    if (buf[off] != 0x03 || buf[off + 1] != 0x00) {
+      off++;
+      continue;
+    }
+
+    u32 pkt_len = ((u32)buf[off + 2] << 8) | buf[off + 3];
+    if (pkt_len < 7 || off + pkt_len > len) break;
+
+    u32 cotp_off = off + 4;
+    if ((buf[cotp_off + 1] & 0xf0) == 0xf0) {
+      u32 s7_off = cotp_off + 3;
+      if (s7_off + 10 <= off + pkt_len && buf[s7_off] == 0x32) {
+        u8 rosctr = buf[s7_off + 1];
+        u32 header_len = 10;
+        if ((rosctr == 0x03 || rosctr == 0x07) && s7_off + 12 <= off + pkt_len) {
+          header_len = 12;
+        }
+
+        u16 param_len = ((u16)buf[s7_off + 6] << 8) | buf[s7_off + 7];
+        u32 params_start = s7_off + header_len;
+        if (param_len && params_start < off + pkt_len) {
+          u8 fn = buf[params_start];
+          if (fn == 0x05 || fn == 0x0f || fn == 0x16 ||
+              fn == 0x1a || fn == 0x28 || fn == 0x29) {
+            return 1;
+          }
+        }
+      }
+    }
+
+    off += pkt_len;
+  }
+
+  return 0;
+}
+
+static u8 s7_current_testcase_needs_reset(void) {
+  char *policy = getenv("S7_RESET_POLICY");
+  kliter_t(lms) *it;
+
+  if (!policy || !*policy || !strcmp(policy, "always")) return 1;
+  if (!strcmp(policy, "none") || !strcmp(policy, "off")) return 0;
+  if (strcmp(policy, "mutating")) return 1;
+
+  for (it = kl_begin(kl_messages); it != kl_end(kl_messages); it = kl_next(it)) {
+    if (s7_request_may_mutate_plc((const u8 *)kl_val(it)->mdata, kl_val(it)->msize)) {
+      return 1;
+    }
+  }
+
+  return 0;
+}
+
+static void s7_reset_plc_state(void) {
+  static u32 reset_counter = 0;
+  if (!env_flag_enabled("S7_AFLNET_RESET")) return;
+  if (net_protocol != PRO_TCP || !net_ip || !net_port) return;
+  if (!s7_current_testcase_needs_reset()) return;
+
+  u32 reset_every = env_u32_or("S7_RESET_EVERY", 1);
+  if (reset_every > 1 && (reset_counter++ % reset_every) != 0) return;
+
+  u32 slot = env_u32_or("S7_RESET_SLOT", 0);
+  u32 rack = env_u32_or("S7_RESET_RACK", 0);
+  u32 settle_us = env_u32_or("S7_RESET_SETTLE_US", 20000);
+  u16 src_tsap = (u16)env_u32_or("S7_RESET_SRC_TSAP", 0x0100);
+  u16 dst_tsap = (u16)(0x0100 | ((rack & 0x07) << 5) | (slot & 0x1f));
+  struct sockaddr_in serv_addr;
+  struct timeval timeout;
+
+  static const u8 setup[] = {
+    0x03, 0x00, 0x00, 0x19,
+    0x02, 0xf0, 0x80,
+    0x32, 0x01, 0x00, 0x00,
+    0x00, 0x01,
+    0x00, 0x08, 0x00, 0x00,
+    0xf0, 0x00, 0x00, 0x01, 0x00, 0x01, 0x01, 0xe0
+  };
+
+  u8 cr[] = {
+    0x03, 0x00, 0x00, 0x16,
+    0x11, 0xe0, 0x00, 0x00, 0x00, 0x01, 0x00,
+    0xc1, 0x02, 0x01, 0x00,
+    0xc2, 0x02, 0x01, 0x00,
+    0xc0, 0x01, 0x0a
+  };
+  u8 write_m0[36];
+  u8 write_q0[36];
+
+  cr[13] = (u8)(src_tsap >> 8);
+  cr[14] = (u8)(src_tsap & 0xff);
+  cr[17] = (u8)(dst_tsap >> 8);
+  cr[18] = (u8)(dst_tsap & 0xff);
+  s7_reset_write_frame(write_m0, 0x0030, 0x83);
+  s7_reset_write_frame(write_q0, 0x0031, 0x82);
+
+  int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+  if (sockfd < 0) return;
+
+  timeout.tv_sec = 0;
+  timeout.tv_usec = env_u32_or("S7_RESET_TIMEOUT_US", 20000);
+  setsockopt(sockfd, SOL_SOCKET, SO_SNDTIMEO, (char *)&timeout, sizeof(timeout));
+  setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(timeout));
+
+  memset(&serv_addr, 0, sizeof(serv_addr));
+  serv_addr.sin_family = AF_INET;
+  serv_addr.sin_port = htons(net_port);
+  serv_addr.sin_addr.s_addr = inet_addr(net_ip);
+
+  if (connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) == 0) {
+    if (s7_reset_send_all(sockfd, cr, sizeof(cr)) == 0) s7_reset_drain_response(sockfd);
+    if (s7_reset_send_all(sockfd, setup, sizeof(setup)) == 0) s7_reset_drain_response(sockfd);
+    if (!getenv("S7_RESET_M0") || env_flag_enabled("S7_RESET_M0")) {
+      if (s7_reset_send_all(sockfd, write_m0, sizeof(write_m0)) == 0) s7_reset_drain_response(sockfd);
+    }
+    if (!getenv("S7_RESET_Q0") || env_flag_enabled("S7_RESET_Q0")) {
+      if (s7_reset_send_all(sockfd, write_q0, sizeof(write_q0)) == 0) s7_reset_drain_response(sockfd);
+    }
+  }
+
+  close(sockfd);
+  if (settle_us) usleep(settle_us);
+}
+
 /* Send (mutated) messages in order to the server under test */
 int send_over_network()
 {
   int n;
   u8 likely_buggy = 0;
+  u8 recv_error_seen = 0;
+  char *last_req = NULL;
+  u32 last_req_len = 0;
   struct sockaddr_in serv_addr;
   struct sockaddr_in local_serv_addr;
 
   //Clean up the server if needed
   if (cleanup_script) system(cleanup_script);
+
+  if (env_flag_enabled("S7_RESET_BEFORE")) s7_reset_plc_state();
 
   //Wait a bit for the server initialization
   usleep(server_wait_usecs);
@@ -1052,6 +1749,7 @@ int send_over_network()
       usleep(1000);
     }
     if (n== 1000) {
+      s7_log_event("connection_failed", "connect retry exhausted", NULL, 0, NULL, 0);
       close(sockfd);
       return 1;
     }
@@ -1065,6 +1763,19 @@ int send_over_network()
   messages_sent = 0;
 
   for (it = kl_begin(kl_messages); it != kl_end(kl_messages); it = kl_next(it)) {
+    last_req = kl_val(it)->mdata;
+    last_req_len = kl_val(it)->msize;
+    u32 max_msg = env_u32_or("S7_NET_MAX_MESSAGE", 4096);
+
+    if (max_msg && last_req_len > max_msg) {
+      messages_sent++;
+      response_bytes = (u32 *) ck_realloc(response_bytes, messages_sent * sizeof(u32));
+      response_bytes[messages_sent - 1] = response_buf_size;
+      s7_log_event("oversized_request_skipped", "message exceeds S7_NET_MAX_MESSAGE",
+                   (u8 *)last_req, last_req_len, (u8 *)response_buf, response_buf_size);
+      continue;
+    }
+
     n = net_send(sockfd, timeout, kl_val(it)->mdata, kl_val(it)->msize);
     messages_sent++;
 
@@ -1079,7 +1790,14 @@ int send_over_network()
     //retrieve server response
     u32 prev_buf_size = response_buf_size;
     if (net_recv(sockfd, timeout, poll_wait_msecs, &response_buf, &response_buf_size)) {
+      recv_error_seen = 1;
       goto HANDLE_RESPONSES;
+    }
+
+    if (response_buf_size > prev_buf_size) {
+      s7_scan_response_events((u8 *)last_req, last_req_len,
+                              (u8 *)response_buf + prev_buf_size,
+                              response_buf_size - prev_buf_size);
     }
 
     //Update accumulated response buffer size
@@ -1087,13 +1805,41 @@ int send_over_network()
 
     //set likely_buggy flag if AFLNet does not receive any feedback from the server
     //it could be a signal of a potentiall server crash, like the case of CVE-2019-7314
-    if (prev_buf_size == response_buf_size) likely_buggy = 1;
-    else likely_buggy = 0;
+    if (prev_buf_size == response_buf_size) {
+      likely_buggy = 1;
+      if (last_req_len) {
+        if (s7_should_log_transport_event()) {
+          s7_log_event("no_response_after_message", "response size unchanged",
+                       (u8 *)last_req, last_req_len, (u8 *)response_buf, response_buf_size);
+        }
+      }
+    } else likely_buggy = 0;
   }
 
 HANDLE_RESPONSES:
 
-  net_recv(sockfd, timeout, poll_wait_msecs, &response_buf, &response_buf_size);
+  {
+    u32 prev_buf_size = response_buf_size;
+    if (net_recv(sockfd, timeout, poll_wait_msecs, &response_buf, &response_buf_size)) {
+      recv_error_seen = 1;
+    } else if (response_buf_size > prev_buf_size) {
+      s7_scan_response_events((u8 *)last_req, last_req_len,
+                              (u8 *)response_buf + prev_buf_size,
+                              response_buf_size - prev_buf_size);
+    }
+  }
+
+  if (recv_error_seen && last_req_len) {
+    if (s7_should_log_transport_event()) {
+      s7_log_event("recv_error_testcase", "net_recv returned error",
+                   (u8 *)last_req, last_req_len, (u8 *)response_buf, response_buf_size);
+    }
+  } else if (messages_sent > 0 && response_buf_size == 0 && last_req_len) {
+    if (s7_should_log_transport_event()) {
+      s7_log_event("no_response_testcase", "no response for testcase",
+                   (u8 *)last_req, last_req_len, NULL, 0);
+    }
+  }
 
   if (messages_sent > 0 && response_bytes != NULL) {
     response_bytes[messages_sent - 1] = response_buf_size;
@@ -1106,6 +1852,7 @@ HANDLE_RESPONSES:
   }
 
   close(sockfd);
+  if (env_flag_enabled("S7_RESET_AFTER")) s7_reset_plc_state();
 
   if (likely_buggy && false_negative_reduction) return 0;
 
@@ -3284,11 +4031,11 @@ static u8 run_target(char** argv, u32 timeout) {
   /* The SIGALRM handler simply kills the child_pid and sets child_timed_out. */
 
   if (dumb_mode == 1 || no_forkserver) {
-    if (use_net) send_over_network();
+    if (use_net && !s7_skip_network_for_current_stage()) send_over_network();
     if (waitpid(child_pid, &status, 0) <= 0) PFATAL("waitpid() failed");
 
   } else {
-    if (use_net) send_over_network();
+    if (use_net && !s7_skip_network_for_current_stage()) send_over_network();
     s32 res;
 
     if ((res = read(fsrv_st_fd, &status, 4)) != 4) {
@@ -3372,7 +4119,29 @@ static u8 run_target(char** argv, u32 timeout) {
 
 static void write_to_testcase(void* mem, u32 len) {
 
-  //AFLNet sends data via network so it does not need this function
+  s32 fd = out_fd;
+  len = s7_effective_testcase_len(len);
+
+  if (out_file) {
+
+    unlink(out_file); /* Ignore errors. */
+    fd = open(out_file, O_WRONLY | O_CREAT | O_EXCL, 0600);
+    if (fd < 0) PFATAL("Unable to create '%s'", out_file);
+
+  } else {
+
+    lseek(fd, 0, SEEK_SET);
+
+  }
+
+  ck_write(fd, mem, len, out_file ? out_file : (u8*)"out_fd");
+
+  if (!out_file) {
+
+    if (ftruncate(fd, len)) PFATAL("ftruncate() failed");
+    lseek(fd, 0, SEEK_SET);
+
+  } else close(fd);
 
 }
 
@@ -3440,6 +4209,14 @@ static u8 calibrate_case(char** argv, struct queue_entry* q, u8* use_mem,
     }
 
     cksum = hash32(trace_bits, MAP_SIZE, HASH_CONST);
+
+    if (s7comm_selected && env_flag_enabled("S7_TRUST_LOCAL_CALIBRATION") &&
+        s7_skip_network_for_current_stage() && stage_cur == 0 &&
+        q->exec_cksum && q->exec_cksum != cksum) {
+      q->exec_cksum = cksum;
+      memcpy(first_trace, trace_bits, MAP_SIZE);
+      continue;
+    }
 
     if (q->exec_cksum != cksum) {
 
@@ -5406,6 +6183,7 @@ EXP_ST u8 common_fuzz_stuff(char** argv, u8* out_buf, u32 len) {
 
   }
 
+  len = s7_effective_testcase_len(len);
   write_to_testcase(out_buf, len);
 
   /* AFLNet update kl_messages linked list */
@@ -5626,6 +6404,21 @@ static u32 calculate_score(struct queue_entry* q) {
     case 8 ... 13:  perf_score *= 3; break;
     case 14 ... 25: perf_score *= 4; break;
     default:        perf_score *= 5;
+
+  }
+
+  /* Optional AFLNet extension: when rare-state-aware seed selection is used,
+     add protocol-agnostic energy for state-rich and message-rich inputs. */
+  if (state_aware_mode && seed_selection_algo == RARE_STATE_AWARE) {
+
+    if (q->unique_state_count >= 6) perf_score = perf_score * 3 / 2;
+    else if (q->unique_state_count >= 3) perf_score = perf_score * 5 / 4;
+
+    if (q->region_count >= 8) perf_score = perf_score * 5 / 4;
+    else if (q->region_count == 1 && !q->is_initial_seed) perf_score = perf_score * 3 / 4;
+
+    if (target_state_id && q->generating_state_id == target_state_id) perf_score = perf_score * 3 / 2;
+    if (q->len > 4096) perf_score = perf_score * 3 / 4;
 
   }
 
@@ -7621,7 +8414,7 @@ abandon_entry:
     queue_cur->was_fuzzed = 1;
     was_fuzzed_map[get_state_index(target_state_id)][queue_cur->index] = 1;
     pending_not_fuzzed--;
-    if (queue_cur->favored) pending_favored--;
+    if (queue_cur->favored && pending_favored) pending_favored--;
   }
 
   //munmap(orig_in, queue_cur->len);
@@ -8100,7 +8893,7 @@ static void usage(u8* argv0) {
        "Settings for network protocol fuzzing (AFLNet):\n\n"
 
        "  -N netinfo    - server information (e.g., tcp://127.0.0.1/8554)\n"
-       "  -P protocol   - application protocol to be tested (e.g., RTSP, FTP, DTLS12, DNS, SMTP, SSH, TLS)\n"
+       "  -P protocol   - application protocol to be tested (e.g., RTSP, FTP, DTLS12, DNS, SMTP, SSH, TLS, MODBUS)\n"
        "  -D usec       - waiting time (in micro seconds) for the server to initialize\n"
        "  -W msec       - waiting time (in miliseconds) for receiving the first response to each input sent\n"
        "  -w usec       - waiting time (in micro seconds) for receiving follow-up responses\n"
@@ -9094,6 +9887,13 @@ int main(int argc, char** argv) {
         }else if (!strcmp(optarg, "SNMP")) {
           extract_requests = &extract_requests_SNMP;
           extract_response_codes = &extract_response_codes_SNMP;
+        } else if (!strcmp(optarg, "MODBUS")) {
+          extract_requests = &extract_requests_modbus;
+          extract_response_codes = &extract_response_codes_modbus;
+        } else if (!strcmp(optarg, "S7COMM")) {
+          extract_requests = &extract_requests_s7comm;
+          extract_response_codes = &extract_response_codes_s7comm;
+          s7comm_selected = 1;
         } else {
           FATAL("%s protocol is not supported yet!", optarg);
         }
@@ -9304,10 +10104,14 @@ int main(int argc, char** argv) {
       u8 skipped_fuzz;
 
       /* Failed to find a new paths in the past 1 mins */
-      if (UR(100) < (get_cur_time() - last_path_time) / time_gap) {
+      if (queue_cycle > 1 &&
+          UR(100) < (get_cur_time() - last_path_time) / time_gap) {
         code_aware_schedule = 0;
         struct queue_entry *selected_seed = NULL;
-        while(!selected_seed || selected_seed->region_count == 0) {
+        u32 select_attempts = 0;
+        u32 max_select_attempts = state_ids_count ? state_ids_count * 4 : 16;
+        while((!selected_seed || selected_seed->region_count == 0) &&
+              select_attempts++ < max_select_attempts) {
           /* choose a state */
           target_state_id = choose_target_state(state_selection_algo);
 
@@ -9321,6 +10125,11 @@ int main(int argc, char** argv) {
           }
 
           selected_seed = choose_seed(target_state_id, seed_selection_algo);
+        }
+
+        if (!selected_seed || selected_seed->region_count == 0) {
+          code_aware_schedule = 1;
+          selected_seed = queue_cur ? queue_cur : queue;
         }
 
         /* Seek to the selected seed */

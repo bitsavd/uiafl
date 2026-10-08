@@ -1,0 +1,6839 @@
+{
+  "final_ok": true,
+  "final_report": {
+    "frames": 4,
+    "min_resets": 4,
+    "min_response_count": 3,
+    "ok": true,
+    "qualified_reset_count": 5,
+    "repeats": 5,
+    "required_responses": [
+      "cotp_cc",
+      "fn=f0:err=00/00",
+      "fn=04:err=00/00"
+    ],
+    "reset_count": 5,
+    "results": [
+      {
+        "detail": "[Errno 104] Connection reset by peer",
+        "elapsed_ms": 402,
+        "kind": "connection_reset",
+        "ok": false,
+        "reset": true,
+        "responses": [
+          "cotp_cc",
+          "s7:rosctr=03:fn=f0:err=00/00:len=27",
+          "s7:rosctr=03:fn=04:err=00/00:len=25"
+        ]
+      },
+      {
+        "detail": "[Errno 104] Connection reset by peer",
+        "elapsed_ms": 405,
+        "kind": "connection_reset",
+        "ok": false,
+        "reset": true,
+        "responses": [
+          "cotp_cc",
+          "s7:rosctr=03:fn=f0:err=00/00:len=27",
+          "s7:rosctr=03:fn=04:err=00/00:len=25"
+        ]
+      },
+      {
+        "detail": "[Errno 104] Connection reset by peer",
+        "elapsed_ms": 400,
+        "kind": "connection_reset",
+        "ok": false,
+        "reset": true,
+        "responses": [
+          "cotp_cc",
+          "s7:rosctr=03:fn=f0:err=00/00:len=27",
+          "s7:rosctr=03:fn=04:err=00/00:len=25"
+        ]
+      },
+      {
+        "detail": "[Errno 104] Connection reset by peer",
+        "elapsed_ms": 398,
+        "kind": "connection_reset",
+        "ok": false,
+        "reset": true,
+        "responses": [
+          "cotp_cc",
+          "s7:rosctr=03:fn=f0:err=00/00:len=27",
+          "s7:rosctr=03:fn=04:err=00/00:len=25"
+        ]
+      },
+      {
+        "detail": "[Errno 104] Connection reset by peer",
+        "elapsed_ms": 409,
+        "kind": "connection_reset",
+        "ok": false,
+        "reset": true,
+        "responses": [
+          "cotp_cc",
+          "s7:rosctr=03:fn=f0:err=00/00:len=27",
+          "s7:rosctr=03:fn=04:err=00/00:len=25"
+        ]
+      }
+    ],
+    "size": 85
+  },
+  "history": [
+    {
+      "accepted": false,
+      "label": "remove_frame_0",
+      "report": {
+        "frames": 6,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 24,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          }
+        ],
+        "size": 165
+      }
+    },
+    {
+      "accepted": false,
+      "label": "remove_frame_1",
+      "report": {
+        "frames": 6,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 138,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 149,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 162
+      }
+    },
+    {
+      "accepted": false,
+      "label": "remove_frame_2",
+      "report": {
+        "frames": 6,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 275,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 276,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 269,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 273,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 272,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27"
+            ]
+          }
+        ],
+        "size": 156
+      }
+    },
+    {
+      "accepted": false,
+      "label": "remove_frame_3",
+      "report": {
+        "frames": 6,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 0,
+        "results": [
+          {
+            "elapsed_ms": 782,
+            "kind": "replay_ok",
+            "ok": true,
+            "reset": false,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25",
+              "s7:rosctr=02:fn=85:len=19",
+              "s7:rosctr=02:fn=85:len=19",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "elapsed_ms": 775,
+            "kind": "replay_ok",
+            "ok": true,
+            "reset": false,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25",
+              "s7:rosctr=02:fn=85:len=19",
+              "s7:rosctr=02:fn=85:len=19",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "elapsed_ms": 777,
+            "kind": "replay_ok",
+            "ok": true,
+            "reset": false,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25",
+              "s7:rosctr=02:fn=85:len=19",
+              "s7:rosctr=02:fn=85:len=19",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "elapsed_ms": 778,
+            "kind": "replay_ok",
+            "ok": true,
+            "reset": false,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25",
+              "s7:rosctr=02:fn=85:len=19",
+              "s7:rosctr=02:fn=85:len=19",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "elapsed_ms": 782,
+            "kind": "replay_ok",
+            "ok": true,
+            "reset": false,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25",
+              "s7:rosctr=02:fn=85:len=19",
+              "s7:rosctr=02:fn=85:len=19",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 165
+      }
+    },
+    {
+      "accepted": true,
+      "label": "remove_frame_4",
+      "report": {
+        "frames": 6,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": true,
+        "qualified_reset_count": 5,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 398,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 403,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 404,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 403,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 401,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          }
+        ],
+        "size": 162
+      }
+    },
+    {
+      "accepted": false,
+      "label": "remove_frame_0",
+      "report": {
+        "frames": 5,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 25,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 11,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          }
+        ],
+        "size": 140
+      }
+    },
+    {
+      "accepted": false,
+      "label": "remove_frame_1",
+      "report": {
+        "frames": 5,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 139,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 149,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 146,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 137
+      }
+    },
+    {
+      "accepted": false,
+      "label": "remove_frame_2",
+      "report": {
+        "frames": 5,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 275,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 275,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 277,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 274,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 281,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27"
+            ]
+          }
+        ],
+        "size": 131
+      }
+    },
+    {
+      "accepted": false,
+      "label": "remove_frame_3",
+      "report": {
+        "frames": 5,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 0,
+        "results": [
+          {
+            "elapsed_ms": 649,
+            "kind": "replay_ok",
+            "ok": true,
+            "reset": false,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25",
+              "s7:rosctr=02:fn=85:len=19",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "elapsed_ms": 651,
+            "kind": "replay_ok",
+            "ok": true,
+            "reset": false,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25",
+              "s7:rosctr=02:fn=85:len=19",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "elapsed_ms": 642,
+            "kind": "replay_ok",
+            "ok": true,
+            "reset": false,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25",
+              "s7:rosctr=02:fn=85:len=19",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "elapsed_ms": 657,
+            "kind": "replay_ok",
+            "ok": true,
+            "reset": false,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25",
+              "s7:rosctr=02:fn=85:len=19",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "elapsed_ms": 646,
+            "kind": "replay_ok",
+            "ok": true,
+            "reset": false,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25",
+              "s7:rosctr=02:fn=85:len=19",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 140
+      }
+    },
+    {
+      "accepted": true,
+      "label": "remove_frame_4",
+      "report": {
+        "frames": 5,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": true,
+        "qualified_reset_count": 5,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 401,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 410,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 409,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 405,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 400,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          }
+        ],
+        "size": 131
+      }
+    },
+    {
+      "accepted": false,
+      "label": "remove_frame_0",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 23,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 16,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 11,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 10,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 14,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          }
+        ],
+        "size": 109
+      }
+    },
+    {
+      "accepted": false,
+      "label": "remove_frame_1",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 143,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 146,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 155,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 145,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 106
+      }
+    },
+    {
+      "accepted": false,
+      "label": "remove_frame_2",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 275,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 273,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 278,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 277,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 283,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27"
+            ]
+          }
+        ],
+        "size": 100
+      }
+    },
+    {
+      "accepted": false,
+      "label": "remove_frame_3",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 0,
+        "results": [
+          {
+            "elapsed_ms": 524,
+            "kind": "replay_ok",
+            "ok": true,
+            "reset": false,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "elapsed_ms": 522,
+            "kind": "replay_ok",
+            "ok": true,
+            "reset": false,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "elapsed_ms": 527,
+            "kind": "replay_ok",
+            "ok": true,
+            "reset": false,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "elapsed_ms": 532,
+            "kind": "replay_ok",
+            "ok": true,
+            "reset": false,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "elapsed_ms": 525,
+            "kind": "replay_ok",
+            "ok": true,
+            "reset": false,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 109
+      }
+    },
+    {
+      "accepted": true,
+      "label": "remove_frame_4",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": true,
+        "qualified_reset_count": 5,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 403,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 404,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 402,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 401,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 394,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          }
+        ],
+        "size": 100
+      }
+    },
+    {
+      "accepted": false,
+      "label": "remove_frame_0",
+      "report": {
+        "frames": 3,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 22,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          }
+        ],
+        "size": 78
+      }
+    },
+    {
+      "accepted": false,
+      "label": "remove_frame_1",
+      "report": {
+        "frames": 3,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 141,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 150,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 146,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 75
+      }
+    },
+    {
+      "accepted": false,
+      "label": "remove_frame_2",
+      "report": {
+        "frames": 3,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 274,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 280,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 277,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 281,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 275,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27"
+            ]
+          }
+        ],
+        "size": 69
+      }
+    },
+    {
+      "accepted": false,
+      "label": "remove_frame_3",
+      "report": {
+        "frames": 3,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 0,
+        "results": [
+          {
+            "elapsed_ms": 402,
+            "kind": "replay_ok",
+            "ok": true,
+            "reset": false,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "elapsed_ms": 400,
+            "kind": "replay_ok",
+            "ok": true,
+            "reset": false,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "elapsed_ms": 398,
+            "kind": "replay_ok",
+            "ok": true,
+            "reset": false,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "elapsed_ms": 398,
+            "kind": "replay_ok",
+            "ok": true,
+            "reset": false,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "elapsed_ms": 397,
+            "kind": "replay_ok",
+            "ok": true,
+            "reset": false,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          }
+        ],
+        "size": 78
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_0_suffix_8",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 15,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 27,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 11,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 15,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          }
+        ],
+        "size": 92
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_0_suffix_4",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 10,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 15,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          }
+        ],
+        "size": 96
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_0_suffix_2",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 16,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          }
+        ],
+        "size": 98
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_0_suffix_1",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 14,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 11,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          }
+        ],
+        "size": 99
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_1_suffix_16",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 138,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 163,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 154,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 84
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_1_suffix_8",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 148,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 147,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 153,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 92
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_1_suffix_4",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 146,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 150,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 148,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 149,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 96
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_1_suffix_2",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 155,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 149,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 98
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_1_suffix_1",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 156,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 149,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 153,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 150,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 99
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_2_suffix_16",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 403,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 409,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 399,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 401,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 402,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 84
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_2_suffix_8",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 404,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 405,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 409,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 395,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 403,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 92
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_2_suffix_4",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 403,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 406,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 403,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 398,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 401,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 96
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_2_suffix_2",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 406,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 405,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 411,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 399,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 405,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 98
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_2_suffix_1",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 401,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 408,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 408,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 405,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 411,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 99
+      }
+    },
+    {
+      "accepted": true,
+      "label": "trim_frame_3_suffix_8",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": true,
+        "qualified_reset_count": 5,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 410,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 403,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 400,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 400,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 403,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          }
+        ],
+        "size": 92
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_0_suffix_8",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 22,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          }
+        ],
+        "size": 84
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_0_suffix_4",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 15,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 11,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          }
+        ],
+        "size": 88
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_0_suffix_2",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          }
+        ],
+        "size": 90
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_0_suffix_1",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          }
+        ],
+        "size": 91
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_1_suffix_16",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 140,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 147,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 76
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_1_suffix_8",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 149,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 155,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 147,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 150,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 149,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 84
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_1_suffix_4",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 150,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 148,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 150,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 148,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 88
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_1_suffix_2",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 147,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 149,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 149,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 148,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 90
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_1_suffix_1",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 154,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 150,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 148,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 91
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_2_suffix_16",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 402,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 406,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 405,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 406,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 405,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 76
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_2_suffix_8",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 404,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 408,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 403,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 400,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 406,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 84
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_2_suffix_4",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 401,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 400,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 404,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 404,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 412,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 88
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_2_suffix_2",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 400,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 406,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 405,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 397,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 405,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 90
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_2_suffix_1",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 403,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 407,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 404,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 404,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 406,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 91
+      }
+    },
+    {
+      "accepted": true,
+      "label": "trim_frame_3_suffix_4",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": true,
+        "qualified_reset_count": 5,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 406,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 399,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 409,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 406,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 405,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          }
+        ],
+        "size": 88
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_0_suffix_8",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 25,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 15,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 14,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 10,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          }
+        ],
+        "size": 80
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_0_suffix_4",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          }
+        ],
+        "size": 84
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_0_suffix_2",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 14,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 11,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 11,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          }
+        ],
+        "size": 86
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_0_suffix_1",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 10,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 15,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 10,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          }
+        ],
+        "size": 87
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_1_suffix_16",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 140,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 150,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 148,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 149,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 154,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 72
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_1_suffix_8",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 153,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 149,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 80
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_1_suffix_4",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 148,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 150,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 148,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 154,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 84
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_1_suffix_2",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 148,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 147,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 149,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 86
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_1_suffix_1",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 149,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 148,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 150,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 148,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 87
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_2_suffix_16",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 401,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 408,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 403,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 406,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 405,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 72
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_2_suffix_8",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 403,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 403,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 404,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 408,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 402,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 80
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_2_suffix_4",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 406,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 406,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 400,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 406,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 400,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 84
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_2_suffix_2",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 399,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 402,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 398,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 403,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 395,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 86
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_2_suffix_1",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 403,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 402,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 401,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 405,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 405,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 87
+      }
+    },
+    {
+      "accepted": true,
+      "label": "trim_frame_3_suffix_2",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": true,
+        "qualified_reset_count": 5,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 408,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 408,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 406,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 402,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 406,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          }
+        ],
+        "size": 86
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_0_suffix_8",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 25,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 16,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 11,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          }
+        ],
+        "size": 78
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_0_suffix_4",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 11,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          }
+        ],
+        "size": 82
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_0_suffix_2",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          }
+        ],
+        "size": 84
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_0_suffix_1",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 14,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 14,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          }
+        ],
+        "size": 85
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_1_suffix_16",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 140,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 155,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 149,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 70
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_1_suffix_8",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 157,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 148,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 78
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_1_suffix_4",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 155,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 148,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 149,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 82
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_1_suffix_2",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 150,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 148,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 155,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 84
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_1_suffix_1",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 148,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 149,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 154,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 148,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 85
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_2_suffix_16",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 401,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 406,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 407,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 406,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 403,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 70
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_2_suffix_8",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 404,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 405,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 403,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 403,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 407,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 78
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_2_suffix_4",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 399,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 406,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 407,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 400,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 397,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 82
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_2_suffix_2",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 399,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 398,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 406,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 400,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 400,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 84
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_2_suffix_1",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 403,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 403,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 407,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 408,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 404,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 85
+      }
+    },
+    {
+      "accepted": true,
+      "label": "trim_frame_3_suffix_1",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": true,
+        "qualified_reset_count": 5,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 404,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 406,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 405,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 406,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 400,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=03:fn=04:err=00/00:len=25"
+            ]
+          }
+        ],
+        "size": 85
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_0_suffix_8",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 27,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 15,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 11,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          }
+        ],
+        "size": 77
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_0_suffix_4",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 15,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          }
+        ],
+        "size": 81
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_0_suffix_2",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 15,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          }
+        ],
+        "size": 83
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_0_suffix_1",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 13,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 12,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": []
+          }
+        ],
+        "size": 84
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_1_suffix_16",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 142,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 148,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 148,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 69
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_1_suffix_8",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 149,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 148,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 77
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_1_suffix_4",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 153,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 150,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 148,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 146,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 81
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_1_suffix_2",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 149,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 148,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 83
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_1_suffix_1",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 154,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 151,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 146,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 152,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc"
+            ]
+          }
+        ],
+        "size": 84
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_2_suffix_16",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 419,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 401,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 400,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 399,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 399,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 69
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_2_suffix_8",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 402,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 413,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 455,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 395,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 400,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 77
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_2_suffix_4",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 403,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 397,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 400,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 401,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 403,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 81
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_2_suffix_2",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 404,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 406,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 405,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 391,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 406,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 83
+      }
+    },
+    {
+      "accepted": false,
+      "label": "trim_frame_2_suffix_1",
+      "report": {
+        "frames": 4,
+        "min_resets": 4,
+        "min_response_count": 3,
+        "ok": false,
+        "qualified_reset_count": 0,
+        "repeats": 5,
+        "required_responses": [
+          "cotp_cc",
+          "fn=f0:err=00/00",
+          "fn=04:err=00/00"
+        ],
+        "reset_count": 5,
+        "results": [
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 402,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 404,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 402,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 398,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          },
+          {
+            "detail": "[Errno 104] Connection reset by peer",
+            "elapsed_ms": 400,
+            "kind": "connection_reset",
+            "ok": false,
+            "reset": true,
+            "responses": [
+              "cotp_cc",
+              "s7:rosctr=03:fn=f0:err=00/00:len=27",
+              "s7:rosctr=02:fn=85:len=19"
+            ]
+          }
+        ],
+        "size": 84
+      }
+    }
+  ],
+  "input": "tutorials/s7/vuln_analysis/triage_deep_len_24h/s7_reset/event_000008_s7_item_abnormal.raw",
+  "minimized_size": 85,
+  "original_size": 196,
+  "output": "tutorials/s7/vuln_analysis/deep_len_24h_minimized/event_000008_readvar_min.raw"
+}

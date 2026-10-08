@@ -1,0 +1,1044 @@
+[
+  {
+    "description": "setup followed by a complete COTP Data frame carrying a short or length-corrupt S7 PDU",
+    "elapsed_ms": 192,
+    "kind": "probed",
+    "name": "feedback_short_s7_00.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "short or length-corrupt S7 PDU followed by a valid ReadVar probe on the same connection",
+    "elapsed_ms": 253,
+    "kind": "probed",
+    "name": "feedback_short_s7_00_then_read.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19",
+      "s7:rosctr=03:fn=04:err=00/00:len=29"
+    ]
+  },
+  {
+    "description": "short or length-corrupt S7 PDU followed by a second Setup Communication probe",
+    "elapsed_ms": 251,
+    "kind": "probed",
+    "name": "feedback_short_s7_00_then_setup.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19",
+      "s7:rosctr=02:fn=81:len=19"
+    ]
+  },
+  {
+    "description": "setup followed by a complete COTP Data frame carrying a short or length-corrupt S7 PDU",
+    "elapsed_ms": 190,
+    "kind": "probed",
+    "name": "feedback_short_s7_01.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "short or length-corrupt S7 PDU followed by a valid ReadVar probe on the same connection",
+    "elapsed_ms": 252,
+    "kind": "probed",
+    "name": "feedback_short_s7_01_then_read.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19",
+      "s7:rosctr=03:fn=04:err=00/00:len=29"
+    ]
+  },
+  {
+    "description": "short or length-corrupt S7 PDU followed by a second Setup Communication probe",
+    "elapsed_ms": 244,
+    "kind": "probed",
+    "name": "feedback_short_s7_01_then_setup.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19",
+      "s7:rosctr=02:fn=81:len=19"
+    ]
+  },
+  {
+    "description": "setup followed by a complete COTP Data frame carrying a short or length-corrupt S7 PDU",
+    "elapsed_ms": 193,
+    "kind": "probed",
+    "name": "feedback_short_s7_02.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "short or length-corrupt S7 PDU followed by a valid ReadVar probe on the same connection",
+    "elapsed_ms": 254,
+    "kind": "probed",
+    "name": "feedback_short_s7_02_then_read.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19",
+      "s7:rosctr=03:fn=04:err=00/00:len=29"
+    ]
+  },
+  {
+    "description": "short or length-corrupt S7 PDU followed by a second Setup Communication probe",
+    "elapsed_ms": 251,
+    "kind": "probed",
+    "name": "feedback_short_s7_02_then_setup.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19",
+      "s7:rosctr=02:fn=81:len=19"
+    ]
+  },
+  {
+    "description": "setup followed by a complete COTP Data frame carrying a short or length-corrupt S7 PDU",
+    "elapsed_ms": 197,
+    "kind": "probed",
+    "name": "feedback_short_s7_03.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "short or length-corrupt S7 PDU followed by a valid ReadVar probe on the same connection",
+    "elapsed_ms": 249,
+    "kind": "probed",
+    "name": "feedback_short_s7_03_then_read.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19",
+      "s7:rosctr=03:fn=04:err=00/00:len=29"
+    ]
+  },
+  {
+    "description": "short or length-corrupt S7 PDU followed by a second Setup Communication probe",
+    "elapsed_ms": 258,
+    "kind": "probed",
+    "name": "feedback_short_s7_03_then_setup.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19",
+      "s7:rosctr=02:fn=81:len=19"
+    ]
+  },
+  {
+    "description": "setup followed by a complete COTP Data frame carrying a short or length-corrupt S7 PDU",
+    "elapsed_ms": 195,
+    "kind": "probed",
+    "name": "feedback_short_s7_04.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "short or length-corrupt S7 PDU followed by a valid ReadVar probe on the same connection",
+    "elapsed_ms": 252,
+    "kind": "probed",
+    "name": "feedback_short_s7_04_then_read.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19",
+      "s7:rosctr=03:fn=04:err=00/00:len=29"
+    ]
+  },
+  {
+    "description": "short or length-corrupt S7 PDU followed by a second Setup Communication probe",
+    "elapsed_ms": 252,
+    "kind": "probed",
+    "name": "feedback_short_s7_04_then_setup.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19",
+      "s7:rosctr=02:fn=81:len=19"
+    ]
+  },
+  {
+    "description": "setup followed by a complete COTP Data frame carrying a short or length-corrupt S7 PDU",
+    "elapsed_ms": 187,
+    "kind": "probed",
+    "name": "feedback_short_s7_05.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "short or length-corrupt S7 PDU followed by a valid ReadVar probe on the same connection",
+    "elapsed_ms": 253,
+    "kind": "probed",
+    "name": "feedback_short_s7_05_then_read.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19",
+      "s7:rosctr=03:fn=04:err=00/00:len=29"
+    ]
+  },
+  {
+    "description": "short or length-corrupt S7 PDU followed by a second Setup Communication probe",
+    "elapsed_ms": 247,
+    "kind": "probed",
+    "name": "feedback_short_s7_05_then_setup.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19",
+      "s7:rosctr=02:fn=81:len=19"
+    ]
+  },
+  {
+    "description": "setup followed by a complete COTP Data frame carrying a short or length-corrupt S7 PDU",
+    "elapsed_ms": 195,
+    "kind": "probed",
+    "name": "feedback_short_s7_06.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "short or length-corrupt S7 PDU followed by a valid ReadVar probe on the same connection",
+    "elapsed_ms": 253,
+    "kind": "probed",
+    "name": "feedback_short_s7_06_then_read.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19",
+      "s7:rosctr=03:fn=04:err=00/00:len=29"
+    ]
+  },
+  {
+    "description": "short or length-corrupt S7 PDU followed by a second Setup Communication probe",
+    "elapsed_ms": 254,
+    "kind": "probed",
+    "name": "feedback_short_s7_06_then_setup.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19",
+      "s7:rosctr=02:fn=81:len=19"
+    ]
+  },
+  {
+    "description": "setup followed by a complete COTP Data frame carrying a short or length-corrupt S7 PDU",
+    "elapsed_ms": 193,
+    "kind": "probed",
+    "name": "feedback_short_s7_07.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "short or length-corrupt S7 PDU followed by a valid ReadVar probe on the same connection",
+    "elapsed_ms": 252,
+    "kind": "probed",
+    "name": "feedback_short_s7_07_then_read.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19",
+      "s7:rosctr=03:fn=04:err=00/00:len=29"
+    ]
+  },
+  {
+    "description": "short or length-corrupt S7 PDU followed by a second Setup Communication probe",
+    "elapsed_ms": 241,
+    "kind": "probed",
+    "name": "feedback_short_s7_07_then_setup.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19",
+      "s7:rosctr=02:fn=81:len=19"
+    ]
+  },
+  {
+    "description": "setup followed by a complete COTP Data frame carrying a short or length-corrupt S7 PDU",
+    "elapsed_ms": 194,
+    "kind": "probed",
+    "name": "feedback_short_s7_08.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "short or length-corrupt S7 PDU followed by a valid ReadVar probe on the same connection",
+    "elapsed_ms": 245,
+    "kind": "probed",
+    "name": "feedback_short_s7_08_then_read.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19",
+      "s7:rosctr=03:fn=04:err=00/00:len=29"
+    ]
+  },
+  {
+    "description": "short or length-corrupt S7 PDU followed by a second Setup Communication probe",
+    "elapsed_ms": 241,
+    "kind": "probed",
+    "name": "feedback_short_s7_08_then_setup.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19",
+      "s7:rosctr=02:fn=81:len=19"
+    ]
+  },
+  {
+    "description": "setup followed by a complete COTP Data frame carrying a short or length-corrupt S7 PDU",
+    "elapsed_ms": 197,
+    "kind": "probed",
+    "name": "feedback_short_s7_09.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "short or length-corrupt S7 PDU followed by a valid ReadVar probe on the same connection",
+    "elapsed_ms": 255,
+    "kind": "probed",
+    "name": "feedback_short_s7_09_then_read.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19",
+      "s7:rosctr=03:fn=04:err=00/00:len=29"
+    ]
+  },
+  {
+    "description": "short or length-corrupt S7 PDU followed by a second Setup Communication probe",
+    "elapsed_ms": 246,
+    "kind": "probed",
+    "name": "feedback_short_s7_09_then_setup.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19",
+      "s7:rosctr=02:fn=81:len=19"
+    ]
+  },
+  {
+    "description": "setup followed by a complete COTP Data frame carrying a short or length-corrupt S7 PDU",
+    "elapsed_ms": 194,
+    "kind": "probed",
+    "name": "feedback_short_s7_10.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "short or length-corrupt S7 PDU followed by a valid ReadVar probe on the same connection",
+    "elapsed_ms": 251,
+    "kind": "probed",
+    "name": "feedback_short_s7_10_then_read.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19",
+      "s7:rosctr=03:fn=04:err=00/00:len=29"
+    ]
+  },
+  {
+    "description": "short or length-corrupt S7 PDU followed by a second Setup Communication probe",
+    "elapsed_ms": 244,
+    "kind": "probed",
+    "name": "feedback_short_s7_10_then_setup.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19",
+      "s7:rosctr=02:fn=81:len=19"
+    ]
+  },
+  {
+    "description": "setup followed by a complete COTP Data frame carrying a short or length-corrupt S7 PDU",
+    "elapsed_ms": 200,
+    "kind": "probed",
+    "name": "feedback_short_s7_11.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "short or length-corrupt S7 PDU followed by a valid ReadVar probe on the same connection",
+    "elapsed_ms": 248,
+    "kind": "probed",
+    "name": "feedback_short_s7_11_then_read.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19",
+      "s7:rosctr=03:fn=04:err=00/00:len=29"
+    ]
+  },
+  {
+    "description": "short or length-corrupt S7 PDU followed by a second Setup Communication probe",
+    "elapsed_ms": 246,
+    "kind": "probed",
+    "name": "feedback_short_s7_11_then_setup.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19",
+      "s7:rosctr=02:fn=81:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar with complete COTP and declared S7 parameter length 0x0000",
+    "elapsed_ms": 188,
+    "kind": "probed",
+    "name": "feedback_read_plen_0000.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar with complete COTP and declared S7 parameter length 0x0001",
+    "elapsed_ms": 193,
+    "kind": "probed",
+    "name": "feedback_read_plen_0001.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar with complete COTP and declared S7 parameter length 0x0002",
+    "elapsed_ms": 184,
+    "kind": "probed",
+    "name": "feedback_read_plen_0002.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar with complete COTP and declared S7 parameter length 0x0003",
+    "elapsed_ms": 185,
+    "kind": "probed",
+    "name": "feedback_read_plen_0003.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar with complete COTP and declared S7 parameter length 0x0007",
+    "elapsed_ms": 189,
+    "kind": "probed",
+    "name": "feedback_read_plen_0007.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar with complete COTP and declared S7 parameter length 0x0008",
+    "elapsed_ms": 189,
+    "kind": "probed",
+    "name": "feedback_read_plen_0008.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar with complete COTP and declared S7 parameter length 0x0009",
+    "elapsed_ms": 198,
+    "kind": "probed",
+    "name": "feedback_read_plen_0009.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar with complete COTP and declared S7 parameter length 0x000d",
+    "elapsed_ms": 189,
+    "kind": "probed",
+    "name": "feedback_read_plen_000d.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar with complete COTP and declared S7 parameter length 0x000e",
+    "elapsed_ms": 188,
+    "kind": "probed",
+    "name": "feedback_read_plen_000e.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=03:fn=04:err=00/00:len=29"
+    ]
+  },
+  {
+    "description": "ReadVar with complete COTP and declared S7 parameter length 0x000f",
+    "elapsed_ms": 184,
+    "kind": "probed",
+    "name": "feedback_read_plen_000f.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar with complete COTP and declared S7 parameter length 0x0010",
+    "elapsed_ms": 189,
+    "kind": "probed",
+    "name": "feedback_read_plen_0010.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar with complete COTP and declared S7 parameter length 0x001f",
+    "elapsed_ms": 192,
+    "kind": "probed",
+    "name": "feedback_read_plen_001f.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar with complete COTP and declared S7 parameter length 0x00ff",
+    "elapsed_ms": 185,
+    "kind": "probed",
+    "name": "feedback_read_plen_00ff.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar with complete COTP and declared S7 parameter length 0x7fff",
+    "elapsed_ms": 193,
+    "kind": "probed",
+    "name": "feedback_read_plen_7fff.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar with complete COTP and declared S7 parameter length 0xff00",
+    "elapsed_ms": 199,
+    "kind": "probed",
+    "name": "feedback_read_plen_ff00.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar with complete COTP and declared S7 parameter length 0xffff",
+    "elapsed_ms": 190,
+    "kind": "probed",
+    "name": "feedback_read_plen_ffff.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar declares item count 0 with one actual item",
+    "elapsed_ms": 187,
+    "kind": "probed",
+    "name": "feedback_read_count_00.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=03:fn=04:err=00/00:len=21"
+    ]
+  },
+  {
+    "description": "ReadVar declares item count 1 with one actual item",
+    "elapsed_ms": 193,
+    "kind": "probed",
+    "name": "feedback_read_count_01.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=03:fn=04:err=00/00:len=29"
+    ]
+  },
+  {
+    "description": "ReadVar declares item count 2 with one actual item",
+    "elapsed_ms": 194,
+    "kind": "probed",
+    "name": "feedback_read_count_02.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=84:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar declares item count 3 with one actual item",
+    "elapsed_ms": 193,
+    "kind": "probed",
+    "name": "feedback_read_count_03.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=84:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar declares item count 8 with one actual item",
+    "elapsed_ms": 198,
+    "kind": "probed",
+    "name": "feedback_read_count_08.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=84:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar declares item count 15 with one actual item",
+    "elapsed_ms": 214,
+    "kind": "probed",
+    "name": "feedback_read_count_0f.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=84:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar declares item count 16 with one actual item",
+    "elapsed_ms": 196,
+    "kind": "probed",
+    "name": "feedback_read_count_10.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=84:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar declares item count 31 with one actual item",
+    "elapsed_ms": 190,
+    "kind": "probed",
+    "name": "feedback_read_count_1f.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=84:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar declares item count 127 with one actual item",
+    "elapsed_ms": 199,
+    "kind": "probed",
+    "name": "feedback_read_count_7f.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=84:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar declares item count 128 with one actual item",
+    "elapsed_ms": 190,
+    "kind": "probed",
+    "name": "feedback_read_count_80.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=84:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar declares item count 255 with one actual item",
+    "elapsed_ms": 188,
+    "kind": "probed",
+    "name": "feedback_read_count_ff.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=84:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar bad_db semantic response followed by short S7 PDU",
+    "elapsed_ms": 257,
+    "kind": "probed",
+    "name": "feedback_read_bad_db_then_short.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=03:fn=04:err=00/00:len=25",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "ReadVar bad_area semantic response followed by short S7 PDU",
+    "elapsed_ms": 246,
+    "kind": "probed",
+    "name": "feedback_read_bad_area_then_short.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=03:fn=04:err=00/00:len=25",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "WriteVar with declared S7 data length 0x0000",
+    "elapsed_ms": 185,
+    "kind": "probed",
+    "name": "feedback_write_dlen_0000.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "WriteVar with declared S7 data length 0x0001",
+    "elapsed_ms": 207,
+    "kind": "probed",
+    "name": "feedback_write_dlen_0001.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "WriteVar with declared S7 data length 0x0002",
+    "elapsed_ms": 183,
+    "kind": "probed",
+    "name": "feedback_write_dlen_0002.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "WriteVar with declared S7 data length 0x0003",
+    "elapsed_ms": 186,
+    "kind": "probed",
+    "name": "feedback_write_dlen_0003.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "WriteVar with declared S7 data length 0x0004",
+    "elapsed_ms": 191,
+    "kind": "probed",
+    "name": "feedback_write_dlen_0004.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "WriteVar with declared S7 data length 0x0005",
+    "elapsed_ms": 188,
+    "kind": "probed",
+    "name": "feedback_write_dlen_0005.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=03:fn=05:err=00/00:len=22"
+    ]
+  },
+  {
+    "description": "WriteVar with declared S7 data length 0x0008",
+    "elapsed_ms": 189,
+    "kind": "probed",
+    "name": "feedback_write_dlen_0008.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "WriteVar with declared S7 data length 0x0010",
+    "elapsed_ms": 198,
+    "kind": "probed",
+    "name": "feedback_write_dlen_0010.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "WriteVar with declared S7 data length 0x00ff",
+    "elapsed_ms": 188,
+    "kind": "probed",
+    "name": "feedback_write_dlen_00ff.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "WriteVar with declared S7 data length 0x7fff",
+    "elapsed_ms": 194,
+    "kind": "probed",
+    "name": "feedback_write_dlen_7fff.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "WriteVar with declared S7 data length 0xffff",
+    "elapsed_ms": 195,
+    "kind": "probed",
+    "name": "feedback_write_dlen_ffff.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "deep S7 function 0x1a followed by short S7 PDU to test error recovery",
+    "elapsed_ms": 243,
+    "kind": "probed",
+    "name": "feedback_fn_1a_then_short.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=81:len=19",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "deep S7 function 0x1b followed by short S7 PDU to test error recovery",
+    "elapsed_ms": 253,
+    "kind": "probed",
+    "name": "feedback_fn_1b_then_short.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=81:len=19",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "deep S7 function 0x1c followed by short S7 PDU to test error recovery",
+    "elapsed_ms": 249,
+    "kind": "probed",
+    "name": "feedback_fn_1c_then_short.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=81:len=19",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "deep S7 function 0x1d followed by short S7 PDU to test error recovery",
+    "elapsed_ms": 251,
+    "kind": "probed",
+    "name": "feedback_fn_1d_then_short.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=81:len=19",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "deep S7 function 0x1e followed by short S7 PDU to test error recovery",
+    "elapsed_ms": 246,
+    "kind": "probed",
+    "name": "feedback_fn_1e_then_short.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=81:len=19",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "deep S7 function 0x1f followed by short S7 PDU to test error recovery",
+    "elapsed_ms": 246,
+    "kind": "probed",
+    "name": "feedback_fn_1f_then_short.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=81:len=19",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "deep S7 function 0x28 followed by short S7 PDU to test error recovery",
+    "elapsed_ms": 274,
+    "kind": "probed",
+    "name": "feedback_fn_28_then_short.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=81:len=19",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  },
+  {
+    "description": "deep S7 function 0x29 followed by short S7 PDU to test error recovery",
+    "elapsed_ms": 249,
+    "kind": "probed",
+    "name": "feedback_fn_29_then_short.raw",
+    "ok": true,
+    "responses": [
+      "cotp_cc",
+      "s7:rosctr=03:fn=f0:err=00/00:len=27",
+      "s7:rosctr=02:fn=81:len=19",
+      "s7:rosctr=02:fn=85:len=19"
+    ]
+  }
+]

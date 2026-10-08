@@ -14,6 +14,26 @@ aflnet-replay
 aflnet.o
 as
 
+# Local editor and target build directories.
+.vscode/
+/mosquitto/
+/截图/
+*.log
+
+# Tutorial binaries produced locally.
+tutorials/modbus/modbus_tcp_server
+tools/s7_harness
+
+# Fuzzing outputs and generated run corpora.
+out/
+out-*/
+*/out/
+*/out-*/
+tutorials/s7/fuzz_results/
+tutorials/s7/out*/
+tutorials/s7plus/out*/
+tutorials/s7plus/vuln_repro/poc_sources/harpos7/HarpoS7/
+
 # Binaries produced by "make -C llvm_mode"
 afl-clang-fast
 afl-clang-fast++
