@@ -2725,22 +2725,42 @@ unsigned int* extract_response_codes_modbus(unsigned char* buf, unsigned int buf
 
   while (offset + 7 <= buf_size) {
     unsigned int mbap_length = ((unsigned int)buf[offset + 4] << 8) | buf[offset + 5];
-    if (mbap_length == 0 || mbap_length > 260) break;
+    if (mbap_length < 2 || mbap_length > 254) break;
 
     unsigned int packet_length = 6 + mbap_length;
     if (packet_length < 8) break;
     if (offset + packet_length < offset) break;
     if (offset + packet_length > buf_size) break;
 
-    unsigned int unit_id = buf[offset + 6];
+    /* Unit/transaction IDs identify recipients and requests, not server states. */
+    if (buf[offset + 2] != 0 || buf[offset + 3] != 0) {
+      offset += packet_length;
+      continue;
+    }
     unsigned int function_code = buf[offset + 7];
-    unsigned int exception_code = 0;
+    unsigned int message_code = function_code;
 
-    if ((function_code & 0x80) && mbap_length >= 3) {
-      exception_code = buf[offset + 8];
+    if (function_code & 0x80) {
+      if (mbap_length != 3) {
+        offset += packet_length;
+        continue;
+      }
+      unsigned int exception_code = buf[offset + 8];
+      /* Group equivalent errors across functions; bound unknown error values. */
+      switch (exception_code) {
+        case 0x01: case 0x02: case 0x03: case 0x04: case 0x05:
+        case 0x06: case 0x08: case 0x0a: case 0x0b:
+          message_code = 0x100 | exception_code;
+          break;
+        default:
+          message_code = 0x1ff;
+          break;
+      }
+    } else if (function_code == 0) {
+      offset += packet_length;
+      continue;
     }
 
-    unsigned int message_code = (unit_id << 16) | (function_code << 8) | exception_code;
     message_code = get_mapped_message_code(message_code);
 
     state_count++;

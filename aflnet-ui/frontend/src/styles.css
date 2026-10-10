@@ -28,10 +28,6 @@ a { color: inherit; }
 .nav-item small { margin-top: 4px; font-size: 10px; font-weight: 800; color: #94a3b8; letter-spacing: .8px; }
 .nav-item:hover { color: #0f172a; background: #f1f5f9; }
 .nav-item.router-link-exact-active { color: #075985; background: #e6f7fb; box-shadow: inset 3px 0 var(--teal); }
-.sidebar-foot { margin-top: auto; border: 1px solid var(--line); background: var(--panel-soft); border-radius: 8px; padding: 13px; display: flex; align-items: center; gap: 10px; color: var(--teal); }
-.sidebar-foot span, .sidebar-foot strong { display: block; }
-.sidebar-foot span { font-size: 12px; color: var(--muted); }
-.sidebar-foot strong { font-size: 14px; color: #334155; margin-top: 3px; }
 .main-area { grid-column: 2; min-width: 0; }
 .topbar { height: 108px; padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); background: rgba(255, 255, 255, .88); backdrop-filter: blur(10px); }
 .topbar h1 { margin: 3px 0 0; font-size: 28px; font-weight: 680; letter-spacing: 0; }

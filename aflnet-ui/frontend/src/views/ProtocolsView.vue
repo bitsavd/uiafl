@@ -2,6 +2,7 @@
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { Connection } from '@element-plus/icons-vue'
 import { api } from '../api/client.js'
 
 const router = useRouter()
@@ -13,6 +14,8 @@ const protocolDialogVisible = ref(false)
 const createDialogVisible = ref(false)
 const creating = ref(false)
 const loading = ref(false)
+const checkingTarget = ref(false)
+const connectionResult = ref(null)
 let timer = null
 
 const form = reactive({
@@ -102,6 +105,33 @@ async function createTask() {
     creating.value = false
   }
 }
+
+async function checkConnection() {
+  checkingTarget.value = true
+  connectionResult.value = null
+  const payload = { host: form.target_host.trim(), port: form.target_port, transport: form.transport, protocol: form.protocol }
+  try {
+    const { data } = await api.checkTarget(payload)
+    if (payload.host === form.target_host.trim() && payload.port === form.target_port && payload.transport === form.transport && payload.protocol === form.protocol) connectionResult.value = data
+  } catch (error) {
+    ElMessage.error(error.message)
+  } finally {
+    checkingTarget.value = false
+  }
+}
+
+watch(() => [form.target_host, form.target_port, form.transport, form.protocol], () => { connectionResult.value = null })
+watch(createDialogVisible, async visible => {
+  if (!visible) return
+  try {
+    const { data } = await api.settings()
+    form.duration = data.execution.default_duration
+    form.aflnet_options.timeout = data.execution.default_timeout_ms
+    form.aflnet_options.startup_delay_us = data.execution.startup_delay_us
+  } catch (error) {
+    ElMessage.error(error.message)
+  }
+})
 
 async function startTask(row) {
   try {
@@ -200,7 +230,7 @@ onUnmounted(() => window.clearInterval(timer))
         <el-table-column prop="status" label="状态" width="100" />
         <el-table-column label="速度" width="110"><template #default="{ row }">{{ metric(row.stats?.execs_per_sec) }}</template></el-table-column>
         <el-table-column label="路径" width="110"><template #default="{ row }">{{ metric(row.stats?.paths_total) }}</template></el-table-column>
-        <el-table-column label="覆盖反馈" width="120"><template #default="{ row }">{{ metric(row.stats?.bitmap_cvg) }}</template></el-table-column>
+        <el-table-column label="覆盖率" width="120"><template #default="{ row }">{{ metric(row.stats?.bitmap_cvg) }}</template></el-table-column>
         <el-table-column label="异常" width="110"><template #default="{ row }">{{ row.stats?.unique_crashes || 0 }} / {{ row.stats?.unique_hangs || 0 }}</template></el-table-column>
         <el-table-column label="操作" width="340" fixed="right">
           <template #default="{ row }">
@@ -261,12 +291,23 @@ onUnmounted(() => window.clearInterval(timer))
           </el-form-item>
           <el-form-item label="目标端口">
             <el-input-number v-model="form.target_port" :min="1" :max="65535" />
+            <el-button :icon="Connection" :loading="checkingTarget" @click="checkConnection">检测前检查</el-button>
             <div class="form-tip">单位：端口号。选择协议后会自动填入默认端口，可按目标服务修改。</div>
           </el-form-item>
           <el-form-item label="运行时长">
             <el-input v-model="form.duration" placeholder="如 10m、1h；留空则手动停止" />
             <div class="form-tip">单位：s 秒、m 分钟、h 小时。示例：10m 表示 10 分钟，1h 表示 1 小时。</div>
           </el-form-item>
+        </div>
+        <div v-if="connectionResult" role="status" style="margin-bottom: 20px">
+          <el-alert :type="connectionResult.status === 'fail' ? 'error' : connectionResult.status === 'warning' ? 'warning' : 'success'" :closable="false" :title="connectionResult.status === 'fail' ? '发现需要处理的问题' : connectionResult.status === 'warning' ? '基础检查完成，部分能力尚未验证' : '检测前检查通过'" />
+          <el-table :data="connectionResult.checks" size="small">
+            <el-table-column prop="name" label="检查项" width="120" />
+            <el-table-column label="结果" width="100">
+              <template #default="{ row }"><el-tag :type="row.status === 'fail' ? 'danger' : row.status === 'warning' ? 'warning' : 'success'">{{ row.status === 'fail' ? '发现问题' : row.status === 'warning' ? '未验证' : '通过' }}</el-tag></template>
+            </el-table-column>
+            <el-table-column prop="message" label="详情" min-width="250" />
+          </el-table>
         </div>
         <div class="form-grid">
           <el-form-item label="状态选择策略">

@@ -105,6 +105,12 @@ onMounted(loadTasks)
         <MetricCard label="崩溃 / 超时" :value="`${stats.unique_crashes || 0} / ${stats.unique_hangs || 0}`" hint="已记录异常样本" tone="red" />
       </section>
 
+      <section class="panel" style="margin-top:16px">
+        <dl class="summary-list">
+          <div><dt>覆盖率</dt><dd>{{ metric(stats.bitmap_cvg) }}</dd></div>
+        </dl>
+      </section>
+
       <section class="grid-two">
         <div class="panel">
           <div class="panel-heading">
@@ -118,7 +124,7 @@ onMounted(loadTasks)
             :series="[
               { key: 'paths_total', label: '路径总数', color: '#2563eb' },
               { key: 'execs_per_sec', label: '执行速度', color: '#0f766e' },
-              { key: 'map_size', label: '覆盖反馈', color: '#b45309' },
+              { key: 'map_size', label: '覆盖率', color: '#b45309' },
             ]"
           />
         </div>

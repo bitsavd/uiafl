@@ -104,20 +104,9 @@ def default_settings() -> dict[str, Any]:
             "default_duration": "10m",
             "default_timeout_ms": "2000+",
             "startup_delay_us": 20000,
-            "default_target_profile": "standard",
-            "bind_interface": "default",
-            "auto_refresh_seconds": 8,
-        },
-        "policies": {
-            "rate_limit": True,
-            "retain_results": True,
-            "coverage_fallback": True,
-            "auto_replay_after_detection": False,
         },
         "limits": {
-            "max_duration_hours": 24,
             "max_replay_seconds": 30,
-            "max_sample_preview": 20,
         },
     }
 
@@ -130,14 +119,26 @@ def load_settings() -> dict[str, Any]:
         stored = json.loads(SETTINGS_FILE.read_text(encoding="utf-8"))
     except json.JSONDecodeError:
         stored = {}
-    return merge_dict(default_settings(), stored)
+    return normalize_settings(stored)
 
 
 def save_settings(settings: dict[str, Any]) -> dict[str, Any]:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
-    merged = merge_dict(default_settings(), settings)
+    merged = normalize_settings(settings)
     SETTINGS_FILE.write_text(json.dumps(merged, ensure_ascii=False, indent=2), encoding="utf-8")
     return merged
+
+
+def normalize_settings(settings: dict[str, Any]) -> dict[str, Any]:
+    """Keep only settings that have an active effect in the application."""
+    defaults = default_settings()
+    return {
+        section: {
+            key: settings.get(section, {}).get(key, value)
+            for key, value in values.items()
+        }
+        for section, values in defaults.items()
+    }
 
 
 def merge_dict(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any]:

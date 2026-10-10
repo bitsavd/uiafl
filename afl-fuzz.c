@@ -5063,6 +5063,11 @@ static void write_stats_file(double bitmap_cvg, double stability, double eps) {
     last_eps  = eps;
   }
 
+  /* Final snapshots must match the current bitmap, not cached percentages. */
+  u32 bitmap_slots = count_non_255_bytes(virgin_bits);
+  bitmap_cvg = ((double)bitmap_slots * 100) / MAP_SIZE;
+  stability = bitmap_slots ? 100 - ((double)var_byte_count * 100) / bitmap_slots : 100;
+
   fprintf(f, "start_time        : %llu\n"
              "last_update       : %llu\n"
              "fuzzer_pid        : %u\n"
@@ -5080,6 +5085,8 @@ static void write_stats_file(double bitmap_cvg, double stability, double eps) {
              "variable_paths    : %u\n"
              "stability         : %0.02f%%\n"
              "bitmap_cvg        : %0.02f%%\n"
+             "bitmap_slots      : %u\n"
+             "bitmap_capacity   : %u\n"
              "unique_crashes    : %llu\n"
              "unique_hangs      : %llu\n"
              "last_path         : %llu\n"
@@ -5096,7 +5103,8 @@ static void write_stats_file(double bitmap_cvg, double stability, double eps) {
              queue_cycle ? (queue_cycle - 1) : 0, total_execs, eps,
              queued_paths, queued_favored, queued_discovered, queued_imported,
              max_depth, current_entry, pending_favored, pending_not_fuzzed,
-             queued_variable, stability, bitmap_cvg, unique_crashes,
+             queued_variable, stability, bitmap_cvg,
+             bitmap_slots, MAP_SIZE, unique_crashes,
              unique_hangs, last_path_time / 1000, last_crash_time / 1000,
              last_hang_time / 1000, total_execs - last_crash_execs,
              exec_tmout, use_banner,

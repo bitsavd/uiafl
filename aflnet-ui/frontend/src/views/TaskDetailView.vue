@@ -116,6 +116,7 @@ onUnmounted(() => window.clearInterval(timer))
             <div><dt>目标地址</dt><dd>{{ task.netinfo }}</dd></div>
             <div><dt>运行时长</dt><dd>{{ task.duration || '手动停止' }}</dd></div>
             <div><dt>任务状态</dt><dd>{{ task.status }}</dd></div>
+            <div><dt>覆盖率</dt><dd>{{ metric(stats.bitmap_cvg) }}</dd></div>
           </dl>
         </div>
 

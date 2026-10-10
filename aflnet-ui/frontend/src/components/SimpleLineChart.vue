@@ -77,7 +77,7 @@ function draw() {
 
   props.series.forEach((serie, index) => {
     const values = rows.map(row => Number(row[serie.key] || 0))
-    const max = Math.max(...values, 1)
+    const max = serie.key === 'map_size' ? 100 : Math.max(...values, 1)
     const color = serie.color || ['#2563eb', '#0f766e', '#b45309'][index % 3]
     const x = row => pad.left + ((row.unix_time - minT) / (maxT - minT || 1)) * chartWidth
     const y = row => pad.top + (1 - Number(row[serie.key] || 0) / max) * chartHeight

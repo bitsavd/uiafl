@@ -28,7 +28,14 @@ static int send_response(int fd, const uint8_t *req, const uint8_t *pdu, uint16_
   put16(out + 4, (uint16_t)(pdu_len + 1));
   out[6] = req[6];
   memcpy(out + 7, pdu, pdu_len);
-  return (int)send(fd, out, pdu_len + 7, 0);
+  size_t sent = 0, total = pdu_len + 7;
+  while (sent < total) {
+    ssize_t n = send(fd, out + sent, total - sent, 0);
+    if (n < 0 && errno == EINTR) continue;
+    if (n <= 0) return -1;
+    sent += (size_t)n;
+  }
+  return (int)total;
 }
 
 static int send_exception(int fd, const uint8_t *req, uint8_t fc, uint8_t code) {
@@ -136,21 +143,27 @@ static int handle_request(int fd, const uint8_t *req, size_t len) {
   }
 }
 
-static void serve_client(int fd) {
-  uint8_t buf[4096];
-  ssize_t n;
+static int receive_exact(int fd, uint8_t *buf, size_t length) {
+  size_t received = 0;
+  while (received < length) {
+    ssize_t n = recv(fd, buf + received, length - received, 0);
+    if (n < 0 && errno == EINTR) continue;
+    if (n <= 0) return -1;
+    received += (size_t)n;
+  }
+  return 0;
+}
 
-  while ((n = recv(fd, buf, sizeof(buf), 0)) > 0) {
-    size_t offset = 0;
-    while (offset + 7 <= (size_t)n) {
-      uint16_t length = be16(buf + offset + 4);
-      size_t adu_len = 6 + length;
-      if (length == 0 || adu_len < 8 || offset + adu_len > (size_t)n) {
-        break;
-      }
-      handle_request(fd, buf + offset, adu_len);
-      offset += adu_len;
-    }
+static void serve_client(int fd) {
+  uint8_t buf[MAX_ADU];
+
+  /* Read one ADU at a time, independently of TCP segment boundaries. */
+  while (receive_exact(fd, buf, 7) == 0) {
+    uint16_t length = be16(buf + 4);
+    if (length < 2 || length > 254) return;
+    size_t adu_len = 6 + length;
+    if (receive_exact(fd, buf + 7, adu_len - 7) != 0) return;
+    if (handle_request(fd, buf, adu_len) < 0) return;
   }
 }
 

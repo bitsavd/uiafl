@@ -11,26 +11,14 @@ const form = reactive({
     default_duration: '10m',
     default_timeout_ms: '2000+',
     startup_delay_us: 20000,
-    default_target_profile: 'standard',
-    bind_interface: 'default',
-    auto_refresh_seconds: 8,
-  },
-  policies: {
-    rate_limit: true,
-    retain_results: true,
-    coverage_fallback: true,
-    auto_replay_after_detection: false,
   },
   limits: {
-    max_duration_hours: 24,
     max_replay_seconds: 30,
-    max_sample_preview: 20,
   },
 })
 
 function assignSettings(data) {
   Object.assign(form.execution, data.execution || {})
-  Object.assign(form.policies, data.policies || {})
   Object.assign(form.limits, data.limits || {})
 }
 
@@ -86,10 +74,6 @@ onMounted(loadSettings)
               <el-input v-model="form.execution.default_duration" placeholder="10m" />
               <div class="form-tip">支持 s/m/h，例如 30s、10m、1h。</div>
             </el-form-item>
-            <el-form-item label="自动刷新间隔">
-              <el-input-number v-model="form.execution.auto_refresh_seconds" :min="3" :max="60" />
-              <div class="form-tip">单位：秒。用于看板和任务状态刷新。</div>
-            </el-form-item>
           </div>
 
           <div class="settings-section">
@@ -108,39 +92,6 @@ onMounted(loadSettings)
             </el-form-item>
           </div>
 
-          <div class="settings-section">
-            <h3>接入策略</h3>
-            <el-form-item label="默认接入方式">
-              <el-radio-group v-model="form.execution.default_target_profile">
-                <el-radio-button label="standard">标准检测</el-radio-button>
-                <el-radio-button label="external">外部目标</el-radio-button>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="默认网口">
-              <el-select v-model="form.execution.bind_interface">
-                <el-option label="系统默认" value="default" />
-                <el-option label="本机回环" value="lo" />
-                <el-option label="以太网" value="eth0" />
-                <el-option label="无线网络" value="wlan0" />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="最长运行时长">
-              <el-input-number v-model="form.limits.max_duration_hours" :min="1" :max="168" />
-              <div class="form-tip">单位：小时。用于约束单个任务的上限。</div>
-            </el-form-item>
-          </div>
-
-          <div class="settings-section">
-            <h3>结果策略</h3>
-            <el-form-item label="速率保护"><el-switch v-model="form.policies.rate_limit" /></el-form-item>
-            <el-form-item label="移除任务时保留结果"><el-switch v-model="form.policies.retain_results" /></el-form-item>
-            <el-form-item label="覆盖反馈降级展示"><el-switch v-model="form.policies.coverage_fallback" /></el-form-item>
-            <el-form-item label="异常发现后自动回放"><el-switch v-model="form.policies.auto_replay_after_detection" /></el-form-item>
-            <el-form-item label="样本预览数量">
-              <el-input-number v-model="form.limits.max_sample_preview" :min="5" :max="100" />
-              <div class="form-tip">单位：条。控制报告和样本列表的默认展示数量。</div>
-            </el-form-item>
-          </div>
         </div>
       </el-form>
     </section>

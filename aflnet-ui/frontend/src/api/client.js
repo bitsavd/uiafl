@@ -15,6 +15,7 @@ export const api = {
   settings: () => http.get('/settings'),
   saveSettings: payload => http.put('/settings', payload),
   protocols: () => http.get('/protocols'),
+  checkTarget: payload => http.post('/targets/check', payload),
   tasks: () => http.get('/tasks'),
   createTask: payload => http.post('/tasks', payload),
   task: id => http.get(`/tasks/${id}`),
@@ -24,5 +25,6 @@ export const api = {
   findings: id => http.get(`/tasks/${id}/findings`),
   replay: (id, payload) => http.post(`/tasks/${id}/replay`, payload),
   report: id => http.get(`/tasks/${id}/report.md`),
+  reportPdfUrl: id => `/api/tasks/${id}/report.pdf`,
   stateMachineUrl: id => `/api/tasks/${id}/state-machine?ts=${Date.now()}`,
 }

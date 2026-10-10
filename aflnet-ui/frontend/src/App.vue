@@ -4,7 +4,6 @@ import { useRoute } from 'vue-router'
 import {
   DataAnalysis,
   Files,
-  Histogram,
   Operation,
   Refresh,
   Setting,
@@ -62,11 +61,6 @@ onUnmounted(() => window.clearInterval(timer))
           <el-icon><Setting /></el-icon><div><span>系统设置</span><small>SETTINGS</small></div>
         </RouterLink>
       </nav>
-
-      <div class="sidebar-foot">
-        <el-icon><Histogram /></el-icon>
-        <div><span>运行模式</span><strong>本地检测引擎</strong></div>
-      </div>
     </aside>
 
     <main class="main-area">

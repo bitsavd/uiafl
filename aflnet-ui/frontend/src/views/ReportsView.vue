@@ -12,6 +12,7 @@ const loading = ref(false)
 const selectedTask = computed(() => tasks.value.find(task => task.id === selectedId.value))
 const stats = computed(() => selectedTask.value?.stats || {})
 const reportName = computed(() => selectedTask.value ? `${selectedTask.value.name}-检测报告.md` : '检测报告.md')
+const pdfName = computed(() => selectedTask.value ? `${selectedTask.value.name}-检测报告.pdf` : '检测报告.pdf')
 
 function metric(value) {
   return value === undefined || value === null || value === '' ? '未采集' : value
@@ -52,6 +53,23 @@ function downloadReport() {
   URL.revokeObjectURL(url)
 }
 
+async function downloadPdf() {
+  if (!selectedId.value) return
+  try {
+    const response = await fetch(api.reportPdfUrl(selectedId.value))
+    if (!response.ok) throw new Error('PDF 报告生成失败')
+    const blob = await response.blob()
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = pdfName.value
+    link.click()
+    URL.revokeObjectURL(url)
+  } catch (error) {
+    ElMessage.error(error.message)
+  }
+}
+
 watch(selectedId, loadReport)
 onMounted(loadTasks)
 </script>
@@ -70,6 +88,7 @@ onMounted(loadTasks)
           </el-select>
           <el-button @click="loadReport">刷新</el-button>
           <el-button type="primary" :disabled="!report" @click="downloadReport">导出 Markdown</el-button>
+          <el-button type="primary" plain :disabled="!selectedTask" @click="downloadPdf">导出 PDF</el-button>
         </div>
       </div>
       <div v-if="selectedTask" class="report-summary">
@@ -87,7 +106,7 @@ onMounted(loadTasks)
       <MetricCard label="崩溃 / 超时" :value="`${stats.unique_crashes || 0} / ${stats.unique_hangs || 0}`" hint="异常样本汇总" tone="red" />
     </section>
 
-    <section class="grid-two" style="margin-top:16px">
+    <section style="margin-top:16px">
       <div class="panel">
         <div class="panel-heading">
           <div>
@@ -96,21 +115,6 @@ onMounted(loadTasks)
           </div>
         </div>
         <pre class="report-preview">{{ report || '请选择任务生成报告。' }}</pre>
-      </div>
-
-      <div class="panel">
-        <div class="panel-heading">
-          <div>
-            <p>CHECKLIST</p>
-            <h2>复核清单</h2>
-          </div>
-        </div>
-        <div class="check-list">
-          <label><el-checkbox :model-value="true" disabled /> 任务摘要完整</label>
-          <label><el-checkbox :model-value="!!stats.execs_done" disabled /> 执行指标已采集</label>
-          <label><el-checkbox :model-value="selectedTask?.has_state_machine" disabled /> 状态机结果可用</label>
-          <label><el-checkbox :model-value="Number(stats.unique_crashes || 0) + Number(stats.unique_hangs || 0) > 0" disabled /> 异常样本已记录</label>
-        </div>
       </div>
     </section>
   </div>
