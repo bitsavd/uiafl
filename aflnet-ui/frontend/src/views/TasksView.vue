@@ -83,7 +83,7 @@ onUnmounted(() => window.clearInterval(timer))
       <el-table-column prop="status" label="状态" width="100" />
       <el-table-column label="速度" width="110"><template #default="{ row }">{{ row.stats?.execs_per_sec || '-' }}</template></el-table-column>
       <el-table-column label="路径" width="100"><template #default="{ row }">{{ row.stats?.paths_total || '-' }}</template></el-table-column>
-      <el-table-column label="覆盖率" width="120"><template #default="{ row }">{{ row.stats?.bitmap_cvg || '-' }}</template></el-table-column>
+      <el-table-column v-if="tasks.some(task => task.stats?.line_coverage_available)" label="代码行覆盖率" width="140"><template #default="{ row }">{{ row.stats?.line_coverage_available ? row.stats.line_coverage : '-' }}</template></el-table-column>
       <el-table-column label="异常" width="110"><template #default="{ row }">{{ row.stats?.unique_crashes || 0 }} / {{ row.stats?.unique_hangs || 0 }}</template></el-table-column>
       <el-table-column label="操作" width="340" fixed="right">
         <template #default="{ row }">

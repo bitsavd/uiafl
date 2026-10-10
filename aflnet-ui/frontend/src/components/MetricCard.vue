@@ -12,6 +12,6 @@ defineProps({
     <span class="metric-accent"></span>
     <p>{{ label }}</p>
     <strong>{{ value ?? '-' }}</strong>
-    <small>{{ hint }}</small>
+    <small v-if="hint">{{ hint }}</small>
   </div>
 </template>

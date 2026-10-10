@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import errno
 import os
 import signal
 import shlex
@@ -8,8 +9,11 @@ import shutil
 import socket
 import subprocess
 import time
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
+from .line_coverage import line_metrics, schedule_collection
+from .protocols import protocol_meta
 
 ROOT = Path(__file__).resolve().parents[3]
 APP_ROOT = ROOT / "aflnet-ui"
@@ -242,6 +246,33 @@ def parse_stats(output_dir: str) -> dict[str, Any]:
     return data
 
 
+@lru_cache(maxsize=64)
+def _state_path_count(directory: str, modified_ns: int) -> int:
+    return sum(1 for entry in os.scandir(directory) if entry.name.startswith("id:") and entry.is_file())
+
+
+def detection_metrics(task: dict[str, Any], stats: dict[str, Any], output_dir: str) -> dict[str, Any]:
+    """Expose measured source lines separately from observable protocol paths."""
+    result = dict(stats)
+    command = shlex.split(stats.get("command_line", ""))
+    engine_args = command[:command.index("--")] if "--" in command else command
+    state_only = "-b" in engine_args and engine_args[engine_args.index("-b") + 1:][:1] != ["1"]
+    mode = stats.get("target_mode", "")
+    available = (stats.get("code_feedback") == "1" if "code_feedback" in stats else
+                 bool(mode) and "dumb" not in mode and "qemu" not in mode and not state_only)
+    available = available and task.get("target_profile") != "external" and bool(stats.get("bitmap_cvg"))
+    if available:
+        schedule_collection(task, Path(output_dir))
+    result.update(line_metrics(Path(output_dir)) if available else {"line_coverage_available": False})
+    for key in ("bitmap_cvg", "bitmap_slots", "bitmap_capacity"):
+        result.pop(key, None)
+    if "state_paths" not in result:
+        directory = Path(output_dir) / "replayable-new-ipsm-paths"
+        if directory.is_dir():
+            result["state_paths"] = _state_path_count(str(directory), directory.stat().st_mtime_ns)
+    return result
+
+
 def parse_plot(output_dir: str) -> list[dict[str, Any]]:
     path = Path(output_dir) / "plot_data"
     if not path.exists():
@@ -323,9 +354,13 @@ def resolve_finding(output_dir: str, group: str, name: str) -> Path:
 
 def build_aflnet_command(task: dict[str, Any]) -> list[str]:
     opts = {**default_options(), **task.get("aflnet_options", {})}
+    meta = protocol_meta(task["protocol"])
+    external = task.get("target_profile") == "external"
     command = [str(ROOT / "afl-fuzz")]
     if opts.get("skip_deterministic"):
         command.append("-d")
+    if external or meta.get("instrumented") is False:
+        command += ["-n", "-b", "2"]
     command += [
         "-i",
         normalize_path(task.get("input_dir")),
@@ -356,7 +391,10 @@ def build_aflnet_command(task: dict[str, Any]) -> list[str]:
         command.append("-R")
     if opts.get("false_negative_reduction"):
         command.append("-F")
-    if opts.get("terminate_server"):
+    if meta.get("poll_timeout_ms"):
+        command += ["-W", str(meta["poll_timeout_ms"])]
+    # For external targets -K ends only the local placeholder, never the remote service.
+    if opts.get("terminate_server") or external:
         command.append("-K")
     command.append("--")
     command += shlex.split(task["target_command"])
@@ -377,6 +415,7 @@ def start_task(task: dict[str, Any]) -> dict[str, Any]:
     proc = subprocess.Popen(command, cwd=task_work_dir(task), stdout=stdout, stderr=stderr, env=env, start_new_session=True)
     task["pid"] = proc.pid
     task["status"] = "running"
+    task["line_coverage_enabled"] = bool(protocol_meta(task["protocol"]).get("coverage_builder")) and task.get("target_profile") != "external"
     task["command_line"] = " ".join(command)
     upsert_task(task)
     return task
@@ -395,15 +434,19 @@ def stop_task(task: dict[str, Any]) -> dict[str, Any]:
     return task
 
 
-def replay_sample(sample_path: str, protocol: str, port: int, timeout: int = 30) -> dict[str, Any]:
+def replay_sample(sample_path: str, protocol: str, port: int, timeout: int = 30,
+                  host: str = "127.0.0.1", transport: str | None = None) -> dict[str, Any]:
     path = Path(sample_path)
     if not path.exists():
         raise FileNotFoundError(sample_path)
     started = time.time()
     proc = subprocess.run(
-        [str(ROOT / "aflnet-replay"), str(path), protocol, str(port)],
+        [str(ROOT / "aflnet-replay"), str(path), protocol, str(port),
+         str(protocol_meta(protocol).get("poll_timeout_ms", 10)), "1000", host,
+         transport or ("udp" if protocol_meta(protocol).get("transport") == "UDP" else "tcp")],
         cwd=str(ROOT),
         capture_output=True,
+        errors="replace",
         text=True,
         timeout=timeout,
     )
@@ -416,30 +459,38 @@ def replay_sample(sample_path: str, protocol: str, port: int, timeout: int = 30)
 
 
 def replay_sample_with_target(sample_path: str, task: dict[str, Any], port: int, timeout: int = 30) -> dict[str, Any]:
-    if task.get("target_profile") == "external" or is_tcp_port_open("127.0.0.1", port):
-        result = replay_sample(sample_path, task["protocol"], port, timeout)
+    transport, endpoint = task["netinfo"].split("://", 1)
+    host = endpoint.rsplit("/", 1)[0]
+    external = task.get("target_profile") == "external"
+    local_ready = is_udp_port_open if transport == "udp" else is_tcp_port_open
+    def replay():
+        return replay_sample(sample_path, task["protocol"], port, timeout, host if external else "127.0.0.1", transport)
+    if external or local_ready("127.0.0.1", port):
+        result = replay()
         result["target_started"] = False
         return result
 
     prepare_task_environment(task)
     command = replay_target_command(task.get("target_command") or "", port)
     if not command:
-        result = replay_sample(sample_path, task["protocol"], port, timeout)
+        result = replay()
         result["target_started"] = False
         return result
 
     proc = subprocess.Popen(
         command,
         cwd=task_work_dir(task),
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
         text=True,
         env=runtime_env(),
         start_new_session=True,
     )
-    target_ready = wait_for_tcp_port("127.0.0.1", port, timeout=3.0)
+    target_ready = wait_for_port("127.0.0.1", port, transport, timeout=8.0)
     try:
-        result = replay_sample(sample_path, task["protocol"], port, timeout)
+        if not target_ready:
+            raise RuntimeError("目标服务未能就绪，请检查启动配置及依赖。")
+        result = replay()
         result["target_started"] = True
         result["target_ready"] = target_ready
         return result
@@ -494,10 +545,20 @@ def is_tcp_port_open(host: str, port: int) -> bool:
         return False
 
 
-def wait_for_tcp_port(host: str, port: int, timeout: float = 3.0) -> bool:
+def is_udp_port_open(host: str, port: int) -> bool:
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as check:
+        try:
+            check.bind((host, port))
+        except OSError as error:
+            return error.errno == errno.EADDRINUSE
+    return False
+
+
+def wait_for_port(host: str, port: int, transport: str, timeout: float = 3.0) -> bool:
+    check = is_udp_port_open if transport == "udp" else is_tcp_port_open
     deadline = time.time() + timeout
     while time.time() < deadline:
-        if is_tcp_port_open(host, port):
+        if check(host, port):
             return True
         time.sleep(0.08)
     return False
@@ -514,6 +575,7 @@ def terminate_process_group(proc: subprocess.Popen[str]) -> None:
             os.killpg(proc.pid, signal.SIGKILL)
         except OSError:
             pass
+        proc.wait(timeout=2)
 
 
 def format_duration(seconds: int) -> str:

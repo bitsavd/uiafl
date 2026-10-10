@@ -1,5 +1,6 @@
 PROTOCOL_TEMPLATES = {
     "MQTT": {
+        "coverage_builder": "mosquitto",
         "default_port": 18885,
         "transport": "TCP",
         "input_dir": "tutorials/mosquitto/in-mqtt",
@@ -11,6 +12,7 @@ PROTOCOL_TEMPLATES = {
         "capabilities": ["state_feedback", "region_mutation", "replay", "trend"],
     },
     "RTSP": {
+        "coverage_builder": "live555",
         "default_port": 8554,
         "transport": "TCP",
         "input_dir": "tutorials/live555/in-rtsp",
@@ -22,6 +24,7 @@ PROTOCOL_TEMPLATES = {
         "capabilities": ["state_feedback", "region_mutation", "replay", "trend"],
     },
     "MODBUS": {
+        "coverage_builder": "modbus",
         "default_port": 1502,
         "transport": "TCP",
         "input_dir": "tutorials/modbus/in-modbus",
@@ -32,8 +35,36 @@ PROTOCOL_TEMPLATES = {
         "profile": "standard",
         "capabilities": ["state_feedback", "region_mutation", "replay", "trend"],
     },
-    "FTP": {"default_port": 2200, "transport": "TCP", "profile": "standard", "capabilities": ["state_feedback", "region_mutation", "replay"]},
-    "DNS": {"default_port": 5353, "transport": "UDP", "profile": "standard", "capabilities": ["state_feedback", "region_mutation", "replay"]},
+    "FTP": {
+        "default_port": 2200, "transport": "TCP", "input_dir": "tutorials/lightftp/in-ftp",
+        "dictionary": "tutorials/lightftp/ftp.dict", "instrumented": False, "startup_delay_us": 750000,
+        "target_command": "python3 aflnet-ui/targets/reference_servers.py FTP {port}", "work_dir": ".",
+        "python_dependencies": ["pyftpdlib"],
+    },
+    "DNS": {
+        "default_port": 15353, "transport": "UDP", "input_dir": "tutorials/dnsmasq/in-dns",
+        "instrumented": False, "startup_delay_us": 1000000, "poll_timeout_ms": 30,
+        "target_command": "python3 aflnet-ui/targets/reference_servers.py DNS {port}", "work_dir": ".",
+        "target_tool": ["dnsmasq", "aflnet-ui/targets/.cache/system/usr/sbin/dnsmasq"],
+    },
+    "DICOM": {
+        "default_port": 5158, "transport": "TCP", "input_dir": "tutorials/dcmqrscp/in-dicom",
+        "instrumented": False, "startup_delay_us": 1500000, "default_timeout_ms": "5000+",
+        "target_command": "python3 aflnet-ui/targets/reference_servers.py DICOM {port}", "work_dir": ".", "poll_timeout_ms": 100,
+        "python_dependencies": ["pynetdicom"],
+    },
+    "IPP": {
+        "default_port": 8631, "transport": "TCP", "input_dir": "tutorials/ippsample/in-ipp",
+        "dictionary": "tutorials/ippsample/ipp.dict", "instrumented": False, "startup_delay_us": 1000000, "poll_timeout_ms": 50,
+        "target_command": "python3 aflnet-ui/targets/reference_servers.py IPP {port}", "work_dir": ".",
+        "target_tool": ["ippeveprinter", "aflnet-ui/targets/.cache/system/usr/sbin/ippeveprinter"],
+    },
+    "DTLS12": {
+        "default_port": 20220, "transport": "UDP", "input_dir": "tutorials/tinydtls/in-dtls",
+        "startup_delay_us": 20000,
+        "target_command": "aflnet-ui/targets/.cache/tinydtls/tests/dtls-server -A ::ffff:127.0.0.1 -p {port}",
+        "work_dir": ".", "poll_timeout_ms": 30,
+    },
 }
 
 
@@ -47,7 +78,9 @@ def public_protocol(item: dict) -> dict:
         **item,
         "default_port": meta.get("default_port", item.get("default_port")),
         "profile": meta.get("profile", "standard"),
-        "capabilities": meta.get("capabilities", ["state_feedback", "region_mutation"]),
+        "capabilities": meta.get("capabilities", ["state_feedback", "region_mutation", "replay", "trend"] if meta else ["state_feedback", "region_mutation"]),
+        "startup_delay_us": meta.get("startup_delay_us", 20000),
+        "default_timeout_ms": meta.get("default_timeout_ms"),
     }
 
 

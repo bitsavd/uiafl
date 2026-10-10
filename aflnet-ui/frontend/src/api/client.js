@@ -19,6 +19,7 @@ export const api = {
   tasks: () => http.get('/tasks'),
   createTask: payload => http.post('/tasks', payload),
   task: id => http.get(`/tasks/${id}`),
+  taskStats: id => http.get(`/tasks/${id}/stats`),
   startTask: id => http.post(`/tasks/${id}/start`),
   stopTask: id => http.post(`/tasks/${id}/stop`),
   removeTask: id => http.delete(`/tasks/${id}`),

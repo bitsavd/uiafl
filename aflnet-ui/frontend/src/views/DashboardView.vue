@@ -47,7 +47,7 @@ onUnmounted(() => window.clearInterval(timer))
     <section class="metric-grid">
       <MetricCard label="运行任务" :value="totals.running" hint="当前后端记录的 running 任务" tone="teal" />
       <MetricCard label="执行速度" :value="activeTask ? metric(stats.execs_per_sec) : '未运行'" hint="运行中任务反馈" />
-      <MetricCard label="路径总数" :value="activeTask ? metric(stats.paths_total) : '未运行'" hint="运行中任务反馈" tone="orange" />
+      <MetricCard label="路径总数" :value="activeTask ? metric(stats.paths_total) : '未运行'" hint="不同执行反馈对应的样本数量" tone="orange" />
       <MetricCard label="崩溃 / 超时" :value="`${totals.crash} / ${totals.hang}`" hint="所有任务汇总" tone="red" />
     </section>
 

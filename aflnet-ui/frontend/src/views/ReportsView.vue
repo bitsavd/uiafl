@@ -34,6 +34,9 @@ async function loadReport() {
   if (!selectedId.value) return
   loading.value = true
   try {
+    const next = (await api.task(selectedId.value)).data
+    const index = tasks.value.findIndex(task => task.id === next.id)
+    if (index !== -1) tasks.value[index] = next
     report.value = (await api.report(selectedId.value)).data
   } catch (error) {
     ElMessage.error(error.message)
@@ -102,8 +105,18 @@ onMounted(loadTasks)
     <section v-if="selectedTask" class="metric-grid" style="margin-top:16px">
       <MetricCard label="执行次数" :value="metric(stats.execs_done)" hint="任务累计执行" />
       <MetricCard label="执行速度" :value="metric(stats.execs_per_sec)" hint="每秒执行反馈" tone="teal" />
-      <MetricCard label="路径总数" :value="metric(stats.paths_total)" hint="目标反馈路径" tone="orange" />
+      <MetricCard label="路径总数" :value="metric(stats.paths_total)" hint="不同执行反馈对应的样本数量" tone="orange" />
       <MetricCard label="崩溃 / 超时" :value="`${stats.unique_crashes || 0} / ${stats.unique_hangs || 0}`" hint="异常样本汇总" tone="red" />
+    </section>
+
+    <section v-if="selectedTask" class="panel" style="margin-top:16px">
+      <div class="panel-heading"><h2>状态覆盖</h2></div>
+      <dl class="summary-list">
+        <div><dt>状态路径数</dt><dd>{{ metric(stats.state_paths) }}</dd></div>
+        <div><dt>状态节点数</dt><dd>{{ metric(stats.state_nodes) }}</dd></div>
+        <div><dt>状态转移数</dt><dd>{{ metric(stats.state_edges) }}</dd></div>
+        <div v-if="stats.line_coverage_available"><dt>代码行覆盖率</dt><dd>{{ metric(stats.line_coverage) }}</dd></div>
+      </dl>
     </section>
 
     <section style="margin-top:16px">

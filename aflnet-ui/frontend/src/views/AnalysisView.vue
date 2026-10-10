@@ -1,9 +1,10 @@
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import MetricCard from '../components/MetricCard.vue'
 import SimpleLineChart from '../components/SimpleLineChart.vue'
 import { api } from '../api/client.js'
+import { useLiveTaskStats } from '../composables/useLiveTaskStats.js'
 
 const tasks = ref([])
 const selectedId = ref('')
@@ -15,7 +16,8 @@ const replayDialogVisible = ref(false)
 const loading = ref(false)
 const stateUrl = ref('')
 
-const stats = computed(() => detail.value?.stats || {})
+const stats = useLiveTaskStats(detail)
+let refreshTimer = null
 const rows = computed(() => [
   ...(findings.value['replayable-crashes'] || []).map(item => ({ ...item, type: '崩溃' })),
   ...(findings.value['replayable-hangs'] || []).map(item => ({ ...item, type: '超时' })),
@@ -38,22 +40,29 @@ async function loadTasks() {
   }
 }
 
-async function loadDetail() {
+async function loadDetail(background = false) {
   if (!selectedId.value) return
-  loading.value = true
-  replayResult.value = null
+  const id = selectedId.value
+  if (!background) {
+    loading.value = true
+    replayResult.value = null
+  }
   try {
-    detail.value = (await api.task(selectedId.value)).data
-    findings.value = (await api.findings(selectedId.value)).data
-    stateUrl.value = detail.value.has_state_machine ? api.stateMachineUrl(selectedId.value) : ''
+    const next = (await api.task(id)).data
+    const nextFindings = (await api.findings(id)).data
+    if (id !== selectedId.value) return
+    detail.value = next
+    findings.value = nextFindings
+    stateUrl.value = next.has_state_machine ? api.stateMachineUrl(id) : ''
   } catch (error) {
+    if (background || id !== selectedId.value) return
     detail.value = null
     findings.value = {}
     stateUrl.value = ''
     replayResult.value = null
     ElMessage.error(error.message)
   } finally {
-    loading.value = false
+    if (!background) loading.value = false
   }
 }
 
@@ -72,12 +81,16 @@ async function replay(row) {
   }
 }
 
-watch(selectedId, loadDetail)
+watch(selectedId, () => loadDetail())
 watch(detail, value => {
   const port = Number(value?.netinfo?.split('/').pop())
   if (port > 0 && port <= 65535) replayPort.value = port
 })
-onMounted(loadTasks)
+onMounted(() => {
+  loadTasks()
+  refreshTimer = window.setInterval(() => loadDetail(true), 8000)
+})
+onUnmounted(() => window.clearInterval(refreshTimer))
 </script>
 
 <template>
@@ -101,13 +114,14 @@ onMounted(loadTasks)
       <section class="metric-grid" style="margin-top:16px">
         <MetricCard label="运行时长" :value="metric(stats.run_time)" :hint="detail.status" tone="teal" />
         <MetricCard label="执行次数" :value="metric(stats.execs_done)" hint="执行引擎反馈" />
-        <MetricCard label="路径总数" :value="metric(stats.paths_total)" hint="未插桩时可能不可用" tone="orange" />
+        <MetricCard label="路径总数" :value="metric(stats.paths_total)" hint="不同执行反馈对应的样本数量" tone="orange" />
         <MetricCard label="崩溃 / 超时" :value="`${stats.unique_crashes || 0} / ${stats.unique_hangs || 0}`" hint="已记录异常样本" tone="red" />
       </section>
 
       <section class="panel" style="margin-top:16px">
         <dl class="summary-list">
-          <div><dt>覆盖率</dt><dd>{{ metric(stats.bitmap_cvg) }}</dd></div>
+          <div><dt>状态路径数</dt><dd>{{ metric(stats.state_paths) }}</dd></div>
+          <div v-if="stats.line_coverage_available"><dt>代码行覆盖率</dt><dd>{{ metric(stats.line_coverage) }}</dd></div>
         </dl>
       </section>
 
@@ -124,7 +138,7 @@ onMounted(loadTasks)
             :series="[
               { key: 'paths_total', label: '路径总数', color: '#2563eb' },
               { key: 'execs_per_sec', label: '执行速度', color: '#0f766e' },
-              { key: 'map_size', label: '覆盖率', color: '#b45309' },
+              ...(stats.line_coverage_available ? [{ key: 'line_coverage_pct', label: '代码行覆盖率', color: '#b45309' }] : []),
             ]"
           />
         </div>
@@ -157,7 +171,7 @@ onMounted(loadTasks)
           </div>
           <div class="state-box">
             <img v-if="stateUrl" :src="stateUrl" alt="协议状态机" />
-            <div v-else class="empty-panel">当前任务未生成状态机，可能是目标未插桩、运行时间不足或结果文件不可用。</div>
+            <div v-else class="empty-panel">当前任务暂无可用的协议状态机数据。</div>
           </div>
         </div>
 

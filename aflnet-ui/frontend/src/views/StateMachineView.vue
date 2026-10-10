@@ -38,12 +38,12 @@ onMounted(load)
     <div class="metric-grid" v-if="selectedTask">
       <div class="metric-card"><span class="metric-accent"></span><p>状态节点</p><strong>{{ selectedTask.plot_tail?.at(-1)?.n_nodes ?? '未采集' }}</strong><small>状态模型反馈</small></div>
       <div class="metric-card tone-teal"><span class="metric-accent"></span><p>状态转移</p><strong>{{ selectedTask.plot_tail?.at(-1)?.n_edges ?? '未采集' }}</strong><small>状态模型反馈</small></div>
-      <div class="metric-card tone-orange"><span class="metric-accent"></span><p>路径总数</p><strong>{{ selectedTask.stats?.paths_total || '未采集' }}</strong><small>执行引擎反馈</small></div>
+      <div class="metric-card tone-orange"><span class="metric-accent"></span><p>路径总数</p><strong>{{ selectedTask.stats?.paths_total || '未采集' }}</strong><small>不同执行反馈对应的样本数量</small></div>
       <div class="metric-card tone-red"><span class="metric-accent"></span><p>异常</p><strong>{{ selectedTask.stats?.unique_crashes || 0 }} / {{ selectedTask.stats?.unique_hangs || 0 }}</strong><small>crashes / hangs</small></div>
     </div>
     <div class="state-box">
       <img v-if="stateUrl" :src="stateUrl" alt="协议状态机" />
-      <div v-else class="empty-panel">请选择一个已生成状态机的任务；未插桩或黑盒目标可能没有状态机数据。</div>
+      <div v-else class="empty-panel">请选择一个已生成状态机的任务。</div>
     </div>
   </section>
 </template>

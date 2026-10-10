@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
+#include <netdb.h>
 #include "alloc-inl.h"
 #include "aflnet.h"
 
@@ -15,6 +16,8 @@ unsigned int* (*extract_response_codes)(unsigned char* buf, unsigned int buf_siz
 Optional:
 4. Response poll timeout (ms), default 1
 5. Per-recv socket timeout (us), default 1000
+6. Target hostname or IPv4 address, default 127.0.0.1
+7. Transport (tcp/udp), defaults to the protocol's usual transport
 */
 
 static int drain_available_responses(int sockfd, struct timeval timeout, int poll_w,
@@ -63,7 +66,7 @@ int main(int argc, char* argv[])
 
 
   if (argc < 4) {
-    PFATAL("Usage: ./aflnet-replay packet_file protocol port [poll_timeout(ms) [socket_timeout(us)]]");
+    PFATAL("Usage: ./aflnet-replay packet_file protocol port [poll_timeout(ms) [socket_timeout(us) [host [tcp|udp]]]]");
   }
 
   fp = fopen(argv[1],"rb");
@@ -113,11 +116,14 @@ else {fprintf(stderr, "[AFLNet-replay] Protocol %s has not been supported yet!\n
   }
 
   int sockfd;
-  if ((!strcmp(argv[2], "DTLS12")) || (!strcmp(argv[2], "DNS")) || (!strcmp(argv[2], "SIP"))) {
-    sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-  } else {
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+  int udp = !strcmp(argv[2], "DTLS12") || !strcmp(argv[2], "DNS") || !strcmp(argv[2], "SIP") ||
+            !strcmp(argv[2], "SNMP") || !strcmp(argv[2], "TFTP") || !strcmp(argv[2], "NTP") ||
+            !strcmp(argv[2], "DHCP") || !strcmp(argv[2], "SNTP");
+  if (argc > 7) {
+    if (strcmp(argv[7], "tcp") && strcmp(argv[7], "udp")) FATAL("Transport must be tcp or udp");
+    udp = !strcmp(argv[7], "udp");
   }
+  sockfd = socket(AF_INET, udp ? SOCK_DGRAM : SOCK_STREAM, 0);
 
   if (sockfd < 0) {
     PFATAL("Cannot create a socket");
@@ -136,7 +142,13 @@ else {fprintf(stderr, "[AFLNet-replay] Protocol %s has not been supported yet!\n
 
   serv_addr.sin_family = AF_INET;
   serv_addr.sin_port = htons(portno);
-  serv_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+  struct addrinfo hints, *address;
+  memset(&hints, 0, sizeof(hints));
+  hints.ai_family = AF_INET;
+  hints.ai_socktype = udp ? SOCK_DGRAM : SOCK_STREAM;
+  if (getaddrinfo(argc > 6 ? argv[6] : "127.0.0.1", NULL, &hints, &address)) FATAL("Cannot resolve target host");
+  serv_addr.sin_addr = ((struct sockaddr_in *)address->ai_addr)->sin_addr;
+  freeaddrinfo(address);
 
   if(connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
     //If it cannot connect to the server under test
@@ -184,7 +196,11 @@ else {fprintf(stderr, "[AFLNet-replay] Protocol %s has not been supported yet!\n
 
   fprintf(stderr,"\n++++++++++++++++++++++++++++++++\nResponses in details:\n");
   for (i=0; i < response_buf_size; i++) {
-    fprintf(stderr,"%c",response_buf[i]);
+    unsigned char byte = response_buf[i];
+    if ((byte >= 32 && byte <= 126) || byte == '\n' || byte == '\r' || byte == '\t')
+      fprintf(stderr, "%c", byte);
+    else
+      fprintf(stderr, "\\x%02x", byte);
   }
   fprintf(stderr,"\n--------------------------------");
 

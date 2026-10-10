@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import os
+import importlib.util
 import shlex
+import shutil
 import socket
 import ssl
 import struct
@@ -38,8 +40,13 @@ def preflight(protocol: str, host: str, port: int, transport: str) -> dict[str, 
     if local:
         command = shlex.split(meta.get("target_command", "").format(port=port))
         work_dir = Path(normalize_path(meta.get("work_dir", ".")))
-        target = Path(normalize_path(command[0], work_dir)) if command else None
+        target = Path(shutil.which(command[0]) or normalize_path(command[0], work_dir)) if command else None
         valid = bool(target and target.is_file() and os.access(target, os.X_OK) and work_dir.is_dir())
+        for module in meta.get("python_dependencies", []):
+            valid = valid and importlib.util.find_spec(module) is not None
+        tool = meta.get("target_tool")
+        if tool:
+            valid = valid and bool(shutil.which(tool[0]) or os.access(normalize_path(tool[1]), os.X_OK))
         add("本地目标程序", "pass" if valid else "fail", "启动配置可用，任务启动时自动启动目标服务。" if valid else "本地目标程序或启动配置缺失。")
     else:
         add("目标接入", "pass", "本机向指定设备发包，目标服务需由设备提供。")

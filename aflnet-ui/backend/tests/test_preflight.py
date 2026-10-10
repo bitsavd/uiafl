@@ -27,7 +27,7 @@ class PreflightTests(unittest.TestCase):
         self.assertFalse(result['ok'])
 
     def test_missing_configuration_is_not_marked_ready(self):
-        result = preflight('DICOM', '127.0.0.1', 49152, 'tcp')
+        result = preflight('SNMP', '127.0.0.1', 49152, 'udp')
         self.assertFalse(result['ok'])
         self.assertEqual(next(item for item in result['checks'] if item['name'] == '测试种子')['status'], 'fail')
 

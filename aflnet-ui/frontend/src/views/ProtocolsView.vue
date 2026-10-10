@@ -60,6 +60,8 @@ function applyProtocol(protocol, closeDialog = true) {
   const port = protocol.default_port || (protocol.id === 'RTSP' ? 8554 : protocol.id === 'FTP' ? 2200 : protocol.id === 'DNS' ? 5353 : 18885)
   form.transport = protocol.transport.includes('UDP') ? 'udp' : 'tcp'
   form.target_port = port
+  form.aflnet_options.startup_delay_us = protocol.startup_delay_us || 20000
+  if (protocol.default_timeout_ms) form.aflnet_options.timeout = protocol.default_timeout_ms
   if (closeDialog) protocolDialogVisible.value = false
 }
 
@@ -126,8 +128,8 @@ watch(createDialogVisible, async visible => {
   try {
     const { data } = await api.settings()
     form.duration = data.execution.default_duration
-    form.aflnet_options.timeout = data.execution.default_timeout_ms
-    form.aflnet_options.startup_delay_us = data.execution.startup_delay_us
+    form.aflnet_options.timeout = activeProtocol.value?.default_timeout_ms || data.execution.default_timeout_ms
+    form.aflnet_options.startup_delay_us = activeProtocol.value?.startup_delay_us || data.execution.startup_delay_us
   } catch (error) {
     ElMessage.error(error.message)
   }
@@ -230,7 +232,7 @@ onUnmounted(() => window.clearInterval(timer))
         <el-table-column prop="status" label="状态" width="100" />
         <el-table-column label="速度" width="110"><template #default="{ row }">{{ metric(row.stats?.execs_per_sec) }}</template></el-table-column>
         <el-table-column label="路径" width="110"><template #default="{ row }">{{ metric(row.stats?.paths_total) }}</template></el-table-column>
-        <el-table-column label="覆盖率" width="120"><template #default="{ row }">{{ metric(row.stats?.bitmap_cvg) }}</template></el-table-column>
+        <el-table-column v-if="tasks.some(task => task.stats?.line_coverage_available)" label="代码行覆盖率" width="140"><template #default="{ row }">{{ row.stats?.line_coverage_available ? metric(row.stats.line_coverage) : '-' }}</template></el-table-column>
         <el-table-column label="异常" width="110"><template #default="{ row }">{{ row.stats?.unique_crashes || 0 }} / {{ row.stats?.unique_hangs || 0 }}</template></el-table-column>
         <el-table-column label="操作" width="340" fixed="right">
           <template #default="{ row }">
@@ -320,7 +322,7 @@ onUnmounted(() => window.clearInterval(timer))
           </el-form-item>
           <el-form-item label="启动等待时间">
             <el-input-number v-model="form.aflnet_options.startup_delay_us" :min="0" :max="10000000" :step="1000" />
-            <div class="form-tip">单位：微秒 us。默认 20000 表示 20 ms，用于等待目标服务完成启动。</div>
+            <div class="form-tip">单位：微秒 us。例如 20000 表示 20 ms，用于等待目标服务完成启动。</div>
           </el-form-item>
           <el-form-item label="单次执行超时">
             <el-input v-model="form.aflnet_options.timeout" />

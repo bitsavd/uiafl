@@ -76,20 +76,26 @@ function draw() {
   }
 
   props.series.forEach((serie, index) => {
-    const values = rows.map(row => Number(row[serie.key] || 0))
-    const max = serie.key === 'map_size' ? 100 : Math.max(...values, 1)
+    const points = rows.filter(row => Number.isFinite(Number(row[serie.key])) && row[serie.key] !== null)
+    const values = points.map(row => Number(row[serie.key]))
+    const max = serie.key === 'line_coverage_pct' ? 100 : Math.max(...values, 1)
     const color = serie.color || ['#2563eb', '#0f766e', '#b45309'][index % 3]
     const x = row => pad.left + ((row.unix_time - minT) / (maxT - minT || 1)) * chartWidth
     const y = row => pad.top + (1 - Number(row[serie.key] || 0) / max) * chartHeight
     ctx.strokeStyle = color
     ctx.lineWidth = 2
     ctx.beginPath()
-    rows.forEach((row, i) => {
+    points.forEach((row, i) => {
       if (i === 0) ctx.moveTo(x(row), y(row))
       else ctx.lineTo(x(row), y(row))
     })
     ctx.stroke()
     ctx.fillStyle = color
+    if (points.length === 1) {
+      ctx.beginPath()
+      ctx.arc(x(points[0]), y(points[0]), 3, 0, Math.PI * 2)
+      ctx.fill()
+    }
     ctx.font = '12px system-ui'
     ctx.textAlign = 'left'
     ctx.textBaseline = 'alphabetic'
@@ -99,8 +105,10 @@ function draw() {
 
 function formatElapsed(seconds) {
   const total = Math.max(0, Math.round(seconds || 0))
-  if (total >= 3600) return `${Math.floor(total / 3600)}h`
-  return `${Math.floor(total / 60)}m`
+  const hours = Math.floor(total / 3600)
+  const minutes = Math.floor((total % 3600) / 60)
+  const remaining = total % 60
+  return [hours, minutes, remaining].map(value => String(value).padStart(2, '0')).join(':')
 }
 
 onMounted(draw)

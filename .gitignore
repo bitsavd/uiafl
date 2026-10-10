@@ -18,6 +18,7 @@ as
 .vscode/
 /mosquitto/
 /截图/
+/aflnet-ui/targets/.cache/
 *.log
 
 # Tutorial binaries produced locally.
@@ -29,6 +30,8 @@ out/
 out-*/
 */out/
 */out-*/
+!/aflnet-ui/demo/mqtt_builtin_20260730/out/
+!/aflnet-ui/demo/mqtt_builtin_20260730/out/**
 tutorials/s7/fuzz_results/
 tutorials/s7/out*/
 tutorials/s7plus/out*/

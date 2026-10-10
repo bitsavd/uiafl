@@ -17,6 +17,7 @@ import matplotlib
 
 matplotlib.use("Agg")
 from matplotlib import pyplot as plt
+from matplotlib.ticker import FuncFormatter
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
@@ -27,11 +28,14 @@ from reportlab.platypus import Image, KeepInFrame, PageBreak, Paragraph, SimpleD
 
 from .protocols import PROTOCOL_GROUPS, protocol_ids, protocol_meta
 from .preflight import preflight
+from .line_coverage import merge_coverage_plot
 from .store import (
     APP_ROOT,
     ROOT,
     build_aflnet_command,
     default_options,
+    detection_metrics,
+    format_duration,
     get_task,
     hide_task,
     list_findings,
@@ -72,7 +76,7 @@ class TaskCreate(BaseModel):
     target_command: str = ""
     cleanup_script: str = ""
     duration: str = ""
-    aflnet_options: dict[str, Any] = Field(default_factory=default_options)
+    aflnet_options: dict[str, Any] = Field(default_factory=dict)
 
 
 class ReplayRequest(BaseModel):
@@ -148,8 +152,8 @@ def create_task(payload: TaskCreate) -> dict[str, Any]:
         raise HTTPException(400, "当前协议模板需要补充目标接入配置")
     options = {
         **default_options(),
-        "startup_delay_us": settings_data["execution"]["startup_delay_us"],
-        "timeout": settings_data["execution"]["default_timeout_ms"],
+        "startup_delay_us": template.get("startup_delay_us", settings_data["execution"]["startup_delay_us"]),
+        "timeout": template.get("default_timeout_ms", settings_data["execution"]["default_timeout_ms"]),
         **payload.aflnet_options,
     }
     if payload.target_profile == "external":
@@ -184,6 +188,21 @@ def create_task(payload: TaskCreate) -> dict[str, Any]:
 def task_detail(task_id: str) -> dict[str, Any]:
     task = get_task_or_404(task_id)
     return with_summary(refresh_task_status(task), include_plot=True)
+
+
+@app.get("/api/tasks/{task_id}/stats")
+def task_stats(task_id: str) -> dict[str, Any]:
+    task = refresh_task_status(get_task_or_404(task_id))
+    output_dir = normalize_path(task.get("output_dir"), ROOT)
+    stats = detection_metrics(task, parse_stats(output_dir), output_dir)
+    server_time = time.time()
+    if task.get("status") == "running" and stats.get("start_time"):
+        seconds = max(0, int(server_time) - int(stats["start_time"]))
+        stats["run_seconds"] = seconds
+        stats["run_time"] = format_duration(seconds)
+    for key in ("command_line", "afl_banner", "afl_version", "target_mode"):
+        stats.pop(key, None)
+    return {"id": task_id, "status": task["status"], "stats": stats, "server_time": server_time}
 
 
 @app.post("/api/tasks/{task_id}/start")
@@ -287,15 +306,16 @@ def build_report_markdown(task: dict[str, Any], findings: dict[str, list[dict[st
         f"- 执行次数：{stats.get('execs_done', '未采集')}",
         f"- 执行速度：{stats.get('execs_per_sec', '未采集')}",
         f"- 路径总数：{stats.get('paths_total', '未采集')}",
-        f"- 覆盖率：{stats.get('bitmap_cvg', '未采集')}",
+        *([f"- 代码行覆盖率：{stats['line_coverage']}", f"- 已执行代码行 / 有效代码行：{stats['lines_covered']} / {stats['lines_total']}"] if stats.get('line_coverage_available') else []),
         f"- 崩溃样本：{len(findings.get('replayable-crashes', []))}",
         f"- 超时样本：{len(findings.get('replayable-hangs', []))}",
         "",
-        "## 状态机",
+        "## 状态覆盖",
         "",
+        f"- 状态路径数：{stats.get('state_paths', '未采集')}",
         f"- 状态机：{'已生成' if task.get('has_state_machine') else '未生成'}",
-        f"- 状态节点：{latest_plot_value(task.get('plot', []), 'n_nodes')}",
-        f"- 状态边：{latest_plot_value(task.get('plot', []), 'n_edges')}",
+        f"- 状态节点数：{stats.get('state_nodes', latest_plot_value(task.get('plot', []), 'n_nodes'))}",
+        f"- 状态转移数：{stats.get('state_edges', latest_plot_value(task.get('plot', []), 'n_edges'))}",
         "",
         "## 异常样本",
         "",
@@ -350,9 +370,12 @@ def build_pdf_report(task: dict[str, Any], findings: dict[str, list[dict[str, An
     story += [Spacer(1, 0.3 * cm), Paragraph("核心指标", styles["CnHeading"])]
     metrics = [
         ["执行次数", value_or_missing(stats.get("execs_done")), "执行速度", value_or_missing(stats.get("execs_per_sec"))],
-        ["路径总数", value_or_missing(stats.get("paths_total")), "覆盖率", value_or_missing(stats.get("bitmap_cvg"))],
+        ["路径总数", value_or_missing(stats.get("paths_total")), "状态路径数", value_or_missing(stats.get("state_paths"))],
+        ["状态节点数", value_or_missing(stats.get("state_nodes", latest_plot_value(task.get("plot", []), "n_nodes"))), "状态转移数", value_or_missing(stats.get("state_edges", latest_plot_value(task.get("plot", []), "n_edges")))],
         ["崩溃样本", str(len(findings.get("replayable-crashes", []))), "超时样本", str(len(findings.get("replayable-hangs", [])))],
     ]
+    if stats.get("line_coverage_available"):
+        metrics.append(["代码行覆盖率", value_or_missing(stats.get("line_coverage")), "代码行数", f"{stats['lines_covered']} / {stats['lines_total']}"])
     story.append(pdf_table(metrics, [2.3 * cm, 6.1 * cm, 2.3 * cm, 6.1 * cm], font_name))
 
     samples = [
@@ -372,7 +395,7 @@ def build_pdf_report(task: dict[str, Any], findings: dict[str, list[dict[str, An
         temp = Path(temp_dir)
         trend_path = temp / "trend.png"
         story += [PageBreak(), Paragraph("速度与覆盖趋势", styles["CnHeading"])]
-        if render_trend_chart(task.get("plot", []), trend_path):
+        if render_trend_chart(task.get("plot", []), trend_path, stats.get("line_coverage_available", False)):
             story.append(Image(str(trend_path), width=16.5 * cm, height=6.3 * cm))
         else:
             story.append(Paragraph("当前任务暂无可用趋势数据。", styles["CnBody"]))
@@ -413,19 +436,30 @@ def pdf_table(data: list[list[str]], widths: list[float], font_name: str, header
     return table
 
 
-def render_trend_chart(rows: list[dict[str, Any]], output: Path) -> bool:
+def chart_time_label(seconds: float) -> str:
+    total = int(max(0, seconds) + 0.5)
+    return f"{total // 3600:02d}:{total % 3600 // 60:02d}:{total % 60:02d}"
+
+
+def render_trend_chart(rows: list[dict[str, Any]], output: Path, line_coverage: bool = True) -> bool:
     rows = [row for row in rows if isinstance(row.get("unix_time"), (int, float))]
     if len(rows) < 2:
         return False
     start = rows[0]["unix_time"]
-    elapsed = [(row["unix_time"] - start) / 3600 for row in rows]
     figure, axis = plt.subplots(figsize=(9.2, 4.6), dpi=150)
-    for key, label, color in [("paths_total", "Paths", "#2563eb"), ("execs_per_sec", "Execs/sec", "#0f766e"), ("map_size", "Coverage", "#b45309")]:
-        values = [float(row.get(key) or 0) for row in rows]
-        maximum = 100 if key == "map_size" else max(max(values), 1)
-        axis.plot(elapsed, [value / maximum * 100 for value in values], label=label, color=color, linewidth=1.6)
+    series = [("paths_total", "Paths", "#2563eb"), ("execs_per_sec", "Execs/sec", "#0f766e")]
+    if line_coverage:
+        series.append(("line_coverage_pct", "Code line coverage", "#b45309"))
+    for key, label, color in series:
+        points = [row for row in rows if row.get(key) is not None]
+        values = [float(row[key]) for row in points]
+        maximum = 100 if key == "line_coverage_pct" else max(max(values, default=0), 1)
+        axis.plot([row['unix_time'] - start for row in points], [value / maximum * 100 for value in values], label=label, color=color, linewidth=1.6)
     axis.set_ylim(0, 100)
-    axis.set_xlabel("Elapsed time (hours)")
+    duration = max(rows[-1]["unix_time"] - start, 1)
+    axis.set_xlim(0, duration)
+    axis.set_xticks([duration * index / 4 for index in range(5)])
+    axis.xaxis.set_major_formatter(FuncFormatter(lambda seconds, position: chart_time_label(seconds)))
     axis.set_ylabel("Normalized value (%)")
     axis.grid(color="#dbe4ee", linewidth=0.7)
     axis.legend(loc="lower right", frameon=False)
@@ -452,9 +486,17 @@ def get_task_or_404(task_id: str) -> dict[str, Any]:
 
 def with_summary(task: dict[str, Any], include_plot: bool = False) -> dict[str, Any]:
     output_dir = normalize_path(task.get("output_dir"), ROOT)
-    stats = parse_stats(output_dir)
+    stats = detection_metrics(task, parse_stats(output_dir), output_dir)
     plot = parse_plot(output_dir)
-    hidden_fields = {"input_dir", "output_dir", "dictionary", "target_command", "work_dir", "cleanup_script", "command_line", "aflnet_options"}
+    if plot:
+        for key, plot_key in (("state_nodes", "n_nodes"), ("state_edges", "n_edges")):
+            value = plot[-1].get(plot_key)
+            if value is not None:
+                stats.setdefault(key, int(value))
+    plot = [{key: value for key, value in row.items() if key != "map_size"} for row in plot]
+    if stats.get("line_coverage_available"):
+        plot = merge_coverage_plot(Path(output_dir), plot)
+    hidden_fields = {"input_dir", "output_dir", "dictionary", "target_command", "work_dir", "cleanup_script", "command_line", "aflnet_options", "line_coverage_enabled"}
     public_task = {key: value for key, value in task.items() if key not in hidden_fields}
     hidden_stats = {"command_line", "afl_banner", "afl_version", "target_mode"}
     public_stats = {key: value for key, value in stats.items() if key not in hidden_stats}

@@ -1858,10 +1858,12 @@ HANDLE_RESPONSES:
 
   if (terminate_child && (child_pid > 0)) kill(child_pid, SIGTERM);
 
-  //give the server a bit more time to gracefully terminate
-  while(1) {
-    int status = kill(child_pid, 0);
-    if ((status != 0) && (errno == ESRCH)) break;
+  /* Direct children remain visible as zombies until run_target reaps them. */
+  if (dumb_mode != 1 && !no_forkserver) {
+    while(1) {
+      int status = kill(child_pid, 0);
+      if ((status != 0) && (errno == ESRCH)) break;
+    }
   }
 
   return 0;
@@ -5087,6 +5089,10 @@ static void write_stats_file(double bitmap_cvg, double stability, double eps) {
              "bitmap_cvg        : %0.02f%%\n"
              "bitmap_slots      : %u\n"
              "bitmap_capacity   : %u\n"
+             "code_feedback     : %u\n"
+             "state_paths       : %u\n"
+             "state_nodes       : %u\n"
+             "state_edges       : %u\n"
              "unique_crashes    : %llu\n"
              "unique_hangs      : %llu\n"
              "last_path         : %llu\n"
@@ -5104,7 +5110,10 @@ static void write_stats_file(double bitmap_cvg, double stability, double eps) {
              queued_paths, queued_favored, queued_discovered, queued_imported,
              max_depth, current_entry, pending_favored, pending_not_fuzzed,
              queued_variable, stability, bitmap_cvg,
-             bitmap_slots, MAP_SIZE, unique_crashes,
+             bitmap_slots, MAP_SIZE,
+             !dumb_mode && !qemu_mode && feedback_type == CODE_FEEDBACK,
+             (u32)kh_size(khs_ipsm_paths), (u32)agnnodes(ipsm), (u32)agnedges(ipsm),
+             unique_crashes,
              unique_hangs, last_path_time / 1000, last_crash_time / 1000,
              last_hang_time / 1000, total_execs - last_crash_execs,
              exec_tmout, use_banner,
@@ -5581,7 +5590,7 @@ static void check_term_size(void);
 
 static void show_stats(void) {
 
-  static u64 last_stats_ms, last_plot_ms, last_ms, last_execs;
+  static u64 last_stats_ms, last_save_ms, last_plot_ms, last_ms, last_execs;
   static double avg_exec;
   double t_byte_ratio, stab_ratio;
 
@@ -5641,12 +5650,16 @@ static void show_stats(void) {
   else
     stab_ratio = 100;
 
-  /* Roughly every minute, update fuzzer stats and save auto tokens. */
+  /* Publish live counters separately from the heavier periodic saves. */
 
   if (cur_ms - last_stats_ms > STATS_UPDATE_SEC * 1000) {
 
     last_stats_ms = cur_ms;
     write_stats_file(t_byte_ratio, stab_ratio, avg_exec);
+  }
+
+  if (cur_ms - last_save_ms > AUTO_SAVE_SEC * 1000) {
+    last_save_ms = cur_ms;
     save_auto();
     write_bitmap();
 
@@ -10229,6 +10242,13 @@ int main(int argc, char** argv) {
 
       struct queue_entry *selected_seed = NULL;
       while(!selected_seed || selected_seed->region_count == 0) {
+        if (stop_soon) goto stop_fuzzing;
+        u32 available = 0, si;
+        for (si = 0; si < state_ids_count; si++) {
+          khint_t sk = kh_get(hms, khms_states, state_ids[si]);
+          if (sk != kh_end(khms_states) && kh_val(khms_states, sk)->seeds_count) available++;
+        }
+        if (!available) FATAL("No seeds reached a protocol state; check target startup and responses.");
         target_state_id = choose_target_state(state_selection_algo);
 
         /* Update favorites based on the selected state */
