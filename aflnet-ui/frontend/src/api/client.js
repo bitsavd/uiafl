@@ -20,6 +20,7 @@ export const api = {
   createTask: payload => http.post('/tasks', payload),
   task: id => http.get(`/tasks/${id}`),
   taskStats: id => http.get(`/tasks/${id}/stats`),
+  taskTraffic: (id, after = 0) => http.get(`/tasks/${id}/traffic`, { params: { after, limit: 300 } }),
   startTask: id => http.post(`/tasks/${id}/start`),
   stopTask: id => http.post(`/tasks/${id}/stop`),
   removeTask: id => http.delete(`/tasks/${id}`),

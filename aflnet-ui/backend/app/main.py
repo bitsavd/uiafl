@@ -9,7 +9,7 @@ from typing import Any
 from tempfile import TemporaryDirectory
 from xml.sax.saxutils import escape
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, PlainTextResponse, Response
 from pydantic import BaseModel, Field
@@ -29,6 +29,7 @@ from reportlab.platypus import Image, KeepInFrame, PageBreak, Paragraph, SimpleD
 from .protocols import PROTOCOL_GROUPS, protocol_ids, protocol_meta
 from .preflight import preflight
 from .line_coverage import merge_coverage_plot
+from .traffic import read_traffic
 from .store import (
     APP_ROOT,
     ROOT,
@@ -208,6 +209,13 @@ def task_stats(task_id: str) -> dict[str, Any]:
         stats.pop(key, None)
     return {"id": task_id, "status": task["status"], "stats": stats, "server_time": server_time,
             "can_start": can_start_task(task), "can_stop": can_stop_task(task)}
+
+
+@app.get("/api/tasks/{task_id}/traffic")
+def task_traffic(task_id: str, after: int = Query(0, ge=0), limit: int = Query(200, ge=1, le=500)) -> dict[str, Any]:
+    task = refresh_task_status(get_task_or_404(task_id))
+    return {**read_traffic(normalize_path(task.get("output_dir"), ROOT), after, limit),
+            "task_id": task_id, "status": task["status"]}
 
 
 @app.post("/api/tasks/{task_id}/start")

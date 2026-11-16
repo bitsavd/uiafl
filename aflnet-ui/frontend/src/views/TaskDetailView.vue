@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import MetricCard from '../components/MetricCard.vue'
 import SimpleLineChart from '../components/SimpleLineChart.vue'
+import TrafficConsole from '../components/TrafficConsole.vue'
 import { api } from '../api/client.js'
 import { useLiveTaskStats } from '../composables/useLiveTaskStats.js'
 
@@ -88,6 +89,8 @@ onUnmounted(() => window.clearInterval(timer))
             ]"
           />
         </div>
+
+        <TrafficConsole :task="task" />
 
         <div class="panel" style="margin-top:16px">
           <div class="panel-heading">

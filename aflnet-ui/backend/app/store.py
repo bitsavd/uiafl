@@ -548,6 +548,7 @@ def replay_sample_with_target(sample_path: str, task: dict[str, Any], port: int,
 def runtime_env(task: dict[str, Any] | None = None) -> dict[str, str]:
     env = os.environ.copy()
     if task is not None:
+        env['AFLNET_UI_TRACE'] = '1'
         env.pop("AFLNET_TCP_READY_WAIT", None)
         env.pop("PROTOCOL_DICOM_FORKSERVER", None)
         env.pop("AFL_DUMB_FORKSRV", None)

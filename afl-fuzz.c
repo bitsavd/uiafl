@@ -670,6 +670,8 @@ kliter_t(lms) *M2_prev, *M2_next;
 unsigned int* (*extract_response_codes)(unsigned char* buf, unsigned int buf_size, unsigned int* state_count_ref) = NULL;
 region_t* (*extract_requests)(unsigned char* buf, unsigned int buf_size, unsigned int* region_count_ref) = NULL;
 
+#include "ui-trace.h"
+
 void expand_was_fuzzed_map(u32 new_states, u32 new_qentries);
 
 static state_info_t *new_state_info(u32 state_id) {
@@ -1755,6 +1757,7 @@ int send_over_network()
       usleep(1000);
     }
     if (n == retry_limit) {
+      ui_trace_connection_failed = 1;
       s7_log_event("connection_failed", "connect retry exhausted", NULL, 0, NULL, 0);
       close(sockfd);
       return 1;
@@ -1762,7 +1765,10 @@ int send_over_network()
   }
 
   //retrieve early server response if needed
-  if (net_recv(sockfd, timeout, poll_wait_msecs, &response_buf, &response_buf_size)) goto HANDLE_RESPONSES;
+  u32 early_response_size = response_buf_size;
+  int early_response_error = net_recv(sockfd, timeout, poll_wait_msecs, &response_buf, &response_buf_size);
+  ui_trace_received(early_response_size, 0);
+  if (early_response_error) goto HANDLE_RESPONSES;
 
   //write the request messages
   kliter_t(lms) *it;
@@ -1777,6 +1783,7 @@ int send_over_network()
       messages_sent++;
       response_bytes = (u32 *) ck_realloc(response_bytes, messages_sent * sizeof(u32));
       response_bytes[messages_sent - 1] = response_buf_size;
+      ui_trace_message("skip", (u8 *)last_req, last_req_len, messages_sent, "message_too_large");
       s7_log_event("oversized_request_skipped", "message exceeds S7_NET_MAX_MESSAGE",
                    (u8 *)last_req, last_req_len, (u8 *)response_buf, response_buf_size);
       continue;
@@ -1784,6 +1791,8 @@ int send_over_network()
 
     n = net_send(sockfd, timeout, kl_val(it)->mdata, kl_val(it)->msize);
     messages_sent++;
+    ui_trace_message("send", (u8 *)last_req, n > 0 ? n : 0, messages_sent,
+                     n == last_req_len ? "sent" : "send_error");
 
     //Allocate memory to store new accumulated response buffer size
     response_bytes = (u32 *) ck_realloc(response_bytes, messages_sent * sizeof(u32));
@@ -1795,7 +1804,9 @@ int send_over_network()
 
     //retrieve server response
     u32 prev_buf_size = response_buf_size;
-    if (net_recv(sockfd, timeout, poll_wait_msecs, &response_buf, &response_buf_size)) {
+    int message_response_error = net_recv(sockfd, timeout, poll_wait_msecs, &response_buf, &response_buf_size);
+    ui_trace_received(prev_buf_size, messages_sent);
+    if (message_response_error) {
       recv_error_seen = 1;
       goto HANDLE_RESPONSES;
     }
@@ -1833,6 +1844,7 @@ HANDLE_RESPONSES:
                               (u8 *)response_buf + prev_buf_size,
                               response_buf_size - prev_buf_size);
     }
+    ui_trace_received(prev_buf_size, messages_sent);
   }
 
   if (recv_error_seen && last_req_len) {
@@ -3910,6 +3922,8 @@ static u8 run_target(char** argv, u32 timeout) {
 
   child_timed_out = 0;
 
+  ui_trace_begin();
+
   /* After this memset, trace_bits[] are effectively volatile, so we
      must prevent any earlier operations from venturing into that
      territory. */
@@ -4084,6 +4098,8 @@ static u8 run_target(char** argv, u32 timeout) {
 #endif /* ^WORD_SIZE_64 */
 
   prev_timed_out = child_timed_out;
+
+  ui_trace_end(status, exec_ms, tb4);
 
   /* Report outcome to caller. */
 
