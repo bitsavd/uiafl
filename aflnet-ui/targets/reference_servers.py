@@ -5,6 +5,7 @@ import logging
 import os
 import shutil
 import signal
+import struct
 import subprocess
 import tempfile
 from pathlib import Path
@@ -31,6 +32,49 @@ def stop_with_parent():
         raise OSError(ctypes.get_errno(), 'Unable to set parent-death signal')
     if os.getppid() != parent:
         os.kill(os.getpid(), signal.SIGTERM)
+
+
+def dicom_forkserver():
+    if os.environ.get('PROTOCOL_DICOM_FORKSERVER') != '1':
+        return
+    try:
+        os.fstat(198)
+        os.fstat(199)
+    except OSError:
+        return
+    # Preload dependencies before any association threads or per-case files exist.
+    import pynetdicom
+    stop_with_parent()
+    child = 0
+    try:
+        os.write(199, struct.pack('=I', 0))
+        while True:
+            command = b''
+            while len(command) < 4:
+                chunk = os.read(198, 4 - len(command))
+                if not chunk:
+                    raise SystemExit(0)
+                command += chunk
+            parent = os.getpid()
+            child = os.fork()
+            if child == 0:
+                os.close(198)
+                os.close(199)
+                if os.getppid() != parent:
+                    os._exit(0)
+                stop_with_parent()
+                return
+            os.write(199, struct.pack('=i', child))
+            _, status = os.waitpid(child, 0)
+            child = 0
+            os.write(199, struct.pack('=I', status))
+    finally:
+        if child > 0:
+            try:
+                os.kill(child, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+            os.waitpid(child, 0)
 
 
 def ftp(port, directory):
@@ -91,6 +135,8 @@ def main():
     signal.signal(signal.SIGTERM, stop)
     signal.signal(signal.SIGINT, stop)
     logging.basicConfig(level=logging.ERROR)
+    if args.protocol == 'DICOM':
+        dicom_forkserver()
     with tempfile.TemporaryDirectory(prefix='protocol-reference-') as directory:
         if args.protocol == 'FTP':
             ftp(args.port, directory)

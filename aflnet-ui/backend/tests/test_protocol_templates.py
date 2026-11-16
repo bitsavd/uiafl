@@ -7,11 +7,28 @@ from pathlib import Path
 from unittest.mock import patch
 
 from app.main import TaskCreate, create_task
-from app.protocols import protocol_meta
-from app.store import ROOT, build_aflnet_command, default_options, replay_sample
+from app.protocols import protocol_meta, public_protocol
+from app.store import ROOT, build_aflnet_command, default_options, replay_sample, runtime_env
 
 
 class ProtocolTemplateTests(unittest.TestCase):
+    def test_dicom_default_startup_budget_matches_public_template(self):
+        meta = protocol_meta('DICOM')
+        public = public_protocol({'id': 'DICOM', 'name': 'DICOM', 'transport': 'TCP'})
+        self.assertEqual(meta['startup_delay_us'], 1000000)
+        self.assertEqual(public['startup_delay_us'], 1000000)
+        self.assertTrue(public['adaptive_startup'])
+
+    def test_adaptive_startup_only_enabled_for_managed_dicom(self):
+        self.assertEqual(runtime_env(self.task('DICOM')).get('AFLNET_TCP_READY_WAIT'), '1')
+        self.assertEqual(runtime_env(self.task('DICOM')).get('AFL_DUMB_FORKSRV'), '1')
+        custom = {**self.task('DICOM'), 'target_command': 'dcmqrscp 5158'}
+        self.assertNotIn('AFL_DUMB_FORKSRV', runtime_env(custom))
+        with patch.dict('os.environ', {'AFLNET_TCP_READY_WAIT': '1', 'PROTOCOL_DICOM_FORKSERVER': '1', 'AFL_DUMB_FORKSRV': '1'}):
+            for task in (self.task('DICOM', external=True), self.task('MQTT'), self.task('FTP')):
+                for key in ('AFLNET_TCP_READY_WAIT', 'PROTOCOL_DICOM_FORKSERVER', 'AFL_DUMB_FORKSRV'):
+                    self.assertNotIn(key, runtime_env(task))
+
     def test_bundled_corpora(self):
         for protocol, count in {'FTP': 2, 'DNS': 1, 'DICOM': 4, 'IPP': 4, 'DTLS12': 2}.items():
             with self.subTest(protocol=protocol):

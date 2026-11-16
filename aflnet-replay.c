@@ -184,6 +184,16 @@ else {fprintf(stderr, "[AFLNet-replay] Protocol %s has not been supported yet!\n
   fclose(fp);
   close(sockfd);
 
+  /* Optional binary capture for repeatable offline state analysis. */
+  const char *capture_path = getenv("AFLNET_REPLAY_RESPONSE_FILE");
+  if (capture_path && *capture_path) {
+    FILE *capture = fopen(capture_path, "wb");
+    if (!capture) PFATAL("Cannot create response capture");
+    if (response_buf_size && fwrite(response_buf, 1, response_buf_size, capture) != response_buf_size)
+      PFATAL("Cannot write response capture");
+    if (fclose(capture)) PFATAL("Cannot close response capture");
+  }
+
   //Extract response codes
   state_sequence = (*extract_response_codes)(response_buf, response_buf_size, &state_count);
 

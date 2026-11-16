@@ -38,7 +38,7 @@ class ProtocolSmokeTests(unittest.TestCase):
                         'duration': '60s' if protocol == 'DICOM' else '30s',
                         'aflnet_options': {**default_options(), 'startup_delay_us': meta['startup_delay_us'],
                                            'timeout': meta.get('default_timeout_ms', '2000+')}}
-                result = subprocess.run(build_aflnet_command(task), cwd=ROOT, env=runtime_env(),
+                result = subprocess.run(build_aflnet_command(task), cwd=ROOT, env=runtime_env(task),
                                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=100)
                 log = result.stdout.decode(errors='replace')
                 self.assertIn(result.returncode, (0, 124), log[-3000:])

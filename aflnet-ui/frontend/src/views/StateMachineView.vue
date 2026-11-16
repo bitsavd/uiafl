@@ -30,14 +30,15 @@ onMounted(load)
       <div>
           <p>STATE MODEL</p>
           <h2>协议状态机展示</h2>
+          <p v-if="selectedTask?.stats?.state_graph_source === 'saved-input-replay'">历史样本回放重建</p>
       </div>
       <el-select v-model="selectedId" style="width: 360px" placeholder="选择任务">
         <el-option v-for="task in tasks" :key="task.id" :label="`${task.protocol} · ${task.name}`" :value="task.id" />
       </el-select>
     </div>
     <div class="metric-grid" v-if="selectedTask">
-      <div class="metric-card"><span class="metric-accent"></span><p>状态节点</p><strong>{{ selectedTask.plot_tail?.at(-1)?.n_nodes ?? '未采集' }}</strong><small>状态模型反馈</small></div>
-      <div class="metric-card tone-teal"><span class="metric-accent"></span><p>状态转移</p><strong>{{ selectedTask.plot_tail?.at(-1)?.n_edges ?? '未采集' }}</strong><small>状态模型反馈</small></div>
+      <div class="metric-card"><span class="metric-accent"></span><p>状态节点</p><strong>{{ selectedTask.stats?.state_nodes ?? selectedTask.plot_tail?.at(-1)?.n_nodes ?? '未采集' }}</strong><small>状态模型反馈</small></div>
+      <div class="metric-card tone-teal"><span class="metric-accent"></span><p>状态转移</p><strong>{{ selectedTask.stats?.state_edges ?? selectedTask.plot_tail?.at(-1)?.n_edges ?? '未采集' }}</strong><small>状态模型反馈</small></div>
       <div class="metric-card tone-orange"><span class="metric-accent"></span><p>路径总数</p><strong>{{ selectedTask.stats?.paths_total || '未采集' }}</strong><small>不同执行反馈对应的样本数量</small></div>
       <div class="metric-card tone-red"><span class="metric-accent"></span><p>异常</p><strong>{{ selectedTask.stats?.unique_crashes || 0 }} / {{ selectedTask.stats?.unique_hangs || 0 }}</strong><small>crashes / hangs</small></div>
     </div>

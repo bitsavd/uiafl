@@ -4,8 +4,10 @@ import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Connection } from '@element-plus/icons-vue'
 import { api } from '../api/client.js'
+import { useTaskTimes } from '../composables/useTaskTimes.js'
 
 const router = useRouter()
+const taskTime = useTaskTimes()
 const groups = ref([])
 const tasks = ref([])
 const activeGroupId = ref('industrial')
@@ -46,6 +48,7 @@ const targetProfile = computed(() => {
   const host = String(form.target_host || '').trim().toLowerCase()
   return ['127.0.0.1', 'localhost', '::1'].includes(host) ? 'standard' : 'external'
 })
+const adaptiveStartup = computed(() => activeProtocol.value?.adaptive_startup && targetProfile.value === 'standard' && form.transport === 'tcp')
 
 function protocolSummary(protocol) {
   const category = activeGroup.value?.name || '协议'
@@ -135,26 +138,6 @@ watch(createDialogVisible, async visible => {
   }
 })
 
-async function startTask(row) {
-  try {
-    await api.startTask(row.id)
-    ElMessage.success('任务已启动')
-    refreshTasks()
-  } catch (error) {
-    ElMessage.error(error.message)
-  }
-}
-
-async function stopTask(row) {
-  try {
-    await api.stopTask(row.id)
-    ElMessage.success('已发送停止信号')
-    refreshTasks()
-  } catch (error) {
-    ElMessage.error(error.message)
-  }
-}
-
 async function removeTask(row) {
   try {
     await ElMessageBox.confirm(
@@ -230,16 +213,15 @@ onUnmounted(() => window.clearInterval(timer))
           </template>
         </el-table-column>
         <el-table-column prop="status" label="状态" width="100" />
+        <el-table-column label="测试时间" width="140"><template #default="{ row }">{{ taskTime(row) }}</template></el-table-column>
         <el-table-column label="速度" width="110"><template #default="{ row }">{{ metric(row.stats?.execs_per_sec) }}</template></el-table-column>
         <el-table-column label="路径" width="110"><template #default="{ row }">{{ metric(row.stats?.paths_total) }}</template></el-table-column>
         <el-table-column v-if="tasks.some(task => task.stats?.line_coverage_available)" label="代码行覆盖率" width="140"><template #default="{ row }">{{ row.stats?.line_coverage_available ? metric(row.stats.line_coverage) : '-' }}</template></el-table-column>
         <el-table-column label="异常" width="110"><template #default="{ row }">{{ row.stats?.unique_crashes || 0 }} / {{ row.stats?.unique_hangs || 0 }}</template></el-table-column>
-        <el-table-column label="操作" width="340" fixed="right">
+        <el-table-column label="操作" width="200" fixed="right">
           <template #default="{ row }">
-            <el-button size="small" @click="router.push(`/tasks/${row.id}`)">详情</el-button>
-            <el-button size="small" type="primary" :disabled="row.readonly || row.status === 'running'" @click.stop="startTask(row)">启动</el-button>
-            <el-button size="small" type="danger" :disabled="row.readonly || row.status !== 'running'" @click.stop="stopTask(row)">停止</el-button>
-            <el-button size="small" :disabled="row.status === 'running'" @click.stop="removeTask(row)">移除记录</el-button>
+            <el-button size="small" type="primary" plain @click="router.push(`/tasks/${row.id}`)">详情</el-button>
+            <el-button size="small" type="danger" plain :disabled="row.status === 'running'" @click.stop="removeTask(row)">移除记录</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -320,13 +302,14 @@ onUnmounted(() => window.clearInterval(timer))
             <el-input-number v-model="form.aflnet_options.seed_selection" :min="1" :max="3" />
             <div class="form-tip">取值范围 1-3：1 随机，2 轮询，3 优先选择高价值样本。</div>
           </el-form-item>
-          <el-form-item label="启动等待时间">
+          <el-form-item :label="adaptiveStartup ? '启动等待预算' : '启动等待时间'">
             <el-input-number v-model="form.aflnet_options.startup_delay_us" :min="0" :max="10000000" :step="1000" />
-            <div class="form-tip">单位：微秒 us。例如 20000 表示 20 ms，用于等待目标服务完成启动。</div>
+            <div v-if="adaptiveStartup" class="form-tip">单位：微秒 us，默认 1000000（1 秒）。目标服务就绪后立即发送，预算之外保留最多约 1 秒的连接重试。</div>
+            <div v-else class="form-tip">单位：微秒 us。例如 20000 表示 20 ms，用于等待目标服务完成启动。</div>
           </el-form-item>
           <el-form-item label="单次执行超时">
             <el-input v-model="form.aflnet_options.timeout" />
-            <div class="form-tip">单位：毫秒 ms。可写 2000，也可写 2000+ 表示允许引擎做自适应放宽。</div>
+            <div class="form-tip">单位：毫秒 ms。2000 表示超时为 2000 ms；2000+ 表示校准阶段跳过超时种子。</div>
           </el-form-item>
         </div>
         <el-form-item label="检测策略">

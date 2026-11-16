@@ -32,6 +32,9 @@ export function useLiveTaskStats(task) {
       if (generation !== requestGeneration) return
       snapshot.value = { ...data, receivedAt: Date.now() }
       task.value.status = data.status
+      for (const key of ['can_start', 'can_stop']) {
+        if (typeof data[key] === 'boolean') task.value[key] = data[key]
+      }
     } catch {
       // Keep the last successful snapshot on transient connection failures.
     } finally {

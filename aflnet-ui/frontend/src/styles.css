@@ -72,8 +72,8 @@ a { color: inherit; }
 .task-title strong { font-size: 16px; }
 .muted { color: var(--muted); }
 .code-line { padding: 12px; border-radius: 6px; background: #172033; color: #d9e5ef; overflow: auto; font-family: "JetBrains Mono", Consolas, monospace; font-size: 12px; line-height: 1.6; }
-.state-box { min-height: 560px; border: 1px solid var(--line); border-radius: 6px; background: #fff; overflow: auto; display: grid; place-items: center; }
-.state-box img { display: block; width: 100%; min-height: 520px; object-fit: contain; }
+.state-box { height: 560px; min-width: 0; border: 1px solid var(--line); border-radius: 6px; background: #fff; overflow: auto; display: grid; place-items: center; }
+.state-box img { display: block; width: 100%; height: 100%; min-height: 0; object-fit: contain; }
 .empty-panel { min-height: 260px; display: grid; place-items: center; text-align: center; color: var(--muted); }
 .detail-grid { display: grid; grid-template-columns: 1fr 380px; gap: 16px; }
 .artifact-list { display: grid; gap: 10px; max-height: 420px; overflow: auto; }

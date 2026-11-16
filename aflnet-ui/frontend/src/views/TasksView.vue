@@ -3,8 +3,10 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { api } from '../api/client.js'
+import { useTaskTimes } from '../composables/useTaskTimes.js'
 
 const router = useRouter()
+const taskTime = useTaskTimes()
 const loading = ref(false)
 const tasks = ref([])
 let timer = null
@@ -17,27 +19,6 @@ async function refresh() {
     ElMessage.error(error.message)
   } finally {
     loading.value = false
-  }
-}
-
-async function startTask(row) {
-  try {
-    await ElMessageBox.confirm(`确认启动任务“${row.name}”？`, '启动检测任务')
-    await api.startTask(row.id)
-    ElMessage.success('任务已启动')
-    refresh()
-  } catch (error) {
-    if (error !== 'cancel') ElMessage.error(error.message || '已取消')
-  }
-}
-
-async function stopTask(row) {
-  try {
-    await api.stopTask(row.id)
-    ElMessage.success('已发送停止信号')
-    refresh()
-  } catch (error) {
-    ElMessage.error(error.message)
   }
 }
 
@@ -81,16 +62,15 @@ onUnmounted(() => window.clearInterval(timer))
       </el-table-column>
       <el-table-column prop="protocol" label="协议" width="100" />
       <el-table-column prop="status" label="状态" width="100" />
+      <el-table-column label="测试时间" width="140"><template #default="{ row }">{{ taskTime(row) }}</template></el-table-column>
       <el-table-column label="速度" width="110"><template #default="{ row }">{{ row.stats?.execs_per_sec || '-' }}</template></el-table-column>
       <el-table-column label="路径" width="100"><template #default="{ row }">{{ row.stats?.paths_total || '-' }}</template></el-table-column>
       <el-table-column v-if="tasks.some(task => task.stats?.line_coverage_available)" label="代码行覆盖率" width="140"><template #default="{ row }">{{ row.stats?.line_coverage_available ? row.stats.line_coverage : '-' }}</template></el-table-column>
       <el-table-column label="异常" width="110"><template #default="{ row }">{{ row.stats?.unique_crashes || 0 }} / {{ row.stats?.unique_hangs || 0 }}</template></el-table-column>
-      <el-table-column label="操作" width="340" fixed="right">
+      <el-table-column label="操作" width="200" fixed="right">
         <template #default="{ row }">
-          <el-button size="small" @click="router.push(`/tasks/${row.id}`)">详情</el-button>
-          <el-button size="small" type="primary" :disabled="row.readonly || row.status === 'running'" @click.stop="startTask(row)">启动</el-button>
-          <el-button size="small" type="danger" :disabled="row.readonly || row.status !== 'running'" @click.stop="stopTask(row)">停止</el-button>
-          <el-button size="small" :disabled="row.status === 'running'" @click.stop="removeTask(row)">移除记录</el-button>
+          <el-button size="small" type="primary" plain @click="router.push(`/tasks/${row.id}`)">详情</el-button>
+          <el-button size="small" type="danger" plain :disabled="row.status === 'running'" @click.stop="removeTask(row)">移除记录</el-button>
         </template>
       </el-table-column>
     </el-table>

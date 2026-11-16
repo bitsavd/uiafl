@@ -130,7 +130,7 @@ onUnmounted(() => window.clearInterval(refreshTimer))
           <div class="panel-heading">
             <div>
               <p>TREND</p>
-              <h2>速度与覆盖趋势</h2>
+              <h2>路径与速度趋势</h2>
             </div>
           </div>
           <SimpleLineChart
@@ -138,7 +138,6 @@ onUnmounted(() => window.clearInterval(refreshTimer))
             :series="[
               { key: 'paths_total', label: '路径总数', color: '#2563eb' },
               { key: 'execs_per_sec', label: '执行速度', color: '#0f766e' },
-              ...(stats.line_coverage_available ? [{ key: 'line_coverage_pct', label: '代码行覆盖率', color: '#b45309' }] : []),
             ]"
           />
         </div>
@@ -167,6 +166,7 @@ onUnmounted(() => window.clearInterval(refreshTimer))
             <div>
               <p>STATE MODEL</p>
               <h2>协议状态机</h2>
+              <p v-if="stats.state_graph_source === 'saved-input-replay'">历史样本回放重建</p>
             </div>
           </div>
           <div class="state-box">

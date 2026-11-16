@@ -32,7 +32,10 @@ from .line_coverage import merge_coverage_plot
 from .store import (
     APP_ROOT,
     ROOT,
+    TASK_CONTROL_LOCK,
     build_aflnet_command,
+    can_start_task,
+    can_stop_task,
     default_options,
     detection_metrics,
     format_duration,
@@ -49,6 +52,7 @@ from .store import (
     replay_sample_with_target,
     resolve_finding,
     save_settings,
+    state_graph_path,
     start_task,
     stop_task,
     upsert_task,
@@ -202,39 +206,41 @@ def task_stats(task_id: str) -> dict[str, Any]:
         stats["run_time"] = format_duration(seconds)
     for key in ("command_line", "afl_banner", "afl_version", "target_mode"):
         stats.pop(key, None)
-    return {"id": task_id, "status": task["status"], "stats": stats, "server_time": server_time}
+    return {"id": task_id, "status": task["status"], "stats": stats, "server_time": server_time,
+            "can_start": can_start_task(task), "can_stop": can_stop_task(task)}
 
 
 @app.post("/api/tasks/{task_id}/start")
 def start(task_id: str) -> dict[str, Any]:
-    task = get_task_or_404(task_id)
-    if task.get("readonly"):
-        raise HTTPException(400, "历史样例任务不能启动")
-    if task.get("status") == "running":
-        return with_summary(task)
-    max_parallel = int(load_settings().get("execution", {}).get("max_parallel_tasks", 1))
-    running_count = sum(1 for item in load_tasks() if not item.get("hidden") and refresh_task_status(item).get("status") == "running")
-    if running_count >= max_parallel:
-        raise HTTPException(400, f"当前并行任务已达到上限：{max_parallel}")
-    return with_summary(start_task(task))
+    with TASK_CONTROL_LOCK:
+        task = refresh_task_status(get_task_or_404(task_id))
+        if not can_start_task(task):
+            raise HTTPException(409, "该任务已运行或不可启动，请新建检测任务")
+        max_parallel = int(load_settings().get("execution", {}).get("max_parallel_tasks", 1))
+        running_count = sum(1 for item in load_tasks() if not item.get("hidden") and refresh_task_status(item).get("status") == "running")
+        if running_count >= max_parallel:
+            raise HTTPException(400, f"当前并行任务已达到上限：{max_parallel}")
+        return with_summary(start_task(task))
 
 
 @app.post("/api/tasks/{task_id}/stop")
 def stop(task_id: str) -> dict[str, Any]:
-    task = get_task_or_404(task_id)
-    if task.get("readonly"):
-        raise HTTPException(400, "历史样例任务不能停止")
-    return with_summary(stop_task(task))
+    with TASK_CONTROL_LOCK:
+        task = refresh_task_status(get_task_or_404(task_id))
+        if not can_stop_task(task):
+            raise HTTPException(409, "只有运行中的任务可以停止")
+        return with_summary(stop_task(task))
 
 
 @app.delete("/api/tasks/{task_id}")
 def remove_task(task_id: str) -> dict[str, str]:
-    task = get_task_or_404(task_id)
-    if task.get("status") == "running":
-        raise HTTPException(400, "运行中的任务不能移除记录")
-    if not hide_task(task_id):
-        raise HTTPException(404, "任务不存在")
-    return {"status": "removed"}
+    with TASK_CONTROL_LOCK:
+        task = refresh_task_status(get_task_or_404(task_id))
+        if task.get("status") == "running":
+            raise HTTPException(400, "运行中的任务不能移除记录")
+        if not hide_task(task_id):
+            raise HTTPException(404, "任务不存在")
+        return {"status": "removed"}
 
 
 @app.get("/api/tasks/{task_id}/findings")
@@ -312,6 +318,7 @@ def build_report_markdown(task: dict[str, Any], findings: dict[str, list[dict[st
         "",
         "## 状态覆盖",
         "",
+        *(["状态图由历史保存样本在当前本地目标上回放重建，执行次数与趋势保留原实验统计。", ""] if stats.get("state_graph_source") == "saved-input-replay" else []),
         f"- 状态路径数：{stats.get('state_paths', '未采集')}",
         f"- 状态机：{'已生成' if task.get('has_state_machine') else '未生成'}",
         f"- 状态节点数：{stats.get('state_nodes', latest_plot_value(task.get('plot', []), 'n_nodes'))}",
@@ -394,16 +401,19 @@ def build_pdf_report(task: dict[str, Any], findings: dict[str, list[dict[str, An
     with TemporaryDirectory(prefix="protocol-report-") as temp_dir:
         temp = Path(temp_dir)
         trend_path = temp / "trend.png"
-        story += [PageBreak(), Paragraph("速度与覆盖趋势", styles["CnHeading"])]
-        if render_trend_chart(task.get("plot", []), trend_path, stats.get("line_coverage_available", False)):
+        story += [PageBreak(), Paragraph("路径与速度趋势", styles["CnHeading"])]
+        if render_trend_chart(task.get("plot", []), trend_path):
             story.append(Image(str(trend_path), width=16.5 * cm, height=6.3 * cm))
         else:
             story.append(Paragraph("当前任务暂无可用趋势数据。", styles["CnBody"]))
 
-        dot_path = output_dir / "ipsm.dot"
+        dot_path = state_graph_path(str(output_dir))
         state_path = temp / "state-machine.png"
         if dot_path.exists() and render_state_machine_png(dot_path, state_path):
-            story += [Spacer(1, 0.2 * cm), Paragraph("协议状态机", styles["CnHeading"]), Image(str(state_path), width=13.5 * cm, height=9.4 * cm)]
+            story += [Spacer(1, 0.2 * cm), Paragraph("协议状态机", styles["CnHeading"])]
+            if stats.get("state_graph_source") == "saved-input-replay":
+                story.append(Paragraph("历史保存样本在当前本地目标上回放重建", styles["CnSmall"]))
+            story.append(Image(str(state_path), width=13.5 * cm, height=9.4 * cm))
         else:
             story += [Spacer(1, 0.2 * cm), Paragraph("协议状态机", styles["CnHeading"]), Paragraph("当前任务未生成协议状态机。", styles["CnBody"])]
 
@@ -441,19 +451,17 @@ def chart_time_label(seconds: float) -> str:
     return f"{total // 3600:02d}:{total % 3600 // 60:02d}:{total % 60:02d}"
 
 
-def render_trend_chart(rows: list[dict[str, Any]], output: Path, line_coverage: bool = True) -> bool:
+def render_trend_chart(rows: list[dict[str, Any]], output: Path) -> bool:
     rows = [row for row in rows if isinstance(row.get("unix_time"), (int, float))]
     if len(rows) < 2:
         return False
     start = rows[0]["unix_time"]
     figure, axis = plt.subplots(figsize=(9.2, 4.6), dpi=150)
     series = [("paths_total", "Paths", "#2563eb"), ("execs_per_sec", "Execs/sec", "#0f766e")]
-    if line_coverage:
-        series.append(("line_coverage_pct", "Code line coverage", "#b45309"))
     for key, label, color in series:
         points = [row for row in rows if row.get(key) is not None]
         values = [float(row[key]) for row in points]
-        maximum = 100 if key == "line_coverage_pct" else max(max(values, default=0), 1)
+        maximum = max(max(values, default=0), 1)
         axis.plot([row['unix_time'] - start for row in points], [value / maximum * 100 for value in values], label=label, color=color, linewidth=1.6)
     axis.set_ylim(0, 100)
     duration = max(rows[-1]["unix_time"] - start, 1)
@@ -500,7 +508,8 @@ def with_summary(task: dict[str, Any], include_plot: bool = False) -> dict[str, 
     public_task = {key: value for key, value in task.items() if key not in hidden_fields}
     hidden_stats = {"command_line", "afl_banner", "afl_version", "target_mode"}
     public_stats = {key: value for key, value in stats.items() if key not in hidden_stats}
-    result = {**public_task, "stats": public_stats, "plot_tail": plot[-120:], "has_state_machine": (Path(output_dir) / "ipsm.dot").exists()}
+    result = {**public_task, "stats": public_stats, "plot_tail": plot[-120:], "has_state_machine": (Path(output_dir) / "ipsm.dot").exists(),
+              "can_start": can_start_task(task), "can_stop": can_stop_task(task)}
     if include_plot:
         result["plot"] = plot
     return result

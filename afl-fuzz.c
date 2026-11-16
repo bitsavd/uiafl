@@ -1688,8 +1688,9 @@ int send_over_network()
 
   if (env_flag_enabled("S7_RESET_BEFORE")) s7_reset_plc_state();
 
-  //Wait a bit for the server initialization
-  usleep(server_wait_usecs);
+  /* Managed TCP targets can connect as soon as the listener is ready. */
+  u8 adaptive_startup = net_protocol == PRO_TCP && env_flag_enabled("AFLNET_TCP_READY_WAIT");
+  if (!adaptive_startup) usleep(server_wait_usecs);
 
   //Clear the response buffer and reset the response buffer size
   if (response_buf) {
@@ -1744,11 +1745,16 @@ int send_over_network()
   if(connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
     //If it cannot connect to the server under test
     //try it again as the server initial startup time is varied
-    for (n=0; n < 1000; n++) {
+    u32 retry_limit = 1000 + (adaptive_startup ? server_wait_usecs / 1000 : 0);
+    for (n=0; n < retry_limit; n++) {
+      if (adaptive_startup && (stop_soon || child_timed_out)) {
+        close(sockfd);
+        return 1;
+      }
       if (connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) == 0) break;
       usleep(1000);
     }
-    if (n== 1000) {
+    if (n == retry_limit) {
       s7_log_event("connection_failed", "connect retry exhausted", NULL, 0, NULL, 0);
       close(sockfd);
       return 1;

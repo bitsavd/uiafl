@@ -49,7 +49,9 @@ PROTOCOL_TEMPLATES = {
     },
     "DICOM": {
         "default_port": 5158, "transport": "TCP", "input_dir": "tutorials/dcmqrscp/in-dicom",
-        "instrumented": False, "startup_delay_us": 1500000, "default_timeout_ms": "5000+",
+        "instrumented": False, "startup_delay_us": 1000000, "default_timeout_ms": "5000+",
+        "adaptive_startup": True,
+        "preload_forkserver": True,
         "target_command": "python3 aflnet-ui/targets/reference_servers.py DICOM {port}", "work_dir": ".", "poll_timeout_ms": 100,
         "python_dependencies": ["pynetdicom"],
     },
@@ -81,6 +83,7 @@ def public_protocol(item: dict) -> dict:
         "capabilities": meta.get("capabilities", ["state_feedback", "region_mutation", "replay", "trend"] if meta else ["state_feedback", "region_mutation"]),
         "startup_delay_us": meta.get("startup_delay_us", 20000),
         "default_timeout_ms": meta.get("default_timeout_ms"),
+        "adaptive_startup": meta.get("adaptive_startup", False),
     }
 
 

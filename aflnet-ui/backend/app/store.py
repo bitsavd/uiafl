@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import errno
 import os
 import signal
@@ -9,6 +10,7 @@ import shutil
 import socket
 import subprocess
 import time
+from threading import RLock
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
@@ -22,6 +24,7 @@ TASKS_FILE = DATA_DIR / "tasks.json"
 SETTINGS_FILE = DATA_DIR / "settings.json"
 RUNS_DIR = APP_ROOT / "runs"
 DEMO_RUN_ENV = "PROTOCOL_DETECTOR_DEMO_RUN"
+TASK_CONTROL_LOCK = RLock()
 
 
 def ensure_dirs() -> None:
@@ -270,6 +273,12 @@ def detection_metrics(task: dict[str, Any], stats: dict[str, Any], output_dir: s
         directory = Path(output_dir) / "replayable-new-ipsm-paths"
         if directory.is_dir():
             result["state_paths"] = _state_path_count(str(directory), directory.stat().st_mtime_ns)
+    rebuilt = state_reanalysis(output_dir) if task.get("status") != "running" else None
+    if rebuilt:
+        result.update({key: rebuilt[key] for key in ("state_nodes", "state_edges", "state_paths")})
+        result["state_graph_source"] = "saved-input-replay"
+        result["state_replay_samples"] = rebuilt["sample_count"]
+        result["state_replay_failures"] = rebuilt["failed_samples"]
     return result
 
 
@@ -305,12 +314,35 @@ def parse_plot(output_dir: str) -> list[dict[str, Any]]:
     return rows
 
 
+def state_reanalysis(output_dir: str) -> dict[str, Any] | None:
+    directory = Path(output_dir)
+    try:
+        summary = json.loads((directory / "state-reanalysis/summary.json").read_text())
+        if summary.get("version") != 1 or summary.get("method") != "saved-input-replay":
+            return None
+        stats_file = directory / "fuzzer_stats"
+        if summary.get("source_stats_sha256") != hashlib.sha256(stats_file.read_bytes() if stats_file.exists() else b"").hexdigest():
+            return None
+        if not (directory / "state-reanalysis/ipsm.dot").is_file():
+            return None
+        for key in ("state_nodes", "state_edges", "state_paths", "sample_count", "failed_samples"):
+            if type(summary.get(key)) is not int or summary[key] < 0:
+                return None
+        return summary
+    except (OSError, ValueError, TypeError, AttributeError):
+        return None
+
+
+def state_graph_path(output_dir: str) -> Path:
+    directory = Path(output_dir)
+    return directory / "state-reanalysis/ipsm.dot" if state_reanalysis(output_dir) else directory / "ipsm.dot"
+
+
 def render_state_machine(output_dir: str) -> Path | None:
-    out_dir = Path(output_dir)
-    dot_path = out_dir / "ipsm.dot"
+    dot_path = state_graph_path(output_dir)
     if not dot_path.exists():
         return None
-    svg_path = out_dir / "ipsm.svg"
+    svg_path = dot_path.with_suffix(".svg")
     subprocess.run(["dot", "-Tsvg", str(dot_path), "-o", str(svg_path)], check=True, timeout=20)
     return svg_path
 
@@ -404,17 +436,30 @@ def build_aflnet_command(task: dict[str, Any]) -> list[str]:
     return command
 
 
+def can_start_task(task: dict[str, Any]) -> bool:
+    if task.get("readonly") or task.get("status") != "created" or task.get("started_at") or task.get("pid"):
+        return False
+    directory = Path(normalize_path(task.get("output_dir")))
+    return not any((directory / name).exists() for name in ("fuzzer_stats", "ipsm.dot", "queue", "replayable-queue"))
+
+
+def can_stop_task(task: dict[str, Any]) -> bool:
+    return not task.get("readonly") and task.get("status") == "running"
+
+
 def start_task(task: dict[str, Any]) -> dict[str, Any]:
+    if not can_start_task(task):
+        raise ValueError("该任务已运行或已有实验数据，请新建检测任务")
     output_dir = Path(normalize_path(task["output_dir"]))
     output_dir.mkdir(parents=True, exist_ok=True)
     prepare_task_environment(task)
-    stdout = open(output_dir / "afl_stdout.log", "ab", buffering=0)
-    stderr = open(output_dir / "afl_stderr.log", "ab", buffering=0)
-    env = runtime_env()
+    env = runtime_env(task)
     command = build_aflnet_command(task)
-    proc = subprocess.Popen(command, cwd=task_work_dir(task), stdout=stdout, stderr=stderr, env=env, start_new_session=True)
+    with open(output_dir / "afl_stdout.log", "ab", buffering=0) as stdout, open(output_dir / "afl_stderr.log", "ab", buffering=0) as stderr:
+        proc = subprocess.Popen(command, cwd=task_work_dir(task), stdout=stdout, stderr=stderr, env=env, start_new_session=True)
     task["pid"] = proc.pid
     task["status"] = "running"
+    task["started_at"] = time.strftime('%Y-%m-%dT%H:%M:%S%z')
     task["line_coverage_enabled"] = bool(protocol_meta(task["protocol"]).get("coverage_builder")) and task.get("target_profile") != "external"
     task["command_line"] = " ".join(command)
     upsert_task(task)
@@ -422,6 +467,8 @@ def start_task(task: dict[str, Any]) -> dict[str, Any]:
 
 
 def stop_task(task: dict[str, Any]) -> dict[str, Any]:
+    if not can_stop_task(task):
+        raise ValueError("只有运行中的任务可以停止")
     pid = task.get("pid")
     if pid and is_process_alive(pid):
         os.killpg(pid, signal.SIGTERM)
@@ -498,8 +545,21 @@ def replay_sample_with_target(sample_path: str, task: dict[str, Any], port: int,
         terminate_process_group(proc)
 
 
-def runtime_env() -> dict[str, str]:
+def runtime_env(task: dict[str, Any] | None = None) -> dict[str, str]:
     env = os.environ.copy()
+    if task is not None:
+        env.pop("AFLNET_TCP_READY_WAIT", None)
+        env.pop("PROTOCOL_DICOM_FORKSERVER", None)
+        env.pop("AFL_DUMB_FORKSRV", None)
+        if task.get("target_profile") != "external" and protocol_meta(task.get("protocol", "")).get("adaptive_startup"):
+            env["AFLNET_TCP_READY_WAIT"] = "1"
+        command = shlex.split(task.get("target_command", ""))
+        reference_dicom = len(command) > 2 and command[2] == "DICOM" and normalize_path(command[1], Path(task_work_dir(task))) == str(ROOT / "aflnet-ui/targets/reference_servers.py")
+        if task.get("target_profile") != "external" and reference_dicom and protocol_meta(task.get("protocol", "")).get("preload_forkserver"):
+            env["PROTOCOL_DICOM_FORKSERVER"] = "1"
+            env["AFL_DUMB_FORKSRV"] = "1"
+            for key in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS", "NUMEXPR_NUM_THREADS"):
+                env[key] = "1"
     env.setdefault("AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES", "1")
     env.setdefault("AFL_SKIP_CPUFREQ", "1")
     lib_paths = [str(ROOT / "mosquitto" / "lib")]
